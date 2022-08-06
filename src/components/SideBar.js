@@ -1,11 +1,14 @@
+import { Chat } from '@mui/icons-material'
 import React from 'react'
 import styled from 'styled-components'
 import SideBarHeader from './SideBarHeader'
+import SideBarOption from './SideBarOption'
 
 const SideBar = () => {
     return (
         <StyledSideBar>
             <SideBarHeader />
+            <SideBarOption title={"Threads"} icon={<Chat />} />
         </StyledSideBar>
     )
 }

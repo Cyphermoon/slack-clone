@@ -40,7 +40,7 @@ const StyledSideBarHeader = styled.div`
 const StyledInfoGroup = styled.div`
      & > h3{
         color:white;
-        font-size:1.5rem;
+        font-size:1.35rem;
         font-weight:600;
         text-transform: capitalize;
         margin-bottom:.15em;
