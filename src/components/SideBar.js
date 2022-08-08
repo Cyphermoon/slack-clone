@@ -8,10 +8,7 @@ import SideBarHeader from './SideBarHeader'
 import SideBarOption from './SideBarOption'
 
 const SideBar = () => {
-    const [data, loading, error] = useCollection(collection(db, "rooms"))
-
-    const id = useId()
-
+    const [data, loading] = useCollection(collection(db, "rooms"))
 
     const addChannels = async () => {
         const channelName = prompt("What is the channel name");
@@ -45,7 +42,8 @@ const SideBar = () => {
             <SideBarOption title={"Add Channel"} Icon={Add} handleClick={addChannels} />
             <div className='channels_group'>
                 {
-                    data.docs.map((doc) => <SideBarOption key={doc.id} title={doc.data().name} />)
+                    data.docs.map((doc) =>
+                        <SideBarOption key={doc.id} id={doc.id} title={doc.data().name} />)
                 }
             </div>
         </StyledSideBar>
@@ -55,6 +53,7 @@ const SideBar = () => {
 const StyledSideBar = styled.section`
     width:100%;
     max-width:250px;
+    padding-top:80px;
     padding-left:15px;
     padding-right:10px;
     padding-bottom:50px;
@@ -73,6 +72,7 @@ const StyledSideBar = styled.section`
 
     .channels_group{
         margin-top:1em;
+        // padding-left:.7em;
 
         & > * + *{
             margin-top:.75em;

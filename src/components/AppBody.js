@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import ChatArea from './ChatArea'
 import SideBar from './SideBar'
 
 const AppBody = () => {
     return (
         <StyledMain>
             <SideBar />
-            {/* <ChatArea /> */}
+            <ChatArea />
         </StyledMain>
     )
 }

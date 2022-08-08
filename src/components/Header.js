@@ -11,14 +11,14 @@ const Header = () => {
                 <StyledAvatar />
                 <AccessTimeIcon />
             </StyledHeaderLeft>
-        
+
             <StyledHeaderSearch>
                 <Search />
                 <input type="text" placeholder='Search Workspace' />
             </StyledHeaderSearch>
 
             <StyledHeaderRight>
-                <Help/>
+                <Help />
             </StyledHeaderRight>
         </StyledHeaderContainer>
     )
@@ -31,6 +31,11 @@ const StyledHeaderContainer = styled.div`
     justify-content:space-between;
     padding:15px 20px;
     color:white;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    z-index:10;
 `
 
 const StyledHeaderLeft = styled.div`
