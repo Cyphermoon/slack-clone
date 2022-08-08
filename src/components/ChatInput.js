@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const ChatInput = () => {
+const ChatInput = ({ channelName }) => {
 
 
     return (
         <StyledChatInput >
-            <input type="text" placeholder='Say something' />
+            <input type="text" placeholder={`message ${channelName}`}  />
             <button type='submit' hidden>send</button>
         </StyledChatInput>
     )

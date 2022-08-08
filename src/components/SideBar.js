@@ -1,6 +1,5 @@
 import { Add, Apps, BookmarkBorder, Chat, Drafts, ExpandLess, ExpandMore, FileCopy, Inbox, PeopleAlt } from '@mui/icons-material'
 import { collection, doc, setDoc } from 'firebase/firestore'
-import React, { useId } from 'react'
 import styled from 'styled-components'
 import { useCollection } from "react-firebase-hooks/firestore"
 import { db } from '../firebase'
