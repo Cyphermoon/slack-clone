@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const SideBarOption = ({ Icon, title, handleClick = f => f }) => {
+const SideBarOption = ({ Icon, title, handleClick = f => f, id }) => {
     return (
         <StyledSideBarOption>
             {Icon && <Icon />}
             {Icon ?
                 <button onClick={handleClick}>{title}</button> :
-                <SideOptionContainer># <button>{title}</button></SideOptionContainer>}
+                <SideOptionContainer onClick={() => handleClick(id)}># <button>{title}</button></SideOptionContainer>}
 
         </StyledSideBarOption>
     )

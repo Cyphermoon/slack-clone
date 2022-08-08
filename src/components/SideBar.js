@@ -5,9 +5,12 @@ import { useCollection } from "react-firebase-hooks/firestore"
 import { db } from '../firebase'
 import SideBarHeader from './SideBarHeader'
 import SideBarOption from './SideBarOption'
+import { useDispatch } from 'react-redux'
+import { roomActions } from '../store/room_slice'
 
 const SideBar = () => {
     const [data, loading] = useCollection(collection(db, "rooms"))
+    const dispatch = useDispatch()
 
     const addChannels = async () => {
         const channelName = prompt("What is the channel name");
@@ -19,9 +22,13 @@ const SideBar = () => {
                 name: channelName
             })
         }
-
-
     }
+
+    const selectChannel = (id) => {
+        dispatch(roomActions.selectChannel({ id }))
+    }
+
+
     if (loading) return <h1>Loading</h1>
 
     return (
@@ -39,12 +46,18 @@ const SideBar = () => {
             <SideBarOption title={"Channels"} Icon={ExpandMore} />
             <hr />
             <SideBarOption title={"Add Channel"} Icon={Add} handleClick={addChannels} />
+
             <div className='channels_group'>
                 {
                     data.docs.map((doc) =>
-                        <SideBarOption key={doc.id} id={doc.id} title={doc.data().name} />)
+                        <SideBarOption
+                            key={doc.id}
+                            id={doc.id}
+                            title={doc.data().name}
+                            handleClick={(docId) => selectChannel(docId)} />)
                 }
             </div>
+
         </StyledSideBar>
     )
 }

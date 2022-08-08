@@ -4,15 +4,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const roomSlice = createSlice({
     name: "room",
     initialState: {
-        id: 0
+        roomId: null
     },
     reducers: {
-        selectChannel() {
-
+        selectChannel(state, action) {
+            state.roomId = action.payload.id
         }
     }
 })
 
-export const RoomActions = roomSlice.actions;
+export const roomActions = roomSlice.actions;
 
 export default roomSlice
