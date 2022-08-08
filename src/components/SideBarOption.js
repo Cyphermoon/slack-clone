@@ -1,11 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const SideBarOption = ({ icon, title }) => {
+const SideBarOption = ({ Icon, title, handleClick = f => f }) => {
     return (
         <StyledSideBarOption>
-            {icon && icon}
-            <button>{title}</button>
+            {Icon && <Icon />}
+            {Icon ?
+                <button onClick={handleClick}>{title}</button> :
+                <SideOptionContainer># <button>{title}</button></SideOptionContainer>}
+
         </StyledSideBarOption>
     )
 }
@@ -16,6 +19,11 @@ const StyledSideBarOption = styled.div`
     display:flex;
     align-items:center;
     justify-content:flex-start;
+    
+    &:hover{
+        opacity:.78;
+        cursor:pointer;
+    }
 
     svg{
         font-size:var(--label-size);
@@ -29,11 +37,15 @@ const StyledSideBarOption = styled.div`
         border:none;
         outline:none;
         background-color:transparent;
+        cursor:pointer;
         font-size:var(--label-size);
         color:white;
         font-weight:400;
-        justify-self:flex-end;
     }
+`
+
+const SideOptionContainer = styled.div`
+    color:white;
 `
 
 export default SideBarOption

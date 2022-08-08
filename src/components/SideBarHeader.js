@@ -3,23 +3,23 @@ import React from 'react'
 import styled from 'styled-components'
 
 const SideBarHeader = () => {
-  return (
-    <StyledSideBarHeader>
-        <StyledInfoGroup>
-            <h3>
-                User Channel
-            </h3>
-            
-            <span>
-            <FiberManualRecord/>
-                <small>sonny sanga</small>
-            </span>
-        </StyledInfoGroup>
-        
-        <Edit />
-       
-    </StyledSideBarHeader>
-  )
+    return (
+        <StyledSideBarHeader>
+            <StyledInfoGroup>
+                <h3>
+                    User Channel
+                </h3>
+
+                <span>
+                    <FiberManualRecord />
+                    <small>sonny sanga</small>
+                </span>
+            </StyledInfoGroup>
+
+            <Edit />
+
+        </StyledSideBarHeader>
+    )
 }
 
 
@@ -29,10 +29,11 @@ const StyledSideBarHeader = styled.div`
         justify-content:space-between;
 
         & > .MuiSvgIcon-root{
+            font-size:1.35rem;
             background-color:white;
             padding:5px;
-            width:30px;
-            height:30px;
+            width:1.4em;
+            height:1.4em;
             border-radius:50%;
         }
 `
