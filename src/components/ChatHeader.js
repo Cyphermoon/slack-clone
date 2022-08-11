@@ -2,11 +2,11 @@ import { DetailsOutlined, StarOutlineOutlined } from '@mui/icons-material'
 import React from 'react'
 import styled from 'styled-components'
 
-const ChatHeader = () => {
+const ChatHeader = ({ roomName }) => {
     return (
         <StyledChatHeader>
-            <h3> #room-name  <StarOutlineOutlined /></h3>
-            <span className='room_details'><DetailsOutlined/> Details</span>
+            <h3> {roomName}  <StarOutlineOutlined /></h3>
+            <span className='room_details'><DetailsOutlined /> Details</span>
         </StyledChatHeader>
     )
 }

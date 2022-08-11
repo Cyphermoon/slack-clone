@@ -2,21 +2,21 @@ import { Avatar } from '@mui/material'
 import React from 'react'
 import styled from 'styled-components'
 
-const ChatMessageItem = () => {
+const ChatMessageItem = ({ userName, message, timeStamp }) => {
     return (
         <StyledMessageItem>
             <div className='message_group'>
                 <Avatar />
                 <div>
-                     <h4>cypher moon</h4>
-                <p>
-                    Lorem ipsum dolor sit 
-                </p>
+                    <h4>{userName}</h4>
+                    <p>
+                        {message}
+                    </p>
                 </div>
-               
+
             </div>
-         
-            <span className='timeStamp'>10:50:am</span>
+
+            <span className='timeStamp'>{timeStamp}</span>
         </StyledMessageItem>
     )
 }
@@ -26,7 +26,7 @@ const StyledMessageItem = styled.div`
     align-items:flex-start;
     justify-content:space-between;
     width:80%;
-    max-width:300px;
+    max-width:500px;
 
     h4{
         font-weight:600;

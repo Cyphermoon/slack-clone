@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, serverTimestamp, setDoc, Timestamp } from 'firebase/firestore';
+import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -41,7 +41,8 @@ const ChatInput = ({ channelName }) => {
 }
 
 const StyledChatInput = styled.form`
-    position:absolute;
+    position:fixed;
+    z-index:10;
     width:80%;
     max-width:450px;
     border:1px solid #ccc;
