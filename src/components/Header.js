@@ -9,8 +9,6 @@ import { auth } from '../firebase';
 const Header = () => {
     const [user, loading] = useAuthState(auth);
 
-    if (!loading) console.log(user)
-
     return (
         <StyledHeaderContainer>
             <StyledHeaderLeft>
