@@ -14,7 +14,8 @@ const Header = () => {
     return (
         <StyledHeaderContainer>
             <StyledHeaderLeft>
-                {!loading && <StyledAvatar src={user?.photoURL} alt={user?.displayName} />}
+                {!loading &&
+                    <StyledAvatar src={user?.photoURL} alt={user?.displayName} onClick={() => auth.signOut()} />}
                 <AccessTimeIcon />
             </StyledHeaderLeft>
 
@@ -80,6 +81,10 @@ const StyledHeaderSearch = styled.div`
 `
 
 const StyledAvatar = styled.img`
+    object-fit:contain;
+    aspect-ratio: 1 / 1;
+    width:45px;
+    border-radius:50%;
     cursor:pointer;
 
     &:hover{

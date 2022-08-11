@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
 
 const ChatInput = ({ chatRef, channelName }) => {
-    const [user, loading] = useAuthState(auth)
+    const [user] = useAuthState(auth)
     const [input, setInput] = useState("");
     const roomId = useSelector((state) => state.room.roomId);
 
