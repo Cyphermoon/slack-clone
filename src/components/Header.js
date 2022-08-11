@@ -1,14 +1,20 @@
-import { Avatar } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import React from 'react'
 import styled from 'styled-components'
 import { Help, Search } from '@mui/icons-material';
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth } from '../firebase';
+
 
 const Header = () => {
+    const [user, loading] = useAuthState(auth);
+
+    if (!loading) console.log(user)
+
     return (
         <StyledHeaderContainer>
             <StyledHeaderLeft>
-                <StyledAvatar />
+                {!loading && <StyledAvatar src={user?.photoURL} alt={user?.displayName} />}
                 <AccessTimeIcon />
             </StyledHeaderLeft>
 
@@ -73,7 +79,7 @@ const StyledHeaderSearch = styled.div`
     }
 `
 
-const StyledAvatar = styled(Avatar)`
+const StyledAvatar = styled.img`
     cursor:pointer;
 
     &:hover{

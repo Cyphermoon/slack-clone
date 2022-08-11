@@ -3,8 +3,11 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { db } from '../firebase';
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth } from '../firebase';
 
 const ChatInput = ({ chatRef, channelName }) => {
+    const [user, loading] = useAuthState(auth)
     const [input, setInput] = useState("");
     const roomId = useSelector((state) => state.room.roomId);
 
@@ -18,8 +21,8 @@ const ChatInput = ({ chatRef, channelName }) => {
         const docSnap = await setDoc(doc(messagesCollectionRef), {
             content: input,
             serverTimeStamp: serverTimestamp(),
-            user: "Cypher moon",
-            userImg: "#"
+            user: user.displayName,
+            userImg: user.photoURL
         })
 
         chatRef.current.scrollIntoView({ behavior: "smooth" })

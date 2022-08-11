@@ -1,18 +1,22 @@
 import { Edit, FiberManualRecord } from '@mui/icons-material'
 import React from 'react'
 import styled from 'styled-components'
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth } from '../firebase';
 
-const SideBarHeader = () => {
+const SideBarHeader = ({ channelName }) => {
+    const [user, loading] = useAuthState(auth)
+
     return (
         <StyledSideBarHeader>
             <StyledInfoGroup>
                 <h3>
-                    User Channel
+                    Cypher Land
                 </h3>
 
                 <span>
                     <FiberManualRecord />
-                    <small>sonny sanga</small>
+                    <small>{!loading && user.displayName}</small>
                 </span>
             </StyledInfoGroup>
 

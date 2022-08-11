@@ -2,11 +2,11 @@ import { Avatar } from '@mui/material'
 import React from 'react'
 import styled from 'styled-components'
 
-const ChatMessageItem = ({ userName, message, timeStamp }) => {
+const ChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
     return (
         <StyledMessageItem>
             <div className='message_group'>
-                <Avatar />
+                <Avatar src={userImg || ""} />
                 <div>
                     <h4>{userName}</h4>
                     <p>
@@ -32,6 +32,7 @@ const StyledMessageItem = styled.div`
         font-weight:600;
         opacity:.89;
         margin-bottom:.25em;
+        text-transform:capitalize;
     }
 
     .MuiAvatar-root{

@@ -29,14 +29,15 @@ const ChatArea = () => {
 
                 {!messagesLoading &&
                     roomMessages.docs.map((doc) => {
-                        const { serverTimeStamp, content, user, id } = doc.data();
+                        const { serverTimeStamp, content, user, id, userImg } = doc.data();
                         console.log("document data", doc.data());
 
                         return <ChatMessageItem
                             key={id}
                             message={content}
                             timeStamp={serverTimeStamp?.toDate().toDateString()}
-                            userName={user} />
+                            userName={user}
+                            userImg={userImg} />
                     })}
                 <div className='message_bottom' ref={chatRef} />
             </StyledChatMessages>

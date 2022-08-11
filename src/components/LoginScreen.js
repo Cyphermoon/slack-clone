@@ -1,9 +1,13 @@
+import { signInWithPopup } from 'firebase/auth'
 import React from 'react'
 import styled from 'styled-components'
+import { auth, provider } from '../firebase'
 
 const LoginScreen = () => {
-    const signIn = (e) => {
 
+    const signIn = (e) => {
+        signInWithPopup(auth, provider)
+            .catch((err) => console.error(err.message))
     }
 
 
