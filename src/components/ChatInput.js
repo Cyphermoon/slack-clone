@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { db } from '../firebase';
 
-const ChatInput = ({ channelName }) => {
+const ChatInput = ({ chatRef, channelName }) => {
     const [input, setInput] = useState("");
     const roomId = useSelector((state) => state.room.roomId);
 
@@ -22,6 +22,8 @@ const ChatInput = ({ channelName }) => {
             userImg: "#"
         })
 
+        chatRef.current.scrollIntoView({ behavior: "smooth" })
+
         console.log(docSnap);
 
         setInput("")
@@ -33,7 +35,7 @@ const ChatInput = ({ channelName }) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 type="text"
-                placeholder={`message ${channelName || "room"}`} />
+                placeholder={`message ${channelName || "room"} room`} />
 
             <button type='submit' hidden>send</button>
         </StyledChatInput>

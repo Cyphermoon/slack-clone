@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ChatHeader from './ChatHeader'
 import ChatInput from './ChatInput'
 import ChatMessageItem from './ChatMessageItem'
 import { useCollection, useDocument } from "react-firebase-hooks/firestore"
-import { collection, doc, Timestamp } from 'firebase/firestore'
+import { collection, doc, orderBy, query } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 import { db } from '../firebase'
 
 const ChatArea = () => {
+    const chatRef = useRef();
     const roomId = useSelector(state => state.room.roomId)
     const [roomDetails, loading] = useDocument(doc(db, "rooms", roomId))
-    const [roomMessages, messagesLoading] = useCollection(collection(db, "rooms", roomId, "messages"))
+    const [roomMessages, messagesLoading] = useCollection(
+        query(collection(db, "rooms", roomId, "messages"), orderBy("serverTimeStamp", "asc")));
+
+
+    useEffect(() => {
+        chatRef.current.scrollIntoView({ behavior: "smooth" })
+    })
 
 
     return (
@@ -24,14 +31,16 @@ const ChatArea = () => {
                     roomMessages.docs.map((doc) => {
                         const { serverTimeStamp, content, user, id } = doc.data();
                         console.log("document data", doc.data());
+
                         return <ChatMessageItem
                             key={id}
                             message={content}
                             timeStamp={serverTimeStamp?.toDate().toDateString()}
                             userName={user} />
                     })}
+                <div className='message_bottom' ref={chatRef} />
             </StyledChatMessages>
-            <ChatInput />
+            <ChatInput chatRef={chatRef} channelName={roomDetails?.data().name} />
         </StyledChatArea>
     )
 }
@@ -50,6 +59,10 @@ const StyledChatMessages = styled.div`
     
     & > * + *{
         margin-top:3.5em;
+    }
+
+    .message_bottom{
+        padding-top:5rem;
     }
 `
 
