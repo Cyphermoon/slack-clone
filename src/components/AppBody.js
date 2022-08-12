@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import ChatArea from './ChatArea'
 import SideBar from './SideBar'
+import WorkspaceMenu from './WorkspaceMenu'
 
 const AppBody = () => {
     return (
         <StyledMain>
+            <WorkspaceMenu />
             <SideBar />
             <ChatArea />
         </StyledMain>

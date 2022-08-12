@@ -30,7 +30,6 @@ const ChatArea = () => {
                 {!messagesLoading &&
                     roomMessages.docs.map((doc) => {
                         const { serverTimeStamp, content, user, id, userImg } = doc.data();
-                        console.log("document data", doc.data());
 
                         return <ChatMessageItem
                             key={id}
