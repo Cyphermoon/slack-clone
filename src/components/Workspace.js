@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const Workspace = ({ initials, id, active, handleClick = f => f }) => {
     return (
-        <StyledWorkspace active={active} onClick={() => handleClick(id)} >
+        <StyledWorkspace id={id} active={active} onClick={() => handleClick(id)} >
             <h6>{initials}</h6>
         </StyledWorkspace>
 
@@ -23,7 +23,7 @@ const StyledWorkspace = styled.div`
     border-color: #c8c8c8;
     border-style: ${({ active }) => active && "solid"};
     transition:all 200ms linear;
-    background-color:gray;
+    background-color: gray;
     display:flex;
     align-items:center;
     justify-content:center;

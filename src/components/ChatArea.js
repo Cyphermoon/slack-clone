@@ -11,9 +11,12 @@ import { db } from '../firebase'
 const ChatArea = () => {
     const chatRef = useRef();
     const roomId = useSelector(state => state.room.roomId)
-    const [roomDetails, loading] = useDocument(doc(db, "rooms", roomId))
+    const workSpaceId = useSelector((state) => state.workspace.activeId)
+
+    const [roomDetails, loading] = useDocument(doc(db, "workspace", workSpaceId, "rooms", roomId))
+
     const [roomMessages, messagesLoading] = useCollection(
-        query(collection(db, "rooms", roomId, "messages"), orderBy("serverTimeStamp", "asc")));
+        query(collection(db, "workspace", workSpaceId, "rooms", roomId, "messages"), orderBy("serverTimeStamp", "asc")));
 
 
     useEffect(() => {
@@ -23,7 +26,7 @@ const ChatArea = () => {
 
     return (
         <StyledChatArea>
-            <ChatHeader roomName={!loading && roomDetails?.data().name} />
+            <ChatHeader roomName={!loading && roomDetails?.data()?.name} />
             <StyledChatMessages>
                 {messagesLoading && <h4>I am fetching messages</h4>}
 
@@ -41,7 +44,7 @@ const ChatArea = () => {
                     })}
                 <div className='message_bottom' ref={chatRef} />
             </StyledChatMessages>
-            <ChatInput chatRef={chatRef} channelName={roomDetails?.data().name} />
+            <ChatInput chatRef={chatRef} channelName={roomDetails?.data()?.name} />
         </StyledChatArea>
     )
 }

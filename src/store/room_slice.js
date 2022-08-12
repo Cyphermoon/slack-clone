@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const roomSlice = createSlice({
     name: "room",
     initialState: {
-        roomId: ":r1:"
+        roomId: false,
     },
     reducers: {
         selectChannel(state, action) {

@@ -10,13 +10,14 @@ const ChatInput = ({ chatRef, channelName }) => {
     const [user] = useAuthState(auth)
     const [input, setInput] = useState("");
     const roomId = useSelector((state) => state.room.roomId);
+    const workSpaceId = useSelector((state) => state.workspace.activeId)
 
     const sendMessage = async (e) => {
         e.preventDefault();
 
         if (!roomId) return false
 
-        const messagesCollectionRef = collection(db, "rooms", roomId, "messages")
+        const messagesCollectionRef = collection(db, "workspace", workSpaceId, "rooms", roomId, "messages")
 
         const docSnap = await setDoc(doc(messagesCollectionRef), {
             content: input,
