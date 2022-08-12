@@ -4,14 +4,14 @@ import styled from 'styled-components'
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
 
-const SideBarHeader = ({ channelName }) => {
+const SideBarHeader = ({ workSpaceName }) => {
     const [user, loading] = useAuthState(auth)
 
     return (
         <StyledSideBarHeader>
             <StyledInfoGroup>
                 <h3>
-                    Cypher Land
+                    {workSpaceName}
                 </h3>
 
                 <span>

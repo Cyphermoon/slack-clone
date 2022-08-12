@@ -1,22 +1,26 @@
 import { Add, Apps, BookmarkBorder, Chat, Drafts, ExpandLess, ExpandMore, FileCopy, Inbox, PeopleAlt } from '@mui/icons-material'
 import { collection, doc, setDoc } from 'firebase/firestore'
 import styled from 'styled-components'
-import { useCollection } from "react-firebase-hooks/firestore"
+import { useCollection, useDocument } from "react-firebase-hooks/firestore"
 import { db } from '../firebase'
 import SideBarHeader from './SideBarHeader'
 import SideBarOption from './SideBarOption'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { roomActions } from '../store/room_slice'
 
 const SideBar = () => {
-    const [data, loading] = useCollection(collection(db, "rooms"))
+    const workSpaceId = useSelector((state) => state.workspace.activeId)
+    const [workSpaceDetails, workSpaceLoading] = useDocument(doc(db, "workspace", workSpaceId))
+
+    const [data, loading] = useCollection(collection(db, "workspace", workSpaceId, "rooms"))
+
     const dispatch = useDispatch()
 
     const addChannels = async () => {
         const channelName = prompt("What is the channel name");
 
         if (channelName) {
-            const roomsRef = collection(db, "rooms");
+            const roomsRef = collection(db, "workspace", workSpaceId, "rooms");
 
             await setDoc(doc(roomsRef), {
                 name: channelName
@@ -28,12 +32,14 @@ const SideBar = () => {
         dispatch(roomActions.selectChannel({ id }))
     }
 
+    if (!workSpaceLoading) console.log(workSpaceDetails.data())
+
 
     if (loading) return <h1>Loading</h1>
 
     return (
         <StyledSideBar>
-            <SideBarHeader />
+            <SideBarHeader workSpaceName={!workSpaceLoading && workSpaceDetails.data().name} />
             <SideBarOption title={"Threads"} Icon={Chat} />
             <SideBarOption title={"Saved Items"} Icon={Drafts} />
             <SideBarOption title={"Mentions & Reactions"} Icon={Inbox} />

@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const workSpaceSlice = createSlice({
     name: "workspace",
     initialState: {
-        activeId: null,
+        activeId: "0eE73qo5t4Xmx9a7PoUF",
     },
     reducers: {
         setActiveId(state, action) {
