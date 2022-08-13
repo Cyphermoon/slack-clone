@@ -62,7 +62,11 @@ const WorkspaceMenu = () => {
 
 
             {promptModalDisplayed &&
-                <PromptModal onClose={closeModal} onSuccess={(workSpaceName) => console.log(workSpaceName)} />}
+                <PromptModal
+                    onClose={closeModal}
+                    message={"What is the channel name"}
+                    placeholder="Enter a channel name"
+                    onSuccess={(workSpaceName) => addWorkSpace(workSpaceName)} />}
         </StyledWorkspaceMenu>
     )
 }
