@@ -12,33 +12,34 @@ const PromptModal = ({ onClose, onSuccess, message, placeholder }) => {
 
         setPromptValue("")
         onClose()
+        return false;
     }
 
     return ReactDOM.createPortal(
-        <>    
-        <StyledOverLay />
-        <StyledPromptModal>
-            <StyledPromptHeader>
-                <h2>{message}</h2>
-            </StyledPromptHeader>
+        <>
+            <StyledOverLay />
+            <StyledPromptModal>
+                <StyledPromptHeader>
+                    <h2>{message}</h2>
+                </StyledPromptHeader>
 
-            <StyledChannelForm onSubmit={submitChannel}>
-                <input type="text" 
-                    value={promptValue}
-                    onChange={(e) => setPromptValue(e.target.value) }
-                    placeholder={placeholder || "Enter a value"} />
+                <StyledChannelForm onSubmit={submitChannel}>
+                    <input type="text"
+                        value={promptValue}
+                        onChange={(e) => setPromptValue(e.target.value)}
+                        placeholder={placeholder || "Enter a value"} />
 
-                <div className='form_btn'>
-                    <button className='cancel_btn' onClick={onClose}>cancel</button>
-                    <button type='submit' className='submit_btn'>Done</button>
-                </div>
+                    <div className='form_btn'>
+                        <button className='cancel_btn' onClick={onClose}>cancel</button>
+                        <button type='submit' className='submit_btn'>Done</button>
+                    </div>
 
-                
+
                 </StyledChannelForm>
-        </StyledPromptModal>
+            </StyledPromptModal>
         </>
-    
-    , document.getElementById("portal"))
+
+        , document.getElementById("portal"))
 }
 
 const StyledPromptModal = styled.div`
@@ -69,6 +70,7 @@ const StyledOverLay = styled.div`
     bottom:0;
     width:100vw;
     height:100vh;
+    z-index:10;
     background-color:rgba(0,0,0,.45);
     backdrop-filter:blur(40px);
 `

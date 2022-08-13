@@ -1,10 +1,11 @@
 import { Add } from '@mui/icons-material'
 import { collection, doc, setDoc } from 'firebase/firestore'
-import React, { useState } from 'react'
+import React from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { db } from '../firebase'
+import { usePromptModal } from '../hooks/util.hook'
 import { roomActions } from '../store/room_slice'
 import { workSpaceActions } from '../store/workspace_slice'
 import PromptModal from './PromptModal'
@@ -12,7 +13,7 @@ import Workspace from './Workspace'
 
 const WorkspaceMenu = () => {
     const dispatch = useDispatch()
-    const [promptModalDisplayed, setPromptModal] = useState()
+    const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const [workspaces, loading] = useCollection(collection(db, "workspace"))
 
@@ -25,14 +26,6 @@ const WorkspaceMenu = () => {
                 name: workSpaceName
             })
         }
-    }
-
-    const closeModal = () => {
-        setPromptModal(false)
-    }
-
-    const openPromptModal = () => {
-        setPromptModal(true)
     }
 
     const setActiveId = (id) => {
@@ -64,8 +57,8 @@ const WorkspaceMenu = () => {
             {promptModalDisplayed &&
                 <PromptModal
                     onClose={closeModal}
-                    message={"What is the channel name"}
-                    placeholder="Enter a channel name"
+                    message={"What is the workspace name"}
+                    placeholder="Enter a workspace name"
                     onSuccess={(workSpaceName) => addWorkSpace(workSpaceName)} />}
         </StyledWorkspaceMenu>
     )

@@ -7,18 +7,19 @@ import SideBarHeader from './SideBarHeader'
 import SideBarOption from './SideBarOption'
 import { useDispatch, useSelector } from 'react-redux'
 import { roomActions } from '../store/room_slice'
+import PromptModal from './PromptModal'
+import { usePromptModal } from '../hooks/util.hook'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
+    const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
     const [workSpaceDetails, workSpaceLoading] = useDocument(doc(db, "workspace", workSpaceId))
-
     const [data, loading] = useCollection(collection(db, "workspace", workSpaceId, "rooms"))
+
 
     const dispatch = useDispatch()
 
-    const addChannels = async () => {
-        const channelName = prompt("What is the channel name");
-
+    const addChannels = async (channelName) => {
         if (channelName) {
             const roomsRef = collection(db, "workspace", workSpaceId, "rooms");
 
@@ -51,7 +52,7 @@ const SideBar = () => {
             <hr />
             <SideBarOption title={"Channels"} Icon={ExpandMore} />
             <hr />
-            <SideBarOption title={"Add Channel"} Icon={Add} handleClick={addChannels} />
+            <SideBarOption title={"Add Channel"} Icon={Add} handleClick={() => openPromptModal()} />
 
             <div className='channels_group'>
                 {
@@ -63,6 +64,13 @@ const SideBar = () => {
                             handleClick={(docId) => selectChannel(docId)} />)
                 }
             </div>
+
+            {promptModalDisplayed &&
+                <PromptModal
+                    onClose={closeModal}
+                    message={"What is the channel name"}
+                    placeholder="Enter a channel name"
+                    onSuccess={(workSpaceName) => console.log(workSpaceName)} />}
 
         </StyledSideBar>
     )
