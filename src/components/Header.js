@@ -13,7 +13,7 @@ const Header = () => {
         <StyledHeaderContainer>
             <StyledHeaderLeft>
                 {!loading &&
-                    <StyledAvatar src={user?.photoURL} alt={user?.displayName} onClick={() => auth.signOut()} />}
+                    <StyledAvatar referrerPolicy="no-referrer" src={user?.photoURL} alt={user?.displayName} onClick={() => auth.signOut()} />}
                 <AccessTimeIcon />
             </StyledHeaderLeft>
 

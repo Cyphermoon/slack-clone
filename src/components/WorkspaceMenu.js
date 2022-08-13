@@ -1,22 +1,23 @@
 import { Add } from '@mui/icons-material'
 import { collection, doc, setDoc } from 'firebase/firestore'
-import React from 'react'
+import React, { useState } from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { db } from '../firebase'
 import { roomActions } from '../store/room_slice'
 import { workSpaceActions } from '../store/workspace_slice'
+import PromptModal from './PromptModal'
 import Workspace from './Workspace'
 
 const WorkspaceMenu = () => {
     const dispatch = useDispatch()
+    const [promptModalDisplayed, setPromptModal] = useState()
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const [workspaces, loading] = useCollection(collection(db, "workspace"))
 
 
-    const addWorkSpace = async () => {
-        const workSpaceName = prompt("what is the name")
+    const addWorkSpace = async (workSpaceName) => {
         const workSpaceRef = collection(db, "workspace")
 
         if (workSpaceName) {
@@ -24,7 +25,14 @@ const WorkspaceMenu = () => {
                 name: workSpaceName
             })
         }
+    }
 
+    const closeModal = () => {
+        setPromptModal(false)
+    }
+
+    const openPromptModal = () => {
+        setPromptModal(true)
     }
 
     const setActiveId = (id) => {
@@ -46,10 +54,15 @@ const WorkspaceMenu = () => {
                     active={id === workSpaceActiveId} />
             })}
 
-            <StyledAddChannel onClick={addWorkSpace}>
+            <StyledAddChannel onClick={() => {
+                openPromptModal()
+            }}>
                 <Add />
             </StyledAddChannel>
 
+
+            {promptModalDisplayed &&
+                <PromptModal onClose={closeModal} onSuccess={(workSpaceName) => console.log(workSpaceName)} />}
         </StyledWorkspaceMenu>
     )
 }

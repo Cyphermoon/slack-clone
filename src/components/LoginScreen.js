@@ -5,8 +5,8 @@ import { auth, provider } from '../firebase'
 
 const LoginScreen = () => {
 
-    const signIn = (e) => {
-        signInWithPopup(auth, provider)
+    const signIn = async (e) => {
+        await signInWithPopup(auth, provider)
             .catch((err) => console.error(err.message))
     }
 

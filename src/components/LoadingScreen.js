@@ -5,7 +5,7 @@ const LoadingScreen = () => {
     return (
         <StyledLoadingScreen>
             <div className='loading_content'>
-                <img src="/images/slack_logo.png" alt='slack logo'/>
+                <img src="/images/slack_logo.png" alt='slack logo' />
             </div>
         </StyledLoadingScreen>
     )

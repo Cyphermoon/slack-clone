@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const ChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
     return (
         <StyledMessageItem>
-                <Avatar src={userImg || ""} />
+                <Avatar src={userImg || ""} referrerPolicy="no-referrer" />
                 <div className="message_info">
                     <div className='user_name'>
                         <h4>{userName}</h4>

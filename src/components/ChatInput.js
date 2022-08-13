@@ -49,12 +49,11 @@ const ChatInput = ({ chatRef, channelName }) => {
 const StyledChatInput = styled.form`
     position:absolute;
     z-index:10;
-    width:80%;
-    max-width:450px;
+    width:90%;
     border:1px solid #ccc;
     background-color:#f1f1f1;
-    border-radius:2px;
-    bottom:50px;
+    border-radius:20px;
+    bottom:20px;
     left:50%;
     transform: translateX(-50%);
 
@@ -63,7 +62,7 @@ const StyledChatInput = styled.form`
         background-color:transparent;
         color:black;
         border:1px solid #333;
-        padding:1em .5em;
+        padding:1.5em;
         font-size:1rem;
     }
 `
