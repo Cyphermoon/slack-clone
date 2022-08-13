@@ -5,18 +5,18 @@ import styled from 'styled-components'
 const ChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
     return (
         <StyledMessageItem>
-            <div className='message_group'>
                 <Avatar src={userImg || ""} />
-                <div>
-                    <h4>{userName}</h4>
+                <div className="message_info">
+                    <div className='user_name'>
+                        <h4>{userName}</h4>
+                        <span className='timeStamp'>{timeStamp}</span>
+                    </div>
+                    
                     <p>
                         {message}
                     </p>
                 </div>
-
-            </div>
-
-            <span className='timeStamp'>{timeStamp}</span>
+                    
         </StyledMessageItem>
     )
 }
@@ -25,35 +25,44 @@ const StyledMessageItem = styled.div`
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
-    width:80%;
-    max-width:500px;
+    width:100%;
+    max-width:350px;
 
-    h4{
-        font-weight:600;
-        opacity:.89;
-        margin-bottom:.25em;
-        text-transform:capitalize;
-    }
 
     .MuiAvatar-root{
+        svg{   font-size:7rem;}
 
-        svg{   font-size:8rem;}
-     
-        margin-right:.45em;
     }
 
-    .message_group{
-        display:flex;
+    .message_info{
+        width:85%;
+
+        .user_name{
+            display:flex;
+            align-items:center;
+            margin-bottom:.3em;
+            justify-content:space-between;
+            width:100%;
+
+            h4{
+                font-weight:700;
+                opacity:.89;
+                text-transform:capitalize;
+            }
+
+
+            span{
+                color:#555;
+                font-size:.76rem;
+                font-weight:300;
+            }
+
+        }
 
         p{
-            font-size:.97rem;
+            font-size:.89rem;
+            width:100%;
         }
-    }
-
-    span{
-        color:#555;
-        font-size:.76rem;
-        font-weight:300;
     }
 `
 

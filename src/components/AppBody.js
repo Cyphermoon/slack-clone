@@ -9,8 +9,6 @@ const AppBody = () => {
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const roomId = useSelector(state => state.room.roomId)
 
-    console.log("roomid " + roomId, "        work space id " + workSpaceActiveId)
-
     return (
         <StyledMain>
             <WorkspaceMenu />

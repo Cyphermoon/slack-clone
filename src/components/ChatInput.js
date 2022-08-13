@@ -39,7 +39,7 @@ const ChatInput = ({ chatRef, channelName }) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 type="text"
-                placeholder={`message ${channelName || "room"} room`} />
+                placeholder={`message ${channelName || ""} room`} />
 
             <button type='submit' hidden>send</button>
         </StyledChatInput>
@@ -47,7 +47,7 @@ const ChatInput = ({ chatRef, channelName }) => {
 }
 
 const StyledChatInput = styled.form`
-    position:fixed;
+    position:absolute;
     z-index:10;
     width:80%;
     max-width:450px;
