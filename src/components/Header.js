@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Help, Search } from '@mui/icons-material';
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
+import { Avatar } from '@mui/material';
 
 
 const Header = () => {
@@ -78,7 +79,7 @@ const StyledHeaderSearch = styled.div`
     }
 `
 
-const StyledAvatar = styled.img`
+const StyledAvatar = styled(Avatar)`
     object-fit:contain;
     aspect-ratio: 1 / 1;
     width:40px;

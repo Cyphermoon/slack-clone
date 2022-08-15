@@ -5,18 +5,18 @@ import styled from 'styled-components'
 const ChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
     return (
         <StyledMessageItem>
-                <Avatar src={userImg || ""} referrerPolicy="no-referrer" />
-                <div className="message_info">
-                    <div className='user_name'>
-                        <h4>{userName}</h4>
-                        <span className='timeStamp'>{timeStamp}</span>
-                    </div>
-                    
-                    <p>
-                        {message}
-                    </p>
+            <Avatar src={userImg || ""} alt={userName} referrerPolicy="no-referrer" />
+            <div className="message_info">
+                <div className='user_name'>
+                    <h4>{userName}</h4>
+                    <span className='timeStamp'>{timeStamp}</span>
                 </div>
-                    
+
+                <p>
+                    {message}
+                </p>
+            </div>
+
         </StyledMessageItem>
     )
 }
