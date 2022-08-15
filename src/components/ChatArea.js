@@ -7,7 +7,7 @@ import { useCollection, useDocument } from "react-firebase-hooks/firestore"
 import { collection, doc, orderBy, query } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 import { db } from '../firebase'
-import MessageSkeletons from './MessageSkeletons'
+import MessageSkeletons from './loaders/MessageSkeletons'
 
 const ChatArea = () => {
     const chatRef = useRef();

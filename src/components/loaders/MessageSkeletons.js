@@ -41,7 +41,7 @@ const StyledMessageSkeletons = styled.div`
         display:flex;
         justify-content:space-between;
         align-items:center;
-        margin-bottom:.1em;
+        margin-bottom:.2em;
     }
 
 `

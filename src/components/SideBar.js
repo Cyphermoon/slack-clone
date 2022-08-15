@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { roomActions } from '../store/room_slice'
 import PromptModal from './PromptModal'
 import { usePromptModal } from '../hooks/util.hook'
+import ChannelLoaders from './loaders/ChannelLoaders'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
@@ -50,7 +51,7 @@ const SideBar = () => {
             <SideBarOption title={"Add Channel"} Icon={Add} handleClick={() => openPromptModal()} />
 
             <div className='channels_group'>
-                {loading ? <p style={{ color: "white" }}>Loading....</p> :
+                {loading ? <ChannelLoaders /> :
                     (
                         data.docs.map((doc) =>
                             <SideBarOption
