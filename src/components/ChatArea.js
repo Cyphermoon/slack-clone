@@ -7,6 +7,7 @@ import { useCollection, useDocument } from "react-firebase-hooks/firestore"
 import { collection, doc, orderBy, query } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 import { db } from '../firebase'
+import MessageSkeletons from './MessageSkeletons'
 
 const ChatArea = () => {
     const chatRef = useRef();
@@ -28,9 +29,8 @@ const ChatArea = () => {
         <StyledChatArea>
             <ChatHeader roomName={!loading && roomDetails?.data()?.name} />
             <StyledChatMessages>
-                {messagesLoading && <h4>I am fetching messages</h4>}
+                {messagesLoading ? <MessageSkeletons /> :
 
-                {!messagesLoading &&
                     roomMessages.docs.map((doc) => {
                         const { serverTimeStamp, content, user, userImg } = doc.data();
                         const id = doc.id;
@@ -41,7 +41,8 @@ const ChatArea = () => {
                             timeStamp={serverTimeStamp?.toDate().toDateString()}
                             userName={user}
                             userImg={userImg} />
-                    })}
+                    })
+                }
                 <div className='message_bottom' ref={chatRef} />
             </StyledChatMessages>
             <ChatInput chatRef={chatRef} channelName={roomDetails?.data()?.name} />

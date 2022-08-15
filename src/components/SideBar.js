@@ -33,11 +33,6 @@ const SideBar = () => {
         dispatch(roomActions.selectChannel({ id }))
     }
 
-    if (!workSpaceLoading) console.log(workSpaceDetails.data())
-
-
-    if (loading) return <h1>Loading</h1>
-
     return (
         <StyledSideBar>
             <SideBarHeader workSpaceName={!workSpaceLoading && workSpaceDetails.data().name} />
@@ -55,14 +50,15 @@ const SideBar = () => {
             <SideBarOption title={"Add Channel"} Icon={Add} handleClick={() => openPromptModal()} />
 
             <div className='channels_group'>
-                {
-                    data.docs.map((doc) =>
-                        <SideBarOption
-                            key={doc.id}
-                            id={doc.id}
-                            title={doc.data().name}
-                            handleClick={(docId) => selectChannel(docId)} />)
-                }
+                {loading ? <p style={{ color: "white" }}>Loading....</p> :
+                    (
+                        data.docs.map((doc) =>
+                            <SideBarOption
+                                key={doc.id}
+                                id={doc.id}
+                                title={doc.data().name}
+                                handleClick={(docId) => selectChannel(docId)} />)
+                    )}
             </div>
 
             {promptModalDisplayed &&

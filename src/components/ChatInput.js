@@ -26,15 +26,19 @@ const ChatInput = ({ chatRef, channelName }) => {
             userImg: user.photoURL
         })
 
+        console.log(docSnap)
+    }
+
+    const clearMessage = () => {
         chatRef.current.scrollIntoView({ behavior: "smooth" })
-
-        console.log(docSnap);
-
         setInput("")
     }
 
     return (
-        <StyledChatInput onSubmit={(e) => sendMessage(e)} >
+        <StyledChatInput onSubmit={(e) => {
+            sendMessage(e);
+            clearMessage()
+        }} >
             <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
