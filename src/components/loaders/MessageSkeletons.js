@@ -13,7 +13,7 @@ const MessageSkeletons = () => {
                         <div>
                             <div className='info_group' >
                                 <Skeleton circle={true} width={40} height={40} />
-                                <Skeleton width={110} height={20} />
+                                <Skeleton width={115} height={20} />
 
                             </div>
                             <Skeleton width={`100%`} height={20} />

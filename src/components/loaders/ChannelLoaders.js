@@ -7,7 +7,7 @@ const ChannelLoaders = () => {
     return (
         <StyledChannelLoaders>
             {
-                numOfTimes.map(() => <Skeleton baseColor='#787878' width={`60%`} height={5} />)
+                numOfTimes.map(() => <Skeleton baseColor='#5c2c55' width={`70%`} height={5} />)
             }
         </StyledChannelLoaders>
     )
