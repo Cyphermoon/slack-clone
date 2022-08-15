@@ -100,9 +100,9 @@ const StyledChannelForm = styled.form`
     input[type="text"]{
         border:none;
         outline:none;
-        padding:.5em 1em;
+        padding:.6em 1em;
         font-size:.99rem;
-        background-color:#f0f0f0;
+        background-color:#e0e0e0;
         width:100%;
         height:50px;
 

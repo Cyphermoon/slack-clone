@@ -70,7 +70,7 @@ const SideBar = () => {
                     onClose={closeModal}
                     message={"What is the channel name"}
                     placeholder="Enter a channel name"
-                    onSuccess={(workSpaceName) => console.log(workSpaceName)} />}
+                    onSuccess={(workSpaceName) => addChannels(workSpaceName)} />}
 
         </StyledSideBar>
     )
@@ -79,7 +79,7 @@ const SideBar = () => {
 const StyledSideBar = styled.section`
     width:100%;
     max-width:250px;
-    padding-top:80px;
+    padding-top:calc(${({ theme }) => theme.spacing_top_from_header} + 10px);
     padding-left:15px;
     padding-right:10px;
     padding-bottom:50px;

@@ -51,7 +51,7 @@ const ChatArea = () => {
 
 const StyledChatArea = styled.div`   
     position:relative;
-    padding-top:80px;
+    padding-top:${({ theme }) => theme.spacing_top_from_header};
     flex-grow:1;
     height:100%;
     overflow:auto;

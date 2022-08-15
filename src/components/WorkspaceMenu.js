@@ -65,11 +65,11 @@ const WorkspaceMenu = () => {
 }
 
 const StyledWorkspaceMenu = styled.section`
-    width:5%;
+    width:6%;
     height:100%;
     overflow:scroll;
-    padding:1em .75em;
-    padding-top:80px;
+    padding:1.3em 1.1em;
+    padding-top:calc(${({ theme }) => theme.spacing_top_from_header} + 10px);
     background-color:var(--slack-color);
 
 

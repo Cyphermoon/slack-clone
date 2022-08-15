@@ -34,7 +34,7 @@ const StyledHeaderContainer = styled.div`
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:15px 20px;
+    padding:5px 20px;
     color:white;
     position:fixed;
     top:0;
@@ -72,7 +72,7 @@ const StyledHeaderSearch = styled.div`
         outline:none;
         border:none;
         font-size:.99rem;
-        padding:.5em;
+        padding:.2em;
         color:white;
         background-color:transparent;
     }
@@ -81,7 +81,7 @@ const StyledHeaderSearch = styled.div`
 const StyledAvatar = styled.img`
     object-fit:contain;
     aspect-ratio: 1 / 1;
-    width:45px;
+    width:40px;
     border-radius:50%;
     cursor:pointer;
 

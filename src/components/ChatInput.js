@@ -50,9 +50,7 @@ const StyledChatInput = styled.form`
     position:absolute;
     z-index:5;
     width:90%;
-    border:1px solid #ccc;
     background-color:#f1f1f1;
-    border-radius:20px;
     bottom:20px;
     left:50%;
     transform: translateX(-50%);
