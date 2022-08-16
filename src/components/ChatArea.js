@@ -45,6 +45,7 @@ const ChatArea = () => {
                 }
                 <div className='message_bottom' ref={chatRef} />
             </StyledChatMessages>
+
             <ChatInput chatRef={chatRef} channelName={roomDetails?.data()?.name} />
         </StyledChatArea>
     )
@@ -52,6 +53,9 @@ const ChatArea = () => {
 
 const StyledChatArea = styled.div`   
     position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
     padding-top:${({ theme }) => theme.spacing_top_from_header};
     flex-grow:1;
     height:100%;
@@ -61,13 +65,16 @@ const StyledChatArea = styled.div`
 const StyledChatMessages = styled.div`
     width:100%;
     padding:.7em 1em; 
+    overflow-y:scroll;
+    justify-self:start;
+    flex-grow:1;
     
     & > * + *{
         margin-top:3.5em;
     }
 
     .message_bottom{
-        padding-top:5rem;
+        padding-bottom:3rem;
     }
 `
 

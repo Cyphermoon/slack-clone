@@ -51,13 +51,11 @@ const ChatInput = ({ chatRef, channelName }) => {
 }
 
 const StyledChatInput = styled.form`
-    position:absolute;
-    z-index:5;
-    width:90%;
+    width:95%;
+    margin:0 auto;
     background-color:#f1f1f1;
-    bottom:20px;
-    left:50%;
-    transform: translateX(-50%);
+    margin-bottom:.5em;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
     input{
         width:100%;
