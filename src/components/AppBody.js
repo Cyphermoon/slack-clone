@@ -21,7 +21,7 @@ const AppBody = () => {
 const StyledMain = styled.main`
     display:flex;
     align-items:flex-start;
-    height:100%;
+    height:100vh;
 `
 
 export default AppBody
