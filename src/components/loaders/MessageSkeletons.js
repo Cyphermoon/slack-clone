@@ -8,9 +8,9 @@ const MessageSkeletons = () => {
     return (
         <StyledMessageSkeletons>
             {
-                numOfTimes.map(() => {
+                numOfTimes.map((num, idx) => {
                     return (
-                        <div>
+                        <div key={idx}>
                             <div className='info_group' >
                                 <Skeleton circle={true} width={40} height={40} />
                                 <Skeleton width={115} height={20} />
