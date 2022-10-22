@@ -1,12 +1,22 @@
 import { signInWithPopup } from 'firebase/auth'
+import { collection, doc, setDoc } from 'firebase/firestore'
 import React from 'react'
 import styled from 'styled-components'
-import { auth, provider } from '../firebase'
+import { auth, db, provider } from '../firebase'
 
 const LoginScreen = () => {
 
     const signIn = async (e) => {
         await signInWithPopup(auth, provider)
+            .then(async (data) => {
+                let usersCollectionRef = collection(db, "users")
+
+                await setDoc(doc(usersCollectionRef), {
+                    name: data.user.displayName,
+                    email: data.user.email,
+                    photoUrl: data.user.photoURL,
+                }, { merge: true })
+            })
             .catch((err) => console.error(err.message))
     }
 

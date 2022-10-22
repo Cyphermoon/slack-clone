@@ -10,6 +10,7 @@ import { roomActions } from '../store/room_slice'
 import PromptModal from './PromptModal'
 import { usePromptModal } from '../hooks/util.hook'
 import ChannelLoaders from './loaders/ChannelLoaders'
+import DirectMessageList from './DirectMessageList'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
@@ -62,6 +63,8 @@ const SideBar = () => {
                     )}
             </div>
 
+           <DirectMessageList />
+
             {promptModalDisplayed &&
                 <PromptModal
                     onClose={closeModal}
@@ -72,6 +75,7 @@ const SideBar = () => {
         </StyledSideBar>
     )
 }
+
 
 const StyledSideBar = styled.section`
     width:100%;
