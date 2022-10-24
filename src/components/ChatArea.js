@@ -3,22 +3,10 @@ import styled from 'styled-components'
 import ChatHeader from './ChatHeader'
 import ChatInput from './ChatInput'
 import ChatMessageItem from './ChatMessageItem'
-import { useCollection, useDocument } from "react-firebase-hooks/firestore"
-import { collection, doc, orderBy, query } from 'firebase/firestore'
-import { useSelector } from 'react-redux'
-import { db } from '../firebase'
 import MessageSkeletons from './loaders/MessageSkeletons'
 
-const ChatArea = () => {
+const ChatArea = ({ roomDetails, roomDetailsLoading, roomMessages, messagesLoading, sendMessage }) => {
     const chatRef = useRef();
-    const roomId = useSelector(state => state.room.roomId)
-    const workSpaceId = useSelector((state) => state.workspace.activeId)
-
-    const [roomDetails, loading] = useDocument(doc(db, "workspace", workSpaceId, "rooms", roomId))
-
-    const [roomMessages, messagesLoading] = useCollection(
-        query(collection(db, "workspace", workSpaceId, "rooms", roomId, "messages"), orderBy("serverTimeStamp", "asc")));
-
 
     useEffect(() => {
         chatRef.current.scrollIntoView({ behavior: "smooth" })
@@ -27,7 +15,8 @@ const ChatArea = () => {
 
     return (
         <StyledChatArea>
-            <ChatHeader roomName={!loading && roomDetails?.data()?.name} />
+            <ChatHeader roomName={!roomDetailsLoading && roomDetails?.data()?.name} />
+
             <StyledChatMessages>
                 {messagesLoading ? <MessageSkeletons /> :
 
@@ -46,7 +35,7 @@ const ChatArea = () => {
                 <div className='message_bottom' ref={chatRef} />
             </StyledChatMessages>
 
-            <ChatInput chatRef={chatRef} channelName={roomDetails?.data()?.name} />
+            <ChatInput chatRef={chatRef} sendMessage={sendMessage} channelName={roomDetails?.data()?.name} />
         </StyledChatArea>
     )
 }

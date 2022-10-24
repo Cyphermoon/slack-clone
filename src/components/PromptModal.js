@@ -121,6 +121,11 @@ const StyledChannelForm = styled.form`
             padding:.5em  .8em;
             border-radius:5px;
             color:white;
+
+            &:hover{
+                opacity:.8;
+                cursor:pointer;
+            }
         }
 
         .submit_btn{

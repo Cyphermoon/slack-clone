@@ -1,32 +1,16 @@
-import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { db } from '../firebase';
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
 
-const ChatInput = ({ chatRef, channelName }) => {
+const ChatInput = ({ chatRef, channelName, sendMessage }) => {
     const [user] = useAuthState(auth)
     const [input, setInput] = useState("");
-    const roomId = useSelector((state) => state.room.roomId);
-    const workSpaceId = useSelector((state) => state.workspace.activeId)
 
-    const sendMessage = async (e) => {
-        e.preventDefault();
-
-        if (!roomId) return false
-
-        const messagesCollectionRef = collection(db, "workspace", workSpaceId, "rooms", roomId, "messages")
-
-        const docSnap = await setDoc(doc(messagesCollectionRef), {
-            content: input,
-            serverTimeStamp: serverTimestamp(),
-            user: user.displayName,
-            userImg: user.photoURL
-        })
-
-        console.log(docSnap)
+    const handleSubmit = (e) => {
+        sendMessage(e, input, user);
+        clearMessage()
     }
 
     const clearMessage = () => {
@@ -35,10 +19,7 @@ const ChatInput = ({ chatRef, channelName }) => {
     }
 
     return (
-        <StyledChatInput onSubmit={(e) => {
-            sendMessage(e);
-            clearMessage()
-        }} >
+        <StyledChatInput onSubmit={handleSubmit} >
             <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
