@@ -11,6 +11,7 @@ import PromptModal from './PromptModal'
 import { usePromptModal } from '../hooks/util.hook'
 import ChannelLoaders from './loaders/ChannelLoaders'
 import DirectMessageList from './DirectMessageList'
+import { chatContextActions } from '../store/chat_slice'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
@@ -33,6 +34,7 @@ const SideBar = () => {
 
     const selectChannel = (id) => {
         dispatch(roomActions.selectChannel({ id }))
+        dispatch(chatContextActions.selectChatContext({ chatContextMode: "roomChat" }))
     }
 
     return (
@@ -63,7 +65,7 @@ const SideBar = () => {
                     )}
             </div>
 
-           <DirectMessageList />
+            <DirectMessageList />
 
             {promptModalDisplayed &&
                 <PromptModal

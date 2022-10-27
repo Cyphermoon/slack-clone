@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import ChatHeader from './ChatHeader'
 import ChatInput from './ChatInput'
@@ -7,6 +8,7 @@ import MessageSkeletons from './loaders/MessageSkeletons'
 
 const ChatArea = ({ roomDetails, roomDetailsLoading, roomMessages, messagesLoading, sendMessage }) => {
     const chatRef = useRef();
+    const chatContext = useSelector(state => state.chatContext.context)
 
     useEffect(() => {
         chatRef.current.scrollIntoView({ behavior: "smooth" })
@@ -20,16 +22,23 @@ const ChatArea = ({ roomDetails, roomDetailsLoading, roomMessages, messagesLoadi
             <StyledChatMessages>
                 {messagesLoading ? <MessageSkeletons /> :
 
-                    roomMessages.docs.map((doc) => {
+                    roomMessages?.docs?.map((doc) => {
                         const { serverTimeStamp, content, user, userImg } = doc.data();
                         const id = doc.id;
 
-                        return <ChatMessageItem
-                            key={id}
-                            message={content}
-                            timeStamp={serverTimeStamp?.toDate().toDateString()}
-                            userName={user}
-                            userImg={userImg} />
+                        return (
+                            <div>
+                                <ChatMessageItem
+                                    key={id}
+                                    message={content}
+                                    timeStamp={serverTimeStamp?.toDate().toDateString()}
+                                    userName={user}
+                                    userImg={userImg} />
+
+                            </div>
+
+                        )
+
                     })
                 }
                 <div className='message_bottom' ref={chatRef} />
@@ -64,6 +73,13 @@ const StyledChatMessages = styled.div`
 
     .message_bottom{
         padding-bottom:3rem;
+    }
+
+    div{
+        // display:flex;
+        // flex-direction:column;
+        // justify-content:center;
+        // background-color:red;
     }
 `
 

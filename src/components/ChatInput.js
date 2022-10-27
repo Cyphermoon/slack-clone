@@ -23,7 +23,7 @@ const ChatInput = ({ chatRef, channelName, sendMessage }) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 type="text"
-                placeholder={`message ${channelName || ""} room`} />
+                placeholder={`message ${channelName || ""}`} />
 
             <button type='submit' hidden>send</button>
         </StyledChatInput>

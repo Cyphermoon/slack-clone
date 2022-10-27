@@ -1,19 +1,21 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import ChatAreaContext from './ChatAreaContext'
+import DirectMessageChatContext from './DirectMessageChatContext'
+import RoomChatContext from './RoomChatsContext'
 import SideBar from './SideBar'
 import WorkspaceMenu from './WorkspaceMenu'
 
 const AppBody = () => {
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
-    const roomId = useSelector(state => state.room.roomId)
+    const chatContext = useSelector(state => state.chatContext.context)
     return (
         <StyledMain>
             <WorkspaceMenu />
             {workSpaceActiveId && <SideBar />}
-            {roomId &&
-                <ChatAreaContext />
+            {chatContext === "roomChat" ?
+                <RoomChatContext /> :
+                chatContext === "directMessage" && <DirectMessageChatContext />
             }
         </StyledMain>
     )

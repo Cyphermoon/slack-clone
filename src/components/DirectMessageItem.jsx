@@ -2,9 +2,9 @@ import { Avatar } from '@mui/material'
 import React from 'react'
 import styled from 'styled-components'
 
-const DirectMessageItem = ({name, photoUrl, chatId}) => {
+const DirectMessageItem = ({name, photoUrl, chatId, handleClick}) => {
   return (
-    <StyledDirectMessageItem>
+    <StyledDirectMessageItem onClick={() => handleClick(chatId, "directMessage")}>
         <StyledAvatar
         alt={`${name} profile`}
         src={photoUrl} 

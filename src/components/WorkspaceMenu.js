@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { db } from '../firebase'
 import { usePromptModal } from '../hooks/util.hook'
+import { chatContextActions } from '../store/chat_slice'
 import { roomActions } from '../store/room_slice'
 import { workSpaceActions } from '../store/workspace_slice'
 import PromptModal from './PromptModal'
@@ -31,6 +32,7 @@ const WorkspaceMenu = () => {
     const setActiveId = (id) => {
         dispatch(workSpaceActions.setActiveId({ id }))
         dispatch(roomActions.selectChannel({ id: false }))
+        dispatch(chatContextActions.selectChatContext({ chatContextMode: null }))
     }
 
     return (

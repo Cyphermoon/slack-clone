@@ -1,10 +1,18 @@
 import { Avatar } from '@mui/material'
 import React from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { auth } from '../firebase'
 
 const ChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
+    const chatContext = useSelector(state => state.chatContext.context)
+    const [user] = useAuthState(auth)
     return (
-        <StyledMessageItem>
+        <StyledMessageItem
+            isDirectMessage={chatContext === "directMessage"}
+            isCurrentUserMessage={user.displayName === userName}>
+
             <Avatar src={userImg || ""} alt={userName} referrerPolicy="no-referrer" />
             <div className="message_info">
                 <div className='user_name'>
@@ -22,8 +30,10 @@ const ChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
 }
 
 const StyledMessageItem = styled.div`
+    margin-left:${({ isDirectMessage, isCurrentUserMessage }) =>
+        isDirectMessage ? (isCurrentUserMessage ? "auto" : null) : null};
     display:flex;
-    align-items:flex-start;
+    align-items:flex-end;
     justify-content:space-between;
     width:100%;
     max-width:350px;

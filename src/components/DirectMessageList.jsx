@@ -1,25 +1,24 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import DirectMessageItem from './DirectMessageItem'
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { IconButton } from '@mui/material';
 import PromptModal from './PromptModal';
 import { usePromptModal } from '../hooks/util.hook';
-import { collection, doc, getDoc, query, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-// eslint-disable-next-line no-unused-vars
-import { useCollection, useDocument, useDocumentOnce } from 'react-firebase-hooks/firestore';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useCollection} from 'react-firebase-hooks/firestore';
+import { useDispatch, useSelector } from 'react-redux';
+import { chatContextActions } from '../store/chat_slice';
 
 
 const DirectMessageList = () => {
   const [user] = useAuthState(auth)
+  const dispatch = useDispatch()
   const userId = user.email
   const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
-  const [friendsList, loading] = useCollection(collection(db, "users", userId, "friends"))
+  const [friendsList, loading] = useCollection(query(collection(db, "users", userId, "friends"), where("workSpaceId", "==", workSpaceActiveId)))
   const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
 
 
@@ -30,14 +29,15 @@ const DirectMessageList = () => {
     return userDoc.exists() ? userDoc : undefined 
   }
 
-  const createChat = async (currentUserId, friendId) => {
-    let chatId = `${currentUserId}_${friendId}`
+  const createChat = async (currentUserId, friendId, friendName, workSpaceId) => {
+    let chatId = `${currentUserId}_${friendId}_${workSpaceId}`
 
     let chatDocRef = doc(db, "chats", chatId)
 
     await setDoc(chatDocRef, {
       workSpaceId: workSpaceActiveId,
-      users: [currentUserId, friendId]
+      users: [currentUserId, friendId],
+      name: friendName,
     }, {merge:true})
 
     return chatId
@@ -56,11 +56,12 @@ const DirectMessageList = () => {
     let friendId = userDoc.id
     let otherUserData = userDoc.data()
 
-    let chatId = await createChat(user.email, userEmail)
+    let chatId = await createChat(user.email, userEmail, otherUserData.name, workSpaceActiveId)
     console.log(chatId)
     
     let userFriendsCollectRef = collection(db, "users", userId, "friends")
     await setDoc(doc(userFriendsCollectRef), {
+      workSpaceId: workSpaceActiveId,
       chatId,
       email:otherUserData.email,
       name:otherUserData.name,
@@ -71,6 +72,7 @@ const DirectMessageList = () => {
     let newFriendCollectionRef = collection(db, "users", userEmail, "friends")
 
     await setDoc(doc(newFriendCollectionRef), {
+      workSpaceId: workSpaceActiveId,
       chatId,
       name:user.displayName,
       email:user.email,
@@ -78,6 +80,12 @@ const DirectMessageList = () => {
       photoUrl: user.photoURL
     })
 
+  }
+
+  const handleClick = (chatId, chatContextMode) => {
+    console.log(chatId, chatContextActions)
+    dispatch(chatContextActions.selectChatContext({chatContextMode}))
+    dispatch(chatContextActions.selectChatId({chatId}))
   }
 
   return (
@@ -93,14 +101,13 @@ const DirectMessageList = () => {
       {!loading && friendsList.docs.map((friendDetails, idx) => {
         const directMessage = friendDetails.data()
 
-        console.log(directMessage)
-
         return(
            <DirectMessageItem
            key={idx}
            name={directMessage.name}
            photoUrl={directMessage.photoUrl}
-           chatId={directMessage.chatId} />
+           chatId={directMessage.chatId}
+           handleClick={handleClick} />
         )
 
       })}

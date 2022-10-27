@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { db } from '../firebase'
 import ChatArea from './ChatArea'
 
-const ChatAreaContext = () => {
+const RoomChatContext = () => {
   const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
   const roomId = useSelector(state => state.room.roomId)
 
@@ -32,8 +32,6 @@ const ChatAreaContext = () => {
       })
   }
 
-
-
   return (
     <ChatArea
     roomDetails={roomDetails}
@@ -44,4 +42,4 @@ const ChatAreaContext = () => {
   )
 }
 
-export default ChatAreaContext
+export default RoomChatContext
