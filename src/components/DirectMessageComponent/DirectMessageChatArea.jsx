@@ -62,7 +62,7 @@ const StyledChatArea = styled.div`
 
 const StyledChatMessages = styled.div`
     width:100%;
-    padding:.7em 1em; 
+    padding:.7em 1.2em; 
     overflow-y:scroll;
     justify-self:start;
     flex-grow:1;

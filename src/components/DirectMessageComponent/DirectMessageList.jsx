@@ -50,7 +50,7 @@ const DirectMessageList = () => {
     let userDoc = await getUser(userEmail)
 
     if(!userDoc){
-      console.log("user does not exist")
+      alert("This user does not exist")
       return
     }
 

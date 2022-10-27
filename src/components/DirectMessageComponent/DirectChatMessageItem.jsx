@@ -11,16 +11,17 @@ const DirectChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
             isCurrentUserMessage={user.displayName === userName}>
 
             <Avatar src={userImg || ""} alt={userName} referrerPolicy="no-referrer" />
-            <div className="message_info">
+            <StyledMessageInfo
+            isCurrentUserMessage={user.displayName === userName}>
                 <div className='user_name'>
                     <h4>{userName}</h4>
-                    <span className='timeStamp'>{timeStamp}</span>
-                </div>
-
-                <p>
+                     <p>
                     {message}
                 </p>
-            </div>
+                </div>
+
+                <span className='timeStamp'>{timeStamp}</span>
+            </StyledMessageInfo>
 
         </StyledMessageItem>
     )
@@ -29,7 +30,8 @@ const DirectChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
 const StyledMessageItem = styled.div`
     margin-left:${({isCurrentUserMessage }) =>(isCurrentUserMessage ? "auto" : null)};
     display:flex;
-    align-items:flex-end;
+    // flex-direction:${({isCurrentUserMessage }) =>(isCurrentUserMessage ? "row-reverse" : "row")};
+    align-items:center;
     justify-content:space-between;
     width:100%;
     max-width:350px;
@@ -39,30 +41,24 @@ const StyledMessageItem = styled.div`
         svg{   font-size:7rem;}
 
     }
+`
 
-    .message_info{
-        width:85%;
+const StyledMessageInfo = styled.div`
+    width:85%;
+    display:flex;
+    // flex-direction:${({isCurrentUserMessage }) =>(isCurrentUserMessage ? "row-reverse" : "row")};
+    justify-content:space-between;
 
-        .user_name{
-            display:flex;
-            align-items:center;
-            margin-bottom:.3em;
-            justify-content:space-between;
-            width:100%;
+    .user_name{
+        display:flex;
+        flex-direction:column;
+        align-items:start;
 
-            h4{
-                font-weight:700;
-                opacity:.89;
-                text-transform:capitalize;
-            }
-
-
-            span{
-                color:#555;
-                font-size:.76rem;
-                font-weight:300;
-            }
-
+        h4{
+            font-weight:700;
+            opacity:.89;
+            text-transform:capitalize;
+            margin-bottom:.1em;
         }
 
         p{
@@ -70,5 +66,14 @@ const StyledMessageItem = styled.div`
             width:100%;
         }
     }
+
+    span{
+        color:#555;
+        font-size:.76rem;
+        font-weight:300;
+        align-self:start;
+    }
+
+  
 `
 export default DirectChatMessageItem
