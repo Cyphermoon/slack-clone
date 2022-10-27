@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
+import { useSelector } from 'react-redux';
 
 const ChatInput = ({ chatRef, channelName, sendMessage }) => {
+    const chatContext = useSelector(state => state.chatContext.context)
     const [user] = useAuthState(auth)
     const [input, setInput] = useState("");
 
@@ -23,7 +25,7 @@ const ChatInput = ({ chatRef, channelName, sendMessage }) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 type="text"
-                placeholder={`message ${channelName || ""}`} />
+                placeholder={`message ${channelName || ""} ${chatContext === "directMessage" ? "in a private chat" : "room"}`} />
 
             <button type='submit' hidden>send</button>
         </StyledChatInput>

@@ -10,8 +10,8 @@ import { roomActions } from '../store/room_slice'
 import PromptModal from './PromptModal'
 import { usePromptModal } from '../hooks/util.hook'
 import ChannelLoaders from './loaders/ChannelLoaders'
-import DirectMessageList from './DirectMessageList'
 import { chatContextActions } from '../store/chat_slice'
+import DirectMessageList from './DirectMessageComponent/DirectMessageList'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)

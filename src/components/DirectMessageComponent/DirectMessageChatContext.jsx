@@ -1,18 +1,14 @@
 import React from 'react'
 import { collection, doc, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore'
-import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
+import { useCollection } from 'react-firebase-hooks/firestore'
 import { useSelector } from 'react-redux'
-import { db } from '../firebase'
-import ChatArea from './ChatArea'
+import DirectMessageChatArea from './DirectMessageChatArea'
+import { db } from '../../firebase'
 
 const DirectMessageChatContext = () => {
-    const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const chatId = useSelector(state => state.chatContext.chatId)
     
-  
-    const [roomDetails, roomDetailsLoading] = useDocument(
-      doc(db, "chats", chatId)
-      )
+    const roomName = useSelector(state => state.otherUser.name)
       
     const [roomMessages, messagesLoading] = useCollection(
       query(collection(db, "chats", chatId, "messages"), orderBy("serverTimeStamp", "asc"))
@@ -36,11 +32,10 @@ const DirectMessageChatContext = () => {
   
   
     return (
-      <ChatArea
-      roomDetails={roomDetails}
+      <DirectMessageChatArea
+      roomName={roomName}
       roomMessages={roomMessages}
       messagesLoading={messagesLoading}
-      roomDetailsLoading={roomDetailsLoading}
       sendMessage={sendMessage} />
     )  
 }

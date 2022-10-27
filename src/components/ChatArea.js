@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import ChatHeader from './ChatHeader'
 import ChatInput from './ChatInput'
@@ -8,7 +7,6 @@ import MessageSkeletons from './loaders/MessageSkeletons'
 
 const ChatArea = ({ roomDetails, roomDetailsLoading, roomMessages, messagesLoading, sendMessage }) => {
     const chatRef = useRef();
-    const chatContext = useSelector(state => state.chatContext.context)
 
     useEffect(() => {
         chatRef.current.scrollIntoView({ behavior: "smooth" })
@@ -22,14 +20,13 @@ const ChatArea = ({ roomDetails, roomDetailsLoading, roomMessages, messagesLoadi
             <StyledChatMessages>
                 {messagesLoading ? <MessageSkeletons /> :
 
-                    roomMessages?.docs?.map((doc) => {
+                    roomMessages?.docs?.map((doc, idx) => {
                         const { serverTimeStamp, content, user, userImg } = doc.data();
-                        const id = doc.id;
 
                         return (
-                            <div>
+                            <div
+                                key={idx}>
                                 <ChatMessageItem
-                                    key={id}
                                     message={content}
                                     timeStamp={serverTimeStamp?.toDate().toDateString()}
                                     userName={user}

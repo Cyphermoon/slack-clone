@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import DirectMessageChatContext from './DirectMessageChatContext'
+import DirectMessageChatContext from './DirectMessageComponent/DirectMessageChatContext'
 import RoomChatContext from './RoomChatsContext'
 import SideBar from './SideBar'
 import WorkspaceMenu from './WorkspaceMenu'

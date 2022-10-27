@@ -3,14 +3,15 @@ import styled from 'styled-components'
 import DirectMessageItem from './DirectMessageItem'
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { IconButton } from '@mui/material';
-import PromptModal from './PromptModal';
-import { usePromptModal } from '../hooks/util.hook';
+import PromptModal from '../PromptModal';
+import { usePromptModal } from '../../hooks/util.hook';
 import { collection, doc, getDoc, query, setDoc, where } from 'firebase/firestore';
-import { auth, db } from '../firebase';
+import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection} from 'react-firebase-hooks/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { chatContextActions } from '../store/chat_slice';
+import { chatContextActions } from '../../store/chat_slice';
+import { otherUserActions } from '../../store/other_user_slice';
 
 
 const DirectMessageList = () => {
@@ -82,8 +83,8 @@ const DirectMessageList = () => {
 
   }
 
-  const handleClick = (chatId, chatContextMode) => {
-    console.log(chatId, chatContextActions)
+  const handleClick = (chatId, chatContextMode, otherUserName) => {
+    dispatch(otherUserActions.updateOtherUserName({name: otherUserName }))
     dispatch(chatContextActions.selectChatContext({chatContextMode}))
     dispatch(chatContextActions.selectChatId({chatId}))
   }

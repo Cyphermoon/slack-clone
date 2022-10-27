@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const DirectMessageItem = ({name, photoUrl, chatId, handleClick}) => {
   return (
-    <StyledDirectMessageItem onClick={() => handleClick(chatId, "directMessage")}>
+    <StyledDirectMessageItem onClick={() => handleClick(chatId, "directMessage", name)}>
         <StyledAvatar
         alt={`${name} profile`}
         src={photoUrl} 
