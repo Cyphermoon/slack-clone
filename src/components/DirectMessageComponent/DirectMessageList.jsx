@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import DirectMessageItem from './DirectMessageItem'
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { IconButton } from '@mui/material';
-import PromptModal from '../PromptModal';
+import PromptModal from '../modals/PromptModal';
 import { usePromptModal } from '../../hooks/util.hook';
 import { collection, doc, getDoc, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../../firebase';

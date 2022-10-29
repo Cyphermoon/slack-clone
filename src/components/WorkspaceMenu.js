@@ -9,7 +9,7 @@ import { usePromptModal } from '../hooks/util.hook'
 import { chatContextActions } from '../store/chat_slice'
 import { roomActions } from '../store/room_slice'
 import { workSpaceActions } from '../store/workspace_slice'
-import PromptModal from './PromptModal'
+import PromptModal from './modals/PromptModal'
 import Workspace from './Workspace'
 
 const WorkspaceMenu = () => {
