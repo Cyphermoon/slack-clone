@@ -22,8 +22,6 @@ const GameHeader = () => {
 const StyledHeader = styled.header`
     background-color:var(--slack-color);
     padding:7px 20px;
-
-
 `
 
 const StyledNav = styled.nav`
