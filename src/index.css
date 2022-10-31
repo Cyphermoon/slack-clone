@@ -6,6 +6,11 @@
   scrollbar-width: none;  
 }
 
+a{
+  display: block;
+  text-decoration: none;
+}
+
 *::-webkit-scrollbar {
   display: none;
 }

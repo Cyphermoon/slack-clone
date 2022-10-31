@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
+import GamePage from './pages/GamePage';
 import { default as HomePage } from './pages/Home';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
               <HomePage />
             </ProtectedRoute>
           } />
+        <Route path="/game" element={<GamePage />} />
       </Routes>
     </div>
   )
