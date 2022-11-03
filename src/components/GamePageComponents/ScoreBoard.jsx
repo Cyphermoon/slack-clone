@@ -1,19 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const ScoreBoard = () => {
-  return (
-    <StyledBoardSection>
-        <StyledUserScore>
-            <h3>Seun</h3>
-            <span>1</span>
-        </StyledUserScore>
-        <StyledUserScore>
-            <h3>Cypher Moon</h3>
-            <span>10</span>
-        </StyledUserScore>
-    </StyledBoardSection>
-  )
+const ScoreBoard = ({ players }) => {
+    return (
+        <StyledBoardSection>
+            {Object.keys(players).map((key, idx) => {
+                if (players.hasOwnProperty(key)) {
+
+                    return (
+                        <StyledUserScore key={idx}>
+                            <h3>{players[key].name}</h3>
+                            <span>{players[key].score}</span>
+                        </StyledUserScore>
+                    )
+                }
+
+                return null
+            })}
+
+        </StyledBoardSection>
+    )
 }
 
 const StyledBoardSection = styled.section`

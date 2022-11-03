@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const TicTacToeCell = ({position,handleCellClicked}) => {
   return (
-    <StyledCell onClick={(e) =>handleCellClicked(e, position)}/>
+    <StyledCell className='tic_tac_toe_cell' onClick={(e) =>handleCellClicked(e, position)}/>
   )
 }
 

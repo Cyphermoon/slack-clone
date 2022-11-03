@@ -5,12 +5,15 @@ import { useReducer } from 'react';
 import styled from 'styled-components'
 import TicTacToeCell from './TicTacToeCell'
 
-const GameBoard = () => {
+const GameBoard = ({players, setPlayers}) => {
+
   const X = "x";
-  const O = 'o'
-  const [currentLetter, setCurrentLetter] = useState(X);
-  const [playerWon, togglePlayerWin] = useReducer((initialState) => !initialState, true)
-  const isXCurrentPlayer = currentLetter === X
+  const O = "0";
+  const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
+  const [winner, setGameWinner] = useState()
+  const isXCurrentPlayer = currentPlayer.letter === X
+
+
 
   const initBoard = () => {
     let board = {}
@@ -23,10 +26,18 @@ const GameBoard = () => {
 
   const gameBoardReducer = (initialState, action) => {
     let pos = action.position
-    return {
-      ...initialState,
-      [pos]: action.value
+
+    if(action.type === "update"){
+        return {
+        ...initialState,
+        [pos]: action.value
+      }
     }
+
+    else if(action.type === "reset"){
+      return initBoard()
+    }
+   
   }
 
   const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
@@ -72,28 +83,42 @@ const GameBoard = () => {
     }
     return true
   }
+
+  const restartGame = () => {
+    setGameWinner(null);
+
+    let cells = document.querySelectorAll("div.tic_tac_toe_cell")
+    
+    cells.forEach((cell) => {
+      cell.classList.remove("x")
+      cell.classList.remove("o")
+    })
+
+    setGameBoard({type:"reset"})
+  }
   
   const handleCellClicked = (e, position, value) => {
-    e.target.classList.add(currentLetter)
-    setGameBoard({ position, value })
+    e.target.classList.add(currentPlayer.letter)
+    setGameBoard({ type:"update", position, value })
 
-    let result = gameBoardReducer(gameBoard, { position, value })
+    let result = gameBoardReducer(gameBoard, { type:"update", position, value })
 
-    if(isWinningMove(result, currentLetter)){
-     //display winner
-     //update score
+    if(isWinningMove(result, currentPlayer.letter)){
+      setGameWinner(currentPlayer)
+      setPlayers({type:"SCORE", player:currentPlayer.id})
     }
     else if(isBoardFull(result)){
       console.log("The math was a draw")
     }
 
-    setCurrentLetter(isXCurrentPlayer ? O : X)
+    setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
   }
+ 
   return (
     <StyledBoardSection>
       <span className='current_user'>Your Turn</span>
 
-      {!playerWon ?
+      {!winner ?
       <StyledTicTacToeBoard>
 
         {Object.keys(gameBoard).map((position, idx) => {
@@ -103,17 +128,19 @@ const GameBoard = () => {
             <TicTacToeCell
               position={position}
               key={idx}
-              handleCellClicked={(e, position) => handleCellClicked(e, position, currentLetter)} />
+              handleCellClicked={(e, position) => handleCellClicked(e, position, currentPlayer.letter)} />
           )
         })}
 
       </StyledTicTacToeBoard> :
       <StyledWinnerDisplay >
-        <h2>Cyphermoon </h2>
+        <h2>{winner?.name} </h2>
         <span>won</span>
       </StyledWinnerDisplay>}
 
-      <span className='restart_game'>Restart Game</span>
+      <button
+        onClick={restartGame}
+       className='restart_game'>Restart Game</button>
     </StyledBoardSection>
   )
 }
@@ -133,10 +160,21 @@ const StyledBoardSection = styled.section`
 
     .current_user,
     .restart_game{
-        display:block;
+        display:inline-block;
         color:var(--board-color);
         font-weight:500;
         font-size:.88rem;
+    }
+
+    .restart_game{
+      outline:none;
+      border:none;
+      padding:.5em .35em;
+      border-radius:15px;
+      text-align:center;
+      background-color:var(--board-color);
+      color:black;
+      cursor:pointer;
     }
 `
 
