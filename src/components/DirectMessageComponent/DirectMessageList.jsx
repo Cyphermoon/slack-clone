@@ -154,6 +154,9 @@ const StyledDirectMessageHeader = styled.div`
 `
 
 const StyledDirectMessages = styled.div`
+  & > * + *{
+    margin-top:.7em;
+  }
 
 `
 
