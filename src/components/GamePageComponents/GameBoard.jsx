@@ -1,17 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useEffect } from 'react';
 import { useReducer } from 'react';
 import styled from 'styled-components'
 import TicTacToeCell from './TicTacToeCell'
 
 const GameBoard = ({players, setPlayers}) => {
-
-  const X = "x";
-  const O = "0";
   const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
   const [winner, setGameWinner] = useState()
-  const isXCurrentPlayer = currentPlayer.letter === X
+  const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
 
 
 
@@ -92,17 +89,20 @@ const GameBoard = ({players, setPlayers}) => {
     cells.forEach((cell) => {
       cell.classList.remove("x")
       cell.classList.remove("o")
+      cell.style.pointerEvents = "auto"
     })
 
     setGameBoard({type:"reset"})
   }
+
   
   const handleCellClicked = (e, position, value) => {
+    e.target.removeEventListener(e.type, handleCellClicked)
     e.target.classList.add(currentPlayer.letter)
     setGameBoard({ type:"update", position, value })
 
     let result = gameBoardReducer(gameBoard, { type:"update", position, value })
-
+    
     if(isWinningMove(result, currentPlayer.letter)){
       setGameWinner(currentPlayer)
       setPlayers({type:"SCORE", player:currentPlayer.id})
@@ -112,12 +112,13 @@ const GameBoard = ({players, setPlayers}) => {
     }
 
     setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
+    e.target.style.pointerEvents = "none"
   }
  
   return (
     <StyledBoardSection>
-      <span className='current_user'>Your Turn</span>
-
+      <span className='current_user'>{currentPlayer.id === "player1" ?  "Your" :
+      `${players["player2"].name}'s`  } Turn</span>
       {!winner ?
       <StyledTicTacToeBoard>
 
