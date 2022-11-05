@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
+import { SettingsSystemDaydreamTwoTone } from '@mui/icons-material';
 import React, { useRef, useState } from 'react'
 import { useEffect } from 'react';
 import { useReducer } from 'react';
 import styled from 'styled-components'
+import MessageModal from '../modals/MessageModal';
 import TicTacToeCell from './TicTacToeCell'
 
-const GameBoard = ({players, setPlayers}) => {
+const GameBoard = ({ players, setPlayers }) => {
   const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
+  const [boardOpened, setBoardOpened] = useState(true)
   const [winner, setGameWinner] = useState()
+  const [isDraw, setIsDraw] = useState(false)
   const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
 
 
@@ -24,17 +28,17 @@ const GameBoard = ({players, setPlayers}) => {
   const gameBoardReducer = (initialState, action) => {
     let pos = action.position
 
-    if(action.type === "update"){
-        return {
+    if (action.type === "update") {
+      return {
         ...initialState,
         [pos]: action.value
       }
     }
 
-    else if(action.type === "reset"){
+    else if (action.type === "reset") {
       return initBoard()
     }
-   
+
   }
 
   const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
@@ -74,74 +78,76 @@ const GameBoard = ({players, setPlayers}) => {
 
   const isBoardFull = (gameBoard) => {
     for (let prop in gameBoard) {
-        if (gameBoard.hasOwnProperty(prop)) {
-          if (gameBoard[prop] === "") return false
+      if (gameBoard.hasOwnProperty(prop)) {
+        if (gameBoard[prop] === "") return false
       }
     }
     return true
   }
 
   const restartGame = () => {
-    setGameWinner(null);
+    setGameWinner(undefined);
+    setBoardOpened(true)
+    setIsDraw(false)
 
     let cells = document.querySelectorAll("div.tic_tac_toe_cell")
-    
+
     cells.forEach((cell) => {
       cell.classList.remove("x")
       cell.classList.remove("o")
       cell.style.pointerEvents = "auto"
     })
 
-    setGameBoard({type:"reset"})
+    setGameBoard({ type: "reset" })
   }
 
-  
+
   const handleCellClicked = (e, position, value) => {
     e.target.removeEventListener(e.type, handleCellClicked)
     e.target.classList.add(currentPlayer.letter)
-    setGameBoard({ type:"update", position, value })
+    setGameBoard({ type: "update", position, value })
 
-    let result = gameBoardReducer(gameBoard, { type:"update", position, value })
-    
-    if(isWinningMove(result, currentPlayer.letter)){
+    let result = gameBoardReducer(gameBoard, { type: "update", position, value })
+
+    if (isWinningMove(result, currentPlayer.letter)) {
       setGameWinner(currentPlayer)
-      setPlayers({type:"SCORE", player:currentPlayer.id})
+      setPlayers({ type: "SCORE", player: currentPlayer.id })
+      setBoardOpened(false)
     }
-    else if(isBoardFull(result)){
-      console.log("The math was a draw")
+    else if (isBoardFull(result)) {
+     setIsDraw(true)
+     setBoardOpened(false)
     }
 
     setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
     e.target.style.pointerEvents = "none"
   }
- 
-  return (
-    <StyledBoardSection>
-      <span className='current_user'>{currentPlayer.id === "player1" ?  "Your" :
-      `${players["player2"].name}'s`  } Turn</span>
-      {!winner ?
-      <StyledTicTacToeBoard>
 
-        {Object.keys(gameBoard).map((position, idx) => {
-          if (typeof gameBoard[position] === "function") return false
+  return (      
+   <StyledBoardSection>
+      <span className='current_user'>{currentPlayer.id === "player1" ? "Your" :
+        `${players["player2"].name}'s`} Turn</span>
+        { boardOpened &&
+        <StyledTicTacToeBoard>
 
-          return (
-            <TicTacToeCell
-              position={position}
-              key={idx}
-              handleCellClicked={(e, position) => handleCellClicked(e, position, currentPlayer.letter)} />
-          )
-        })}
+          {Object.keys(gameBoard).map((position, idx) => {
+            if (typeof gameBoard[position] === "function") return false
 
-      </StyledTicTacToeBoard> :
-      <StyledWinnerDisplay >
-        <h2>{winner?.name} </h2>
-        <span>won</span>
-      </StyledWinnerDisplay>}
+            return (
+              <TicTacToeCell
+                position={position}
+                key={idx}
+                handleCellClicked={(e, position) => handleCellClicked(e, position, currentPlayer.letter)} />
+            )
+          })}
 
+        </StyledTicTacToeBoard> }
+
+        {winner && <MessageModal message={`${winner?.name} won the game`} />}
+        {isDraw && <MessageModal message={`This match is a draw`} />}
       <button
         onClick={restartGame}
-       className='restart_game'>Restart Game</button>
+        className='restart_game'>Restart Game</button>
     </StyledBoardSection>
   )
 }
@@ -176,20 +182,6 @@ const StyledBoardSection = styled.section`
       background-color:var(--board-color);
       color:black;
       cursor:pointer;
-    }
-`
-
-const StyledWinnerDisplay = styled.div`
-
-    h2{
-      color:white;
-      font-weight:700;
-      font-size:2rem;
-    }
-    span{
-      color:white;
-      font-size:.9rem;
-      font-weight:300;
     }
 `
 
