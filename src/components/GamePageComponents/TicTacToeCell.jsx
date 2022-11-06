@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const TicTacToeCell = ({position,handleCellClicked}) => {
+const TicTacToeCell = ({position,handleCellClicked, className}) => {
   return (
-    <StyledCell className='tic_tac_toe_cell' onClick={(e) =>handleCellClicked(e, position)}/>
+    <StyledCell className={`tic_tac_toe_cell ${className}`} onClick={(e) =>handleCellClicked(e, position)}/>
   )
 }
 

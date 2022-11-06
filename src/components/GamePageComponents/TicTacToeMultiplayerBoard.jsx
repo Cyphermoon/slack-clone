@@ -1,20 +1,17 @@
-/* eslint-disable no-unused-vars */
-import { SettingsSystemDaydreamTwoTone } from '@mui/icons-material';
-import React, { useRef, useState } from 'react'
-import { useEffect } from 'react';
+
+import React, { useState } from 'react'
+import { isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import { useReducer } from 'react';
 import styled from 'styled-components'
 import MessageModal from '../modals/MessageModal';
-import TicTacToeCell from './TicTacToeCell'
+import TicTacToeBoard from './TicTacToeBoard';
 
-const GameBoard = ({ players, setPlayers }) => {
+const TicTacToeMultiplayerBoard = ({ players, setPlayers }) => {
   const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
   const [boardOpened, setBoardOpened] = useState(true)
   const [winner, setGameWinner] = useState()
   const [isDraw, setIsDraw] = useState(false)
   const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
-
-
 
   const initBoard = () => {
     let board = {}
@@ -43,48 +40,6 @@ const GameBoard = ({ players, setPlayers }) => {
 
   const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
 
-  const isWinningMove = (gameBoard, currentPlayer) => {
-    let winningMoves = [
-      [1, 2, 3],
-      [4, 5, 6],
-      [7, 8, 9],
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9],
-      [1, 5, 9],
-      [3, 5, 7]
-    ]
-
-
-    return winningMoves.some((move) => {
-      return (
-        (gameBoard[move[0]] === currentPlayer) &&
-        (gameBoard[move[1]] === currentPlayer) &&
-        (gameBoard[move[2]] === currentPlayer)
-      )
-    })
-
-
-    // return((gameBoard[1] && gameBoard[2] && gameBoard[3]) ||
-    //   (gameBoard[4] && gameBoard[5] && gameBoard[6])  ||
-    //   (gameBoard[7] && gameBoard[8] && gameBoard[9])  ||
-    //   (gameBoard[1] && gameBoard[4] && gameBoard[7])  ||
-    //   (gameBoard[2] && gameBoard[5] && gameBoard[8])  ||
-    //   (gameBoard[3] && gameBoard[6] && gameBoard[9])  ||
-    //   (gameBoard[1] && gameBoard[5] && gameBoard[9])  ||
-    //   (gameBoard[3] && gameBoard[5] && gameBoard[7])  
-    // ) 
-  }
-
-  const isBoardFull = (gameBoard) => {
-    for (let prop in gameBoard) {
-      if (gameBoard.hasOwnProperty(prop)) {
-        if (gameBoard[prop] === "") return false
-      }
-    }
-    return true
-  }
-
   const restartGame = () => {
     setGameWinner(undefined);
     setBoardOpened(true)
@@ -101,10 +56,7 @@ const GameBoard = ({ players, setPlayers }) => {
     setGameBoard({ type: "reset" })
   }
 
-
   const handleCellClicked = (e, position, value) => {
-    e.target.removeEventListener(e.type, handleCellClicked)
-    e.target.classList.add(currentPlayer.letter)
     setGameBoard({ type: "update", position, value })
 
     let result = gameBoardReducer(gameBoard, { type: "update", position, value })
@@ -115,36 +67,28 @@ const GameBoard = ({ players, setPlayers }) => {
       setBoardOpened(false)
     }
     else if (isBoardFull(result)) {
-     setIsDraw(true)
-     setBoardOpened(false)
+      setIsDraw(true)
+      setBoardOpened(false)
     }
 
     setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
     e.target.style.pointerEvents = "none"
   }
 
-  return (      
-   <StyledBoardSection>
-      <span className='current_user'>{currentPlayer.id === "player1" ? "Your" :
+  return (
+    <StyledBoardSection>
+      <span className='current_user'>{currentPlayer.id === "player1" ? `${players["player1"].name}` :
         `${players["player2"].name}'s`} Turn</span>
-        { boardOpened &&
-        <StyledTicTacToeBoard>
 
-          {Object.keys(gameBoard).map((position, idx) => {
-            if (typeof gameBoard[position] === "function") return false
+      {boardOpened &&
+        <TicTacToeBoard
+          gameBoard={gameBoard}
+          handleCellClicked={(e, position) => handleCellClicked(e, position, currentPlayer.letter)} />
+      }
 
-            return (
-              <TicTacToeCell
-                position={position}
-                key={idx}
-                handleCellClicked={(e, position) => handleCellClicked(e, position, currentPlayer.letter)} />
-            )
-          })}
+      {winner && <MessageModal message={`${winner?.name} won the game`} />}
+      {isDraw && <MessageModal message={`This match is a draw`} />}
 
-        </StyledTicTacToeBoard> }
-
-        {winner && <MessageModal message={`${winner?.name} won the game`} />}
-        {isDraw && <MessageModal message={`This match is a draw`} />}
       <button
         onClick={restartGame}
         className='restart_game'>Restart Game</button>
@@ -185,15 +129,7 @@ const StyledBoardSection = styled.section`
     }
 `
 
-const StyledTicTacToeBoard = styled.div`
-    --cell-size: 80px;
-    display:grid;
-    grid-template-columns: repeat(3, var(--cell-size));
-    grid-auto-rows:var(--cell-size);
-    // place-items:center;
-    place-content:center;
-`
 
 
 
-export default GameBoard
+export default TicTacToeMultiplayerBoard

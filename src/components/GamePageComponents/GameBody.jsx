@@ -1,20 +1,20 @@
 import React, { useReducer } from 'react'
 import styled from 'styled-components'
-import GameBoard from './GameBoard'
 import ScoreBoard from './ScoreBoard'
+import TicTacToeMultiplayerBoard from './TicTacToeMultiplayerBoard'
 
 const GameBody = () => {
   const initPlayers = () => {
     const players = {
       player1: {
         id : "player1",
-        name : "Cypher Moon",
+        name : "Player 1",
         score : 0, 
         letter : "x"
       },
       player2: {
         id : "player2",
-        name : "Seun",
+        name : "Player 2",
         score : 0, 
         letter : "o"
       }
@@ -47,7 +47,7 @@ const GameBody = () => {
   return (
     <StyledMain>
         <ScoreBoard players={players} />
-        <GameBoard players={players} setPlayers={setPlayers} />
+        <TicTacToeMultiplayerBoard players={players} setPlayers={setPlayers} />
     </StyledMain>
   )
 }
