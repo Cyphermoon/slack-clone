@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import styled from 'styled-components';
+import { StyledChatArea, StyledChatMessages } from '../ChatArea';
 import ChatInput from '../ChatInput';
 import MessageSkeletons from '../loaders/MessageSkeletons';
 
@@ -49,38 +49,5 @@ return(
 )
 }
 
-const StyledChatArea = styled.div`   
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    padding-top:${({ theme }) => theme.spacing_top_from_header};
-    flex-grow:1;
-    height:100%;
-    overflow:auto;
-`
-
-const StyledChatMessages = styled.div`
-    width:100%;
-    padding:.7em 1.2em; 
-    overflow-y:scroll;
-    justify-self:start;
-    flex-grow:1;
-    
-    & > * + *{
-        margin-top:3.5em;
-    }
-
-    .message_bottom{
-        padding-bottom:3rem;
-    }
-
-    div{
-        // display:flex;
-        // flex-direction:column;
-        // justify-content:center;
-        // background-color:red;
-    }
-`
 
 export default DirectMessageChatArea

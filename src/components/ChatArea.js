@@ -46,7 +46,7 @@ const ChatArea = ({ roomDetails, roomDetailsLoading, roomMessages, messagesLoadi
     )
 }
 
-const StyledChatArea = styled.div`   
+export const StyledChatArea = styled.div`   
     position:relative;
     display:flex;
     flex-direction:column;
@@ -57,7 +57,7 @@ const StyledChatArea = styled.div`
     overflow:auto;
 `
 
-const StyledChatMessages = styled.div`
+export const StyledChatMessages = styled.div`
     width:100%;
     padding:.7em 1em; 
     overflow-y:scroll;

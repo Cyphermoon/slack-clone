@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import chatContextSlice from "./chat_slice";
 import otherUserSlice from "./other_user_slice";
 import roomSlice from "./room_slice";
+import ticTacToeSlice from "./tic_tac_toe";
 import userSlice from "./user_slice";
 import workSpaceSlice from "./workspace_slice";
 
@@ -11,7 +12,8 @@ const store = configureStore({
         workspace: workSpaceSlice.reducer,
         user: userSlice.reducer,
         chatContext: chatContextSlice.reducer,
-        otherUser: otherUserSlice.reducer
+        otherUser: otherUserSlice.reducer,
+        ticTacToe: ticTacToeSlice.reducer
     }
 });
 

@@ -1,4 +1,4 @@
-import { DetailsOutlined, StarOutlineOutlined } from '@mui/icons-material'
+import { GamepadOutlined, StarOutlineOutlined } from '@mui/icons-material'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -6,7 +6,7 @@ const DirectMessageChatHeader = ({roomName}) => {
   return (
     <StyledChatHeader>
     <h3> {roomName}  <StarOutlineOutlined /></h3>
-    <span className='room_details'><DetailsOutlined /> Details</span>
+    <button className='room_details'><GamepadOutlined /> <span>Play Game</span> </button>
     </StyledChatHeader>
   )
 }
@@ -32,13 +32,19 @@ const StyledChatHeader = styled.div`
         }
     }
 
-    span.room_details{
+    button.room_details{
+        display:flex;
+        align-items:center;
+        background-color:#eaeaea;
+        outline: none;
+        border:none;
+        border-radius:15px;
+        padding: .5em;
+        cursor:pointer;
         font-size:.99rem;
-        display:flex
-        align-items:baseline;
 
-        svg{
-            font-size:.99rem;
+        span{
+            margin-left:.5em;
         }
     }
 `

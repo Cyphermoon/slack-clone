@@ -1,23 +1,47 @@
 import React, { useReducer } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { localMultiplayerContext, OnlineMultiplayerContext } from '../../constants/GameConstant.constant'
+import OnlineMultiplayerTicTacToeBoard from './OnlineMultiplayerTicTacToeBoard'
 import ScoreBoard from './ScoreBoard'
-import TicTacToeMultiplayerBoard from './TicTacToeMultiplayerBoard'
 
 const GameBody = () => {
+  const gameContext = useSelector((state) => state.ticTacToe.context)
+
   const initPlayers = () => {
-    const players = {
-      player1: {
-        id : "player1",
-        name : "Player 1",
-        score : 0, 
-        letter : "x"
-      },
-      player2: {
-        id : "player2",
-        name : "Player 2",
-        score : 0, 
-        letter : "o"
+    let players;
+
+    if(gameContext === localMultiplayerContext){
+      players = {
+          player1: {
+            id : "player1",
+            name : "Player 1",
+            score : 0, 
+            letter : "x"
+          },
+          player2: {
+            id : "player2",
+            name : "Player 2",
+            score : 0, 
+            letter : "o"
+          }
       }
+    }
+    else if(gameContext === OnlineMultiplayerContext){
+      players = {
+        player1: {
+          id : "player1",
+          name : "Cypher Moon",
+          score : 0, 
+          letter : "x"
+        },
+        player2: {
+          id : "player2",
+          name : "Seun",
+          score : 0, 
+          letter : "o"
+        }
+    }
     }
 
     return players
@@ -47,7 +71,7 @@ const GameBody = () => {
   return (
     <StyledMain>
         <ScoreBoard players={players} />
-        <TicTacToeMultiplayerBoard players={players} setPlayers={setPlayers} />
+       <OnlineMultiplayerTicTacToeBoard players={players} setPlayers={setPlayers} />
     </StyledMain>
   )
 }

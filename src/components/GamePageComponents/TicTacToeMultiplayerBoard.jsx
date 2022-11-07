@@ -96,7 +96,7 @@ const TicTacToeMultiplayerBoard = ({ players, setPlayers }) => {
   )
 }
 
-const StyledBoardSection = styled.section`
+export const StyledBoardSection = styled.section`
     --board-color:#f4f4f4;
     width:100%;
     text-align:center;
