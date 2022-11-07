@@ -15,6 +15,6 @@ const ticTacToeSlice = createSlice
         }
     })
 
-export const ticTacToeSliceActions = ticTacToeSlice.actions
+export const ticTacToeActions = ticTacToeSlice.actions
 
 export default ticTacToeSlice

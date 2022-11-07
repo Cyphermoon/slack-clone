@@ -41,9 +41,11 @@ const StyledUserScore = styled.div`
     align-items:center;
 
     h3{
-        font-size:1.2rem;
+        font-size:1rem;
         font-weight:400;
         margin-bottom:3em;
+        text-transform: capitalize;
+        word-wrap: break-word;
     }
 
     span{

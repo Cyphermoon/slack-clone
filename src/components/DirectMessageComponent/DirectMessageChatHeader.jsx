@@ -1,11 +1,18 @@
 import { GamepadOutlined, StarOutlineOutlined } from '@mui/icons-material'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { OnlineMultiplayerContext } from '../../constants/GameConstant.constant'
+import { ticTacToeActions } from '../../store/tic_tac_toe'
 
 const DirectMessageChatHeader = ({roomName}) => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const moveToOnlineGame = () => {
-
+        dispatch(ticTacToeActions.updateContext({contextState: OnlineMultiplayerContext}))
+        return navigate("/game")
     }
 
   return (

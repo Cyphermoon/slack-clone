@@ -10,6 +10,8 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
     const [winner, setGameWinner] = useState()
     const [isDraw, setIsDraw] = useState(false)
     const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
+
+
   
     const initBoard = () => {
       let board = {}
@@ -75,7 +77,7 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
   
     return (
       <StyledBoardSection>
-        <span className='current_user'>{currentPlayer.id === "player1" ? `${players["player1"].name}` :
+        <span className='current_user'>{isXCurrentPlayer ? `${players["player1"].name}` :
           `${players["player2"].name}'s`} Turn</span>
   
         {boardOpened &&

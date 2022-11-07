@@ -7,6 +7,9 @@ import ScoreBoard from './ScoreBoard'
 
 const GameBody = () => {
   const gameContext = useSelector((state) => state.ticTacToe.context)
+  const currentUserObj = useSelector((state) => state.user)
+  const otherUserObj = useSelector((state) => state.otherUser)
+
 
   const initPlayers = () => {
     let players;
@@ -31,13 +34,13 @@ const GameBody = () => {
       players = {
         player1: {
           id : "player1",
-          name : "Cypher Moon",
+          name : currentUserObj.userName,
           score : 0, 
           letter : "x"
         },
         player2: {
           id : "player2",
-          name : "Seun",
+          name : otherUserObj.name,
           score : 0, 
           letter : "o"
         }
