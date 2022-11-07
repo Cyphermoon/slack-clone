@@ -3,10 +3,15 @@ import React from 'react'
 import styled from 'styled-components'
 
 const DirectMessageChatHeader = ({roomName}) => {
+
+    const moveToOnlineGame = () => {
+
+    }
+
   return (
     <StyledChatHeader>
     <h3> {roomName}  <StarOutlineOutlined /></h3>
-    <button className='room_details'><GamepadOutlined /> <span>Play Game</span> </button>
+    <button onClick={moveToOnlineGame} className='room_details'><GamepadOutlined /> <span>Play Game</span> </button>
     </StyledChatHeader>
   )
 }

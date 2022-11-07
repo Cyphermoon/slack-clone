@@ -12,6 +12,7 @@ import { useCollection} from 'react-firebase-hooks/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { chatContextActions } from '../../store/chat_slice';
 import { otherUserActions } from '../../store/other_user_slice';
+import { currentUserActions} from '../../store/user_slice';
 
 
 const DirectMessageList = () => {
@@ -83,10 +84,13 @@ const DirectMessageList = () => {
 
   }
 
-  const handleClick = (chatId, chatContextMode, otherUserName) => {
+  const handleClick = (chatId, chatContextMode, otherUserName, otherUserId) => {
     dispatch(otherUserActions.updateOtherUserName({name: otherUserName }))
+    dispatch(otherUserActions.updateOtherUserId({id : otherUserId}))
     dispatch(chatContextActions.selectChatContext({chatContextMode}))
     dispatch(chatContextActions.selectChatId({chatId}))
+    dispatch(currentUserActions.updateUserId({id: userId}))
+    dispatch(currentUserActions.updateUserName({name: user.displayName}))
   }
 
   return (
@@ -108,6 +112,7 @@ const DirectMessageList = () => {
            name={directMessage.name}
            photoUrl={directMessage.photoUrl}
            chatId={directMessage.chatId}
+           otherUserId={directMessage.friendId}
            handleClick={handleClick} />
         )
 
