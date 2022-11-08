@@ -1,8 +1,13 @@
-import React, { useReducer, useState } from 'react'
-import { isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useReducer, useState } from 'react'
+import { collection, doc, orderBy, query, setDoc } from 'firebase/firestore'
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
+import { initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
+import { db } from '../../firebase';
+import { updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
     const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
@@ -11,17 +16,10 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
     const [isDraw, setIsDraw] = useState(false)
     const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
 
-
-  
-    const initBoard = () => {
-      let board = {}
-  
-      for (let i = 1; i < 10; i++) {
-        board[i] = ""
-      }
-      return board
-    }
-  
+    const [gameData, isGameDataLoading] = useDocument(
+    query(doc(db, "ticTacToeGames", "oPVDWoSc58tRkSMktYGZ"))
+    );
+    
     const gameBoardReducer = (initialState, action) => {
       let pos = action.position
   
@@ -31,15 +29,42 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
           [pos]: action.value
         }
       }
+
+      else if (action.type === "serverUpdate"){
+        return {
+          ...action["newBoard"]
+        }
+      }
   
       else if (action.type === "reset") {
         return initBoard()
       }
   
     }
-  
+
     const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
-  
+
+    useEffect(() => {
+      if(isGameDataLoading) return
+
+      setGameBoard({type:"serverUpdate", newBoard: gameData.data()["gameBoard"]})
+      let result = gameBoardReducer(gameBoard, {type:"serverUpdate", newBoard: gameData.data()["gameBoard"]})
+
+      if (isWinningMove(result, "x")) {
+        setGameWinner(currentPlayer)
+        setPlayers({ type: "SCORE", player: currentPlayer.id })
+        setBoardOpened(false)
+      }
+      else if (isBoardFull(result)) {
+        setIsDraw(true)
+        setBoardOpened(false)
+      }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gameData, isGameDataLoading])
+
+ 
+
     const restartGame = () => {
       setGameWinner(undefined);
       setBoardOpened(true)
@@ -52,25 +77,20 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
         cell.classList.remove("o")
         cell.style.pointerEvents = "auto"
       })
-  
-      setGameBoard({ type: "reset" })
+
+      setGameBoard({type:"reset"})
+      let result = gameBoardReducer(gameBoard, { type: "reset" })
+      updateOnlineGameBoard(result, "oPVDWoSc58tRkSMktYGZ")
     }
+
   
-    const handleCellClicked = (e, position, value) => {
+    const handleCellClicked = async (e, position, value) => {
       setGameBoard({ type: "update", position, value })
-  
+
       let result = gameBoardReducer(gameBoard, { type: "update", position, value })
-  
-      if (isWinningMove(result, currentPlayer.letter)) {
-        setGameWinner(currentPlayer)
-        setPlayers({ type: "SCORE", player: currentPlayer.id })
-        setBoardOpened(false)
-      }
-      else if (isBoardFull(result)) {
-        setIsDraw(true)
-        setBoardOpened(false)
-      }
-  
+
+      updateOnlineGameBoard(result, "oPVDWoSc58tRkSMktYGZ")
+      
       setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
       e.target.style.pointerEvents = "none"
     }
@@ -82,7 +102,7 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
   
         {boardOpened &&
           <TicTacToeBoard
-            gameBoard={gameBoard}
+            gameBoard={!isGameDataLoading && gameBoard}
             handleCellClicked={(e, position) => handleCellClicked(e, position, currentPlayer.letter)} />
         }
   

@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { OnlineMultiplayerContext } from "../constants/GameConstant.constant"
+import { localMultiplayerContext } from "../constants/GameConstant.constant"
 
 
 const ticTacToeSlice = createSlice
     ({
         name: "tic_tac_toe",
         initialState: {
-            context: OnlineMultiplayerContext,
+            context: localMultiplayerContext,
         },
         reducers: {
             updateContext(state, action) {

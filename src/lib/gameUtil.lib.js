@@ -29,3 +29,50 @@ export const isBoardFull = (gameBoard) => {
     }
     return true
 }
+
+export const initBoard = () => {
+    let board = {}
+
+    for (let i = 1; i < 10; i++) {
+        board[i] = ""
+    }
+    return board
+}
+
+export const initPlayers = () => {
+    let players = {
+        player1: {
+            id: "player1",
+            name: "Player 1",
+            score: 0,
+            letter: "x"
+        },
+        player2: {
+            id: "player2",
+            name: "Player 2",
+            score: 0,
+            letter: "o"
+        }
+    }
+
+    return players
+}
+
+export const playersReducer = (initialState, action) => {
+    let playerId = action.player
+
+    if (action.type === "SCORE") {
+        console.log("updating score")
+        return {
+            ...initialState,
+
+            [playerId]: {
+                ...initialState[playerId],
+                score: initialState[playerId].score += 1
+            }
+        }
+
+    }
+
+    return initialState
+}

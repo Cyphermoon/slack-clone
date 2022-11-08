@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
+import { initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import { useReducer } from 'react';
 import styled from 'styled-components'
 import MessageModal from '../modals/MessageModal';
@@ -13,14 +13,7 @@ const TicTacToeMultiplayerBoard = ({ players, setPlayers }) => {
   const [isDraw, setIsDraw] = useState(false)
   const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
 
-  const initBoard = () => {
-    let board = {}
 
-    for (let i = 1; i < 10; i++) {
-      board[i] = ""
-    }
-    return board
-  }
 
   const gameBoardReducer = (initialState, action) => {
     let pos = action.position
