@@ -9,16 +9,14 @@ import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
 import { db } from '../../firebase';
 import { updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
 
-const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
+const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameDataLoading}) => {
     const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
     const [boardOpened, setBoardOpened] = useState(true)
     const [winner, setGameWinner] = useState()
     const [isDraw, setIsDraw] = useState(false)
+    const ticTacToeGameId = "oPVDWoSc58tRkSMktYGZ"
     const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
 
-    const [gameData, isGameDataLoading] = useDocument(
-    query(doc(db, "ticTacToeGames", "oPVDWoSc58tRkSMktYGZ"))
-    );
     
     const gameBoardReducer = (initialState, action) => {
       let pos = action.position
@@ -63,6 +61,23 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameData, isGameDataLoading])
 
+    // useEffect(() => {
+    
+    //   const updateOnlineCurrentPlayer = async (gameId, newPlayer) => {
+
+    //     const gameDataRef = doc(db, "ticTacToeGames", gameId)
+
+    //       let result = await setDoc(gameDataRef, {
+    //         currentPlayer: newPlayer
+    //     }, { merge: true })
+
+    //     return result
+
+    //   }
+
+    //   updateOnlineCurrentPlayer(ticTacToeGameId, currentPlayer)   
+    // }, [currentPlayer])
+
  
 
     const restartGame = () => {
@@ -80,7 +95,7 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
 
       setGameBoard({type:"reset"})
       let result = gameBoardReducer(gameBoard, { type: "reset" })
-      updateOnlineGameBoard(result, "oPVDWoSc58tRkSMktYGZ")
+      updateOnlineGameBoard(result, ticTacToeGameId)
     }
 
   
@@ -89,9 +104,10 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
 
       let result = gameBoardReducer(gameBoard, { type: "update", position, value })
 
-      updateOnlineGameBoard(result, "oPVDWoSc58tRkSMktYGZ")
+      updateOnlineGameBoard(result, ticTacToeGameId)
       
       setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
+
       e.target.style.pointerEvents = "none"
     }
   

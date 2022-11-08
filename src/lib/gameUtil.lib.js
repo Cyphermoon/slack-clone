@@ -74,5 +74,16 @@ export const playersReducer = (initialState, action) => {
 
     }
 
+    else if (action.type === "serverUpdate") {
+        return {
+            player1: {
+                ...action["newPlayers"]["player1"]
+            },
+            player2: {
+                ...action["newPlayers"]["player2"]
+            }
+        }
+    }
+
     return initialState
 }
