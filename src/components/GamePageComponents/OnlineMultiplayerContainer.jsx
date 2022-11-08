@@ -19,7 +19,7 @@ const OnlineMultiplayerContainer = () => {
     if(isGameDataLoading) return
 
     setPlayers(!isGameDataLoading && ({type:"serverUpdate", newPlayers:gameData.data()["players"]}))
-    console.log(!isGameDataLoading && gameData.data())
+
 
   }, [gameData, isGameDataLoading])
 

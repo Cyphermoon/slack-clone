@@ -7,10 +7,21 @@ import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
 import { db } from '../../firebase';
-import { updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
+import { updateOnlineCurrentPlayer, updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameDataLoading}) => {
-    const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
+
+
+    const currentPlayerReducer = (initialState, action) => {
+
+      if(action.type === "changeCurrentPlayer"){
+        return {
+          ...action["newPlayer"]
+        }
+      }
+    }
+
+    const [currentPlayer, setCurrentPlayer] = useReducer(currentPlayerReducer, players["player1"])
     const [boardOpened, setBoardOpened] = useState(true)
     const [winner, setGameWinner] = useState()
     const [isDraw, setIsDraw] = useState(false)
@@ -48,9 +59,19 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
       setGameBoard({type:"serverUpdate", newBoard: gameData.data()["gameBoard"]})
       let result = gameBoardReducer(gameBoard, {type:"serverUpdate", newBoard: gameData.data()["gameBoard"]})
 
-      if (isWinningMove(result, "x")) {
-        setGameWinner(currentPlayer)
-        setPlayers({ type: "SCORE", player: currentPlayer.id })
+      setCurrentPlayer({ type:"changeCurrentPlayer",  newPlayer:gameData.data()["currentPlayer"]})
+      let calculatedCurrentPlayer = currentPlayerReducer(currentPlayer,{ type:"changeCurrentPlayer",  newPlayer:gameData.data()["currentPlayer"]} )
+
+  
+
+      let previousPlayer = calculatedCurrentPlayer.letter === players["player1"].letter ? players["player2"] : players["player1"]
+
+      console.log("current letter", calculatedCurrentPlayer)
+      console.log("previous letter", previousPlayer)
+
+      if (isWinningMove(result, previousPlayer.letter)) {
+        setGameWinner(previousPlayer)
+        setPlayers({ type: "SCORE", player: previousPlayer.id })
         setBoardOpened(false)
       }
       else if (isBoardFull(result)) {
@@ -58,28 +79,12 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
         setBoardOpened(false)
       }
 
+    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameData, isGameDataLoading])
 
-    // useEffect(() => {
-    
-    //   const updateOnlineCurrentPlayer = async (gameId, newPlayer) => {
-
-    //     const gameDataRef = doc(db, "ticTacToeGames", gameId)
-
-    //       let result = await setDoc(gameDataRef, {
-    //         currentPlayer: newPlayer
-    //     }, { merge: true })
-
-    //     return result
-
-    //   }
-
-    //   updateOnlineCurrentPlayer(ticTacToeGameId, currentPlayer)   
-    // }, [currentPlayer])
-
  
-
     const restartGame = () => {
       setGameWinner(undefined);
       setBoardOpened(true)
@@ -106,7 +111,16 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
 
       updateOnlineGameBoard(result, ticTacToeGameId)
       
-      setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
+
+      setCurrentPlayer(isXCurrentPlayer ? 
+        { type:"changeCurrentPlayer",  newPlayer:players["player2"]} : 
+        { type:"changeCurrentPlayer",  newPlayer:players["player1"]})
+      
+      let playerCalculatedRes = currentPlayerReducer(currentPlayer, isXCurrentPlayer ? 
+        { type:"changeCurrentPlayer",  newPlayer:players["player2"]} : 
+        { type:"changeCurrentPlayer",  newPlayer:players["player1"]} )
+
+      updateOnlineCurrentPlayer(ticTacToeGameId, playerCalculatedRes)
 
       e.target.style.pointerEvents = "none"
     }
