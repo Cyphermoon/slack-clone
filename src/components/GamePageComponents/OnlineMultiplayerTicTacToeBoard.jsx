@@ -3,7 +3,7 @@ import { initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
-import { currentPlayerReducer, gameBoardReducer, updateOnlineCurrentPlayer, updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
+import { currentPlayerReducer, gameBoardReducer, incrementOnlineCurrentPlayerScore, resetOnlineCurrentPlayerScore, updateOnlineCurrentPlayer, updateOnlineBoardOpenedState, updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameDataLoading}) => {
     const [currentPlayer, setCurrentPlayer] = useReducer(currentPlayerReducer, players["player1"])
@@ -18,21 +18,24 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
     useEffect(() => {
       if(isGameDataLoading) return
 
+      setBoardOpened(gameData.data()["boardOpened"])
+
       setGameBoard({type:"serverUpdate", newBoard: gameData.data()["gameBoard"]})
       let result = gameBoardReducer(gameBoard, {type:"serverUpdate", newBoard: gameData.data()["gameBoard"]})
 
       setCurrentPlayer({ type:"changeCurrentPlayer",  newPlayer:gameData.data()["currentPlayer"]})
 
-      let previousPlayer = currentPlayer
+      const previousPlayer = currentPlayer
 
       if (isWinningMove(result, previousPlayer.letter)) {
         setGameWinner(previousPlayer)
-        setPlayers({ type: "SCORE", player: previousPlayer.id })
-        setBoardOpened(false)
+        let score = previousPlayer.score + 1
+        incrementOnlineCurrentPlayerScore(ticTacToeGameId, previousPlayer.id, score)
+        updateOnlineBoardOpenedState(ticTacToeGameId, false)
       }
       else if (isBoardFull(result)) {
         setIsDraw(true)
-        setBoardOpened(false)
+        updateOnlineBoardOpenedState(ticTacToeGameId, false)
       }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,7 +44,6 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
  
     const restartGame = () => {
       setGameWinner(undefined);
-      setBoardOpened(true)
       setIsDraw(false)
   
       let cells = document.querySelectorAll("div.tic_tac_toe_cell")
@@ -54,14 +56,18 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
 
       let result = gameBoardReducer(gameBoard, { type: "reset" })
       updateOnlineGameBoard(result, ticTacToeGameId)
+      updateOnlineBoardOpenedState(ticTacToeGameId, true)
+    }
+
+    const finishGame = () => {
+      restartGame()
+      resetOnlineCurrentPlayerScore(ticTacToeGameId)
     }
 
   
     const handleCellClicked = async (e, position, value) => {
       let result = gameBoardReducer(gameBoard, { type: "update", position, value })
       updateOnlineGameBoard(result, ticTacToeGameId)
-      
-
       
       let playerCalculatedRes = currentPlayerReducer(currentPlayer, isXCurrentPlayer ? 
         { type:"changeCurrentPlayer",  newPlayer:players["player2"]} : 

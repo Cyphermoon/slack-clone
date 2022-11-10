@@ -62,7 +62,6 @@ export const playersReducer = (initialState, action) => {
     let playerId = action.player
 
     if (action.type === "SCORE") {
-        console.log("updating score")
         return {
             ...initialState,
 
