@@ -29,8 +29,7 @@ const OnlineMultiplayerContainer = () => {
       <OnlineMultiplayerTicTacToeBoard
         gameData={gameData}
         isGameDataLoading={isGameDataLoading}
-        players={players}
-        setPlayers={setPlayers} />
+        players={players} />
     </StyledContextArea>
   )
 }
