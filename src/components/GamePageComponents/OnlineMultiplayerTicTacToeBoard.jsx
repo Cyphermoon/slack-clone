@@ -1,55 +1,17 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react'
-import { collection, doc, orderBy, query, setDoc } from 'firebase/firestore'
-import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import { initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
-import { db } from '../../firebase';
-import { updateOnlineCurrentPlayer, updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
+import { currentPlayerReducer, gameBoardReducer, updateOnlineCurrentPlayer, updateOnlineGameBoard } from '../../lib/onlineGameUtil.lib';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameDataLoading}) => {
-
-
-    const currentPlayerReducer = (initialState, action) => {
-
-      if(action.type === "changeCurrentPlayer"){
-        return {
-          ...action["newPlayer"]
-        }
-      }
-    }
-
     const [currentPlayer, setCurrentPlayer] = useReducer(currentPlayerReducer, players["player1"])
     const [boardOpened, setBoardOpened] = useState(true)
     const [winner, setGameWinner] = useState()
     const [isDraw, setIsDraw] = useState(false)
     const ticTacToeGameId = "oPVDWoSc58tRkSMktYGZ"
     const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
-
-    
-    const gameBoardReducer = (initialState, action) => {
-      let pos = action.position
-  
-      if (action.type === "update") {
-        return {
-          ...initialState,
-          [pos]: action.value
-        }
-      }
-
-      else if (action.type === "serverUpdate"){
-        return {
-          ...action["newBoard"]
-        }
-      }
-  
-      else if (action.type === "reset") {
-        return initBoard()
-      }
-  
-    }
 
     const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
 
@@ -60,14 +22,8 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
       let result = gameBoardReducer(gameBoard, {type:"serverUpdate", newBoard: gameData.data()["gameBoard"]})
 
       setCurrentPlayer({ type:"changeCurrentPlayer",  newPlayer:gameData.data()["currentPlayer"]})
-      let calculatedCurrentPlayer = currentPlayerReducer(currentPlayer,{ type:"changeCurrentPlayer",  newPlayer:gameData.data()["currentPlayer"]} )
 
-  
-
-      let previousPlayer = calculatedCurrentPlayer.letter === players["player1"].letter ? players["player2"] : players["player1"]
-
-      console.log("current letter", calculatedCurrentPlayer)
-      console.log("previous letter", previousPlayer)
+      let previousPlayer = currentPlayer
 
       if (isWinningMove(result, previousPlayer.letter)) {
         setGameWinner(previousPlayer)
@@ -78,8 +34,6 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
         setIsDraw(true)
         setBoardOpened(false)
       }
-
-    
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameData, isGameDataLoading])
@@ -98,23 +52,16 @@ const OnlineMultiplayerTicTacToeBoard = ({players, setPlayers, gameData, isGameD
         cell.style.pointerEvents = "auto"
       })
 
-      setGameBoard({type:"reset"})
       let result = gameBoardReducer(gameBoard, { type: "reset" })
       updateOnlineGameBoard(result, ticTacToeGameId)
     }
 
   
     const handleCellClicked = async (e, position, value) => {
-      setGameBoard({ type: "update", position, value })
-
       let result = gameBoardReducer(gameBoard, { type: "update", position, value })
-
       updateOnlineGameBoard(result, ticTacToeGameId)
       
 
-      setCurrentPlayer(isXCurrentPlayer ? 
-        { type:"changeCurrentPlayer",  newPlayer:players["player2"]} : 
-        { type:"changeCurrentPlayer",  newPlayer:players["player1"]})
       
       let playerCalculatedRes = currentPlayerReducer(currentPlayer, isXCurrentPlayer ? 
         { type:"changeCurrentPlayer",  newPlayer:players["player2"]} : 
