@@ -65,10 +65,10 @@ const OnlineMultiplayerTicTacToeBoard = ({players, gameData, isGameDataLoading})
       updateOnlineGame(ticTacToeGameId, "boardOpened", true)
     }
 
-    const finishGame = () => {
-      restartGame()
-      resetOnlineCurrentPlayerScore(ticTacToeGameId)
-    }
+    // const finishGame = () => {
+    //   restartGame()
+    //   resetOnlineCurrentPlayerScore(ticTacToeGameId)
+    // }
 
     const handleCellClicked = async (e, position, value) => {
       let result = gameBoardReducer(gameBoard, { type: "update", position, value })
