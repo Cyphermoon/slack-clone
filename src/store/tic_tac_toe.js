@@ -7,10 +7,14 @@ const ticTacToeSlice = createSlice
         name: "tic_tac_toe",
         initialState: {
             context: localMultiplayerContext,
+            gameId: "oPVDWoSc58tRkSMktYGZ",
         },
         reducers: {
             updateContext(state, action) {
                 state.context = action.payload.contextState
+            },
+            updateGameId(state, action) {
+                state.gameId = action.payload.id
             }
         }
     })

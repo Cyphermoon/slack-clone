@@ -4,13 +4,14 @@ import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
 import { currentPlayerReducer, gameBoardReducer, resetOnlineCurrentPlayerScore, updateOnlineGame } from '../../lib/onlineGameUtil.lib';
+import { useSelector } from 'react-redux';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, gameData, isGameDataLoading}) => {
     const [currentPlayer, setCurrentPlayer] = useReducer(currentPlayerReducer, players["player1"])
     const [boardOpened, setBoardOpened] = useState(true)
     const [winner, setGameWinner] = useState()
     const [isDraw, setIsDraw] = useState(false)
-    const ticTacToeGameId = "oPVDWoSc58tRkSMktYGZ"
+    const ticTacToeGameId = useSelector(state => state.ticTacToe.gameId)
     const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
 
     const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
