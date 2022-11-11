@@ -97,6 +97,7 @@ export const StyledBoardSection = styled.section`
     background-color:red;
     border-radius:20px;
     padding:1em .5em;
+    transition: all 500ms linear;
 
     & > * + *{
       margin-top:2em;
@@ -119,6 +120,12 @@ export const StyledBoardSection = styled.section`
       background-color:var(--board-color);
       color:black;
       cursor:pointer;
+    }
+
+    &.disabled{
+      pointer-events:none;
+      opacity:.8;
+      filter: blur(2px);
     }
 `
 

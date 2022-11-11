@@ -12,8 +12,8 @@ import { db } from '../../firebase'
 
 const DirectMessageChatHeader = ({roomName}) => {
     const chatId = useSelector(state => state.chatContext.chatId)
-    const currentUserName = useSelector(state => state.user.userName)
-    const otherUserName = useSelector(state => state.otherUser.name)
+    const currentUserObj = useSelector(state => state.user)
+    const otherUserObj = useSelector(state => state.otherUser)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -29,15 +29,17 @@ const DirectMessageChatHeader = ({roomName}) => {
         let player1 = {
             id : "player1",
             letter: "x",
-            name : currentUserName,
-            score : 0
+            name : currentUserObj.userName,
+            score : 0,
+            userId: currentUserObj.userId
         }
         
         let player2 = {
             id : "player2",
             letter: "o",
-            name : otherUserName,
-            score : 0
+            name : otherUserObj.name,
+            score : 0,
+            userId: otherUserObj.id
         }
 
         const gameData = {

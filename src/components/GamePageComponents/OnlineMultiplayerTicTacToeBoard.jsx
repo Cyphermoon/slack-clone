@@ -3,16 +3,18 @@ import { initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
-import { currentPlayerReducer, gameBoardReducer, resetOnlineCurrentPlayerScore, updateOnlineGame } from '../../lib/onlineGameUtil.lib';
+import { currentPlayerReducer, gameBoardReducer, updateOnlineGame } from '../../lib/onlineGameUtil.lib';
 import { useSelector } from 'react-redux';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, gameData, isGameDataLoading}) => {
+  const currentUserObj = useSelector(state => state.user)
     const [currentPlayer, setCurrentPlayer] = useReducer(currentPlayerReducer, players["player1"])
     const [boardOpened, setBoardOpened] = useState(true)
     const [winner, setGameWinner] = useState()
     const [isDraw, setIsDraw] = useState(false)
     const ticTacToeGameId = useSelector(state => state.ticTacToe.gameId)
     const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
+    const isCurrentUserPlayer = currentPlayer.userId === currentUserObj.userId
 
     const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
 
@@ -84,7 +86,7 @@ const OnlineMultiplayerTicTacToeBoard = ({players, gameData, isGameDataLoading})
     }
   
     return (
-      <StyledBoardSection>
+      <StyledBoardSection className={`${!isCurrentUserPlayer && "disabled"}`}>
         <span className='current_user'>{isXCurrentPlayer ? `${players["player1"].name}` :
           `${players["player2"].name}'s`} Turn</span>
   
