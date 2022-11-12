@@ -26,7 +26,8 @@ const AIMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
        checkBoardState(result, currentPlayer)
 
        setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
-       disableCell(position)
+
+       if(position) disableCell(position)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPlayer.letter] )
