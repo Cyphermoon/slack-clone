@@ -1,9 +1,23 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { AIMultiplayerContext } from '../../constants/GameConstant.constant'
 
 const TicTacToeCell = ({position,handleCellClicked, className}) => {
+  const gameContext = useSelector((state) => state.ticTacToe.context)
+
   return (
-    <StyledCell className={`tic_tac_toe_cell ${className}`} onClick={(e) =>handleCellClicked(e, position)}/>
+    <>
+      {gameContext === AIMultiplayerContext ?
+      <StyledCell 
+        id={position} 
+        className={`tic_tac_toe_cell ${className}`} 
+        onClick={(e) =>handleCellClicked(e, position)}/>:
+      <StyledCell className={`tic_tac_toe_cell ${className}`} onClick={(e) =>handleCellClicked(e, position)}/>
+    }
+    </>
+  
+  
   )
 }
 

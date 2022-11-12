@@ -86,3 +86,25 @@ export const playersReducer = (initialState, action) => {
 
     return initialState
 }
+
+export const gameBoardReducer = (initialState, action) => {
+    let pos = action.position
+
+    if (action.type === "update") {
+        return {
+            ...initialState,
+            [pos]: action.value
+        }
+    }
+
+    else if (action.type === "serverUpdate") {
+        return {
+            ...action["newBoard"]
+        }
+    }
+
+    else if (action.type === "reset") {
+        return initBoard()
+    }
+
+}

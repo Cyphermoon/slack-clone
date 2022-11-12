@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useState } from 'react'
-import { initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
+import { gameBoardReducer, initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
-import { currentPlayerReducer, gameBoardReducer, updateOnlineGame } from '../../lib/onlineGameUtil.lib';
+import { currentPlayerReducer,  updateOnlineGame } from '../../lib/onlineGameUtil.lib';
 import { useSelector } from 'react-redux';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, gameData, isGameDataLoading}) => {

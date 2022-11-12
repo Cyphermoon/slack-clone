@@ -1,6 +1,5 @@
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
-import { initBoard } from "./gameUtil.lib"
 
 
 export const resetOnlineCurrentPlayerScore = async (gameId) => {
@@ -34,24 +33,4 @@ export const currentPlayerReducer = (initialState, action) => {
     }
 }
 
-export const gameBoardReducer = (initialState, action) => {
-    let pos = action.position
 
-    if (action.type === "update") {
-        return {
-            ...initialState,
-            [pos]: action.value
-        }
-    }
-
-    else if (action.type === "serverUpdate") {
-        return {
-            ...action["newBoard"]
-        }
-    }
-
-    else if (action.type === "reset") {
-        return initBoard()
-    }
-
-}

@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { localMultiplayerContext } from "../constants/GameConstant.constant"
+import { AIMultiplayerContext } from "../constants/GameConstant.constant"
 
 
 const ticTacToeSlice = createSlice
     ({
         name: "tic_tac_toe",
         initialState: {
-            context: localMultiplayerContext,
+            context: AIMultiplayerContext,
             gameId: "oPVDWoSc58tRkSMktYGZ",
         },
         reducers: {

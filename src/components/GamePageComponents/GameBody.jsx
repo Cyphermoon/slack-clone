@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { localMultiplayerContext, OnlineMultiplayerContext } from '../../constants/GameConstant.constant'
+import { AIMultiplayerContext, localMultiplayerContext, OnlineMultiplayerContext } from '../../constants/GameConstant.constant'
+import AIMultiplayerContainer from './AIMultiplayerContainer'
 import LocalMultiplayerContainer from './LocalMultiplayerContainer'
 import OnlineMultiplayerContainer from './OnlineMultiplayerContainer'
 
@@ -12,8 +13,8 @@ const GameBody = () => {
   return (
     <StyledMain>
        {gameContext === OnlineMultiplayerContext && <OnlineMultiplayerContainer />}
-
        {gameContext === localMultiplayerContext && <LocalMultiplayerContainer />}
+       {gameContext === AIMultiplayerContext && <AIMultiplayerContainer />}
     </StyledMain>
   )
 }
