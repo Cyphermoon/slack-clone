@@ -108,3 +108,14 @@ export const gameBoardReducer = (initialState, action) => {
     }
 
 }
+
+export const getAvailableMoves = (board) => {
+    let availableMoves = Object.keys(board).filter((key) => (board[key] === ""))
+
+    return availableMoves
+}
+
+export const countAvailableMove = (board) => {
+    return getAvailableMoves(board).length
+}
+

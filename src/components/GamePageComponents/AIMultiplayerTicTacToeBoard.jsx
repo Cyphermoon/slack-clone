@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react'
 import { useEffect } from 'react';
-import { gameBoardReducer, initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
+import { countAvailableMove, gameBoardReducer, getAvailableMoves, initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
@@ -12,22 +12,24 @@ const AIMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
     const [isDraw, setIsDraw] = useState(false)
     const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
     const isCompTurn = currentPlayer.letter === players["player2"].letter
+    const X = "x"
+    const O = "o"
+    let sim_winner = ""
   
     const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
 
     useEffect(() => {
         if(!isCompTurn) return
 
-       let position = generateComputerMove(gameBoard)
-   
-       setGameBoard({ type: "update", position, value : currentPlayer.letter })
-       let result = gameBoardReducer(gameBoard, { type: "update", position, value : currentPlayer.letter })
+        let position = generateComputerMove(gameBoard)
 
-       checkBoardState(result, currentPlayer)
+        if(position && !winner) disableCell(position)
+        setGameBoard({ type: "update", position, value : currentPlayer.letter })
+        let result = gameBoardReducer(gameBoard, { type: "update", position, value : currentPlayer.letter })
+        
+        checkBoardState(result, currentPlayer)
 
-       setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
-
-       if(position) disableCell(position)
+        setCurrentPlayer(isXCurrentPlayer ? players["player2"] : players["player1"])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPlayer.letter] )
@@ -51,27 +53,69 @@ const AIMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
     const disableCell = (id) => {
         let cell = document.getElementById(`${id}`)
 
-        cell.style.pointerEvents = "none"
+        if(cell.style) cell.style.pointerEvents = "none"
     }
 
     const checkBoardState = (result, currentPlayer) => {
-        if (isWinningMove(result, currentPlayer.letter)) {
+        let _isWinningMove = isWinningMove(result, currentPlayer.letter)
+        if (_isWinningMove) {
             setGameWinner(currentPlayer.name)
             setPlayers({ type: "SCORE", player: currentPlayer.id })
             setBoardOpened(false)
         }
-        else if (isBoardFull(result)) {
+        else if (!_isWinningMove && isBoardFull(result)) {
             setIsDraw(true)
             setBoardOpened(false)
         }
     }
 
-    const generateComputerMove = (gameBoard) => {
-        for(let position in gameBoard){
-            if(!gameBoard.hasOwnProperty(position)) continue
 
-            if(gameBoard[position] === "") return position
+    function miniMax(board, player) {
+        let maxPlayer = "o"
+        let otherPlayer = player === X ? O : X
+        let best
+    
+        if (sim_winner === otherPlayer) {
+            return {
+                position: null,
+                score: otherPlayer === maxPlayer ? 1 * (countAvailableMove(board) + 1) : -1 * (countAvailableMove(board) + 1)
+            }
         }
+    
+    
+        if (isBoardFull(board)) return { position: null, score: 0 }
+    
+        if (player === maxPlayer)   best = { position: null, score: Number.NEGATIVE_INFINITY }
+    
+        else best = { position: null, score: Number.POSITIVE_INFINITY }
+    
+        for (let availableMove of getAvailableMoves(board)) {
+            board[availableMove] = player
+            if (isWinningMove(board, player)) sim_winner = player
+            let sim_score = miniMax(board, otherPlayer)
+    
+            board[availableMove] = ""
+            sim_winner = ""
+            sim_score["position"] = availableMove
+    
+            if (player === maxPlayer) {
+                if (sim_score["score"] > best["score"]) {
+                    best = sim_score
+                }
+            }
+            else {
+                if (sim_score["score"] < best["score"]) {
+                    best = sim_score
+                }
+            }
+        }
+        return best
+    }
+
+    const generateComputerMove = (gameBoard) => {
+        if(getAvailableMoves(gameBoard).length === 9) return 1
+
+        else return miniMax(gameBoard, "o")["position"]
     }
   
     const handleCellClicked = (e, position, value) => {
