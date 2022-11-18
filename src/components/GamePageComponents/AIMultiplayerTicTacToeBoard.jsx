@@ -113,7 +113,8 @@ const AIMultiplayerTicTacToeBoard = ({players, setPlayers}) => {
     }
 
     const generateComputerMove = (gameBoard) => {
-        if(getAvailableMoves(gameBoard).length === 9) return 1
+        let availableMoves = getAvailableMoves(gameBoard)
+        if(availableMoves.length === 9) return availableMoves[Math.round(Math.random() * availableMoves.length -1)]
 
         else return miniMax(gameBoard, "o")["position"]
     }
