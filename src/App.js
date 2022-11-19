@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import DisplayModal from './components/modals/DisplayModal';
 import ProtectedRoute from './components/ProtectedRoute';
 import GamePage from './pages/GamePage';
 import { default as HomePage } from './pages/Home';
@@ -6,7 +7,7 @@ import NotFound from './pages/NotFound';
 
 function App() {
   const mql = window.matchMedia('(max-width: 750px)');
-  if (mql.matches) return <h1>Mobile and tablet support for this page is not yet available</h1>
+  if (mql.matches) return <DisplayModal message={"Mobile and tablet support for this page is not yet available"} />
 
   return (
     <div className='app' style={{ height: "100vh" }}>
