@@ -3,20 +3,26 @@ import { gameBoardReducer, initBoard, isBoardFull, isWinningMove } from '../../l
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
 import { StyledBoardSection } from './TicTacToeMultiplayerBoard';
-import { currentPlayerReducer,  updateOnlineGame } from '../../lib/onlineGameUtil.lib';
-import { useSelector } from 'react-redux';
+import { currentPlayerReducer,  resetOnlineCurrentPlayerScore,  updateOnlineGame } from '../../lib/onlineGameUtil.lib';
+import { useDispatch, useSelector } from 'react-redux';
+import { ticTacToeActions } from '../../store/tic_tac_toe';
 
 const OnlineMultiplayerTicTacToeBoard = ({players, gameData, isGameDataLoading}) => {
+  //These variables controls the player state
   const currentUserObj = useSelector(state => state.user)
-    const [currentPlayer, setCurrentPlayer] = useReducer(currentPlayerReducer, players["player1"])
-    const [boardOpened, setBoardOpened] = useState(true)
-    const [winner, setGameWinner] = useState()
-    const [isDraw, setIsDraw] = useState(false)
-    const ticTacToeGameId = useSelector(state => state.ticTacToe.gameId)
-    const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
-    const isCurrentUserPlayer = currentPlayer.userId === currentUserObj.userId
+  const [currentPlayer, setCurrentPlayer] = useReducer(currentPlayerReducer, players["player1"])
+  const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
+  const isCurrentUserPlayer = currentPlayer.userId === currentUserObj.userId
 
-    const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
+  //These variable controls the game state
+  const [boardOpened, setBoardOpened] = useState(true)
+  const [winner, setGameWinner] = useState()
+  const [isDraw, setIsDraw] = useState(false)
+  const ticTacToeGameId = useSelector(state => state.ticTacToe.gameId)
+  const isFinishGameClicked = useSelector(state => state.ticTacToe.isFinishGameClicked)
+  const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
+
+  const dispatch = useDispatch()
 
     useEffect(() => {
       if(isGameDataLoading) return
@@ -67,10 +73,15 @@ const OnlineMultiplayerTicTacToeBoard = ({players, gameData, isGameDataLoading})
       updateOnlineGame(ticTacToeGameId, "boardOpened", true)
     }
 
-    // const finishGame = () => {
-    //   restartGame()
-    //   resetOnlineCurrentPlayerScore(ticTacToeGameId)
-    // }
+    const finishGame = () => {
+      restartGame()
+      resetOnlineCurrentPlayerScore(ticTacToeGameId)
+    }
+
+    if(isFinishGameClicked){
+      finishGame()
+      dispatch(ticTacToeActions.updateFinishGameClicked({isClicked: false}))
+    }
 
     const handleCellClicked = async (e, position, value) => {
       let result = gameBoardReducer(gameBoard, { type: "update", position, value })

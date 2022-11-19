@@ -8,6 +8,7 @@ const ticTacToeSlice = createSlice
         initialState: {
             context: AIMultiplayerContext,
             gameId: "oPVDWoSc58tRkSMktYGZ",
+            isFinishGameClicked: false,
         },
         reducers: {
             updateContext(state, action) {
@@ -15,6 +16,9 @@ const ticTacToeSlice = createSlice
             },
             updateGameId(state, action) {
                 state.gameId = action.payload.id
+            },
+            updateFinishGameClicked(state, action) {
+                state.isFinishGameClicked = action.payload.isClicked
             }
         }
     })

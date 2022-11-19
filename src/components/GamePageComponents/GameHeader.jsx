@@ -16,6 +16,10 @@ const GameHeader = () => {
         dispatch(ticTacToeActions.updateContext({contextState: mode}))
     }
 
+    const handleFinishGameClicked = () => {
+        dispatch(ticTacToeActions.updateFinishGameClicked({isClicked:true}))
+    }
+
     const openDropDownList = (e) => {
         //set the variable that controls the list visibility
         setIsListOpen(true)
@@ -34,11 +38,13 @@ const GameHeader = () => {
                     <ChevronLeft />
                     <Link to={"/"}>return to chat</Link>
                     </li>
-                {isGameContextOnline && <li><StyledFinishBtn>Finish Game</StyledFinishBtn></li>}
+                {isGameContextOnline && 
+                <li><StyledFinishBtn onClick={handleFinishGameClicked}>Finish Game</StyledFinishBtn></li>}
+
                {!isGameContextOnline && 
                     <StyledGameModes onMouseEnter={openDropDownList} onMouseLeave={closeDropDownList}>
                         <button ><span>{gameContext}</span> <ArrowDropDown /> </button>
-                        <ul className={isListOpen && "show"}>
+                        <ul className={isListOpen ? "show" : undefined}>
                             <li onClick={() => changeContextMode(AIMultiplayerContext)}>AI mode</li>
                             <li onClick={() => changeContextMode(localMultiplayerContext)}>Local mode</li>
                         </ul>
@@ -61,6 +67,7 @@ const StyledFinishBtn = styled.button`
     border:none;
     outline:none;
     padding:.5em .35em;
+    cursor:pointer
 `
 
 
@@ -94,7 +101,7 @@ const StyledNav = styled.nav`
     }
 `
 
-const StyledGameModes = styled.div`
+const StyledGameModes = styled.li`
     border: 2px lightgray solid;
     position:relative;
     padding: .2em .5em;
