@@ -1,23 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
+import GameModeInfo from './GameModeInfo'
 
 const ScoreBoard = ({ players }) => {
     return (
         <StyledBoardSection>
             {Object.keys(players).map((key, idx) => {
-                if (players.hasOwnProperty(key)) {
-
-                    return (
-                        <StyledUserScore key={idx}>
-                            <h3>{players[key].name}</h3>
-                            <span>{players[key].score}</span>
-                        </StyledUserScore>
-                    )
-                }
-
-                return null
+                return (
+                    <StyledUserScore key={idx}>
+                        <h3>{players[key].name}</h3>
+                        <span>{players[key].score}</span>
+                    </StyledUserScore>
+                )
             })}
-
+            <GameModeInfo />
         </StyledBoardSection>
     )
 }
@@ -30,14 +26,13 @@ const StyledBoardSection = styled.section`
     height:290px;
     border-radius:20px;
     padding:1em 1.5em;
-    display:flex;
-    justify-content:space-between;
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
 `
 
 const StyledUserScore = styled.div`
     display:flex;
     flex-direction:column;
-    // justify-content:center;
     align-items:center;
 
     h3{
@@ -54,5 +49,4 @@ const StyledUserScore = styled.div`
         color:#444;
     }
 `
-
 export default ScoreBoard
