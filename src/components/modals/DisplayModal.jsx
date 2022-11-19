@@ -16,12 +16,15 @@ const StyledDisplayModal = styled.div`
     transform: translate(-50%, -50%);
     box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
     border-left: 7px red solid;
-    padding:2.5em 2em;
+    padding:2.5em .5em;
+    width:90%;
+    max-width:320px;
 
     h3{
         font-size:1.1rem;
         font-weight:600;
         color:#333;
+        text-align:center;
     }
 `
 
