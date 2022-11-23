@@ -1,14 +1,25 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import React from 'react'
 import styled from 'styled-components'
-import { Help, Search } from '@mui/icons-material';
+import { Search } from '@mui/icons-material';
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
 import { Avatar } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { ticTacToeActions } from '../store/tic_tac_toe';
+import { AIMultiplayerContext } from '../constants/GameConstant.constant';
 
 
 const Header = () => {
     const [user, loading] = useAuthState(auth);
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const navigateToGame = () => {
+        dispatch(ticTacToeActions.updateContext({ contextState: AIMultiplayerContext }))
+        navigate("/game")
+    }
 
     return (
         <StyledHeaderContainer>
@@ -24,7 +35,7 @@ const Header = () => {
             </StyledHeaderSearch>
 
             <StyledHeaderRight>
-                <Help />
+                <button onClick={navigateToGame}>play with AI</button>
             </StyledHeaderRight>
         </StyledHeaderContainer>
     )
@@ -97,6 +108,16 @@ const StyledHeaderRight = styled.div`
     max-width:150px;
     text-align:right;
     justify-self:self-end;
+
+    button{
+        color: white;
+        text-decoration:underline;
+        cursor:pointer;
+        font-size:.95rem;
+        background-color:transparent;
+        outline:none;
+        border:none
+    }
 
 `
 
