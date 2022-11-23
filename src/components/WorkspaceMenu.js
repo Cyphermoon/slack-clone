@@ -14,6 +14,7 @@ import Workspace from './Workspace'
 
 const WorkspaceMenu = () => {
     const dispatch = useDispatch()
+
     const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const [workspaces, loading] = useCollection(collection(db, "workspace"))
@@ -23,9 +24,13 @@ const WorkspaceMenu = () => {
         const workSpaceRef = collection(db, "workspace")
 
         if (workSpaceName) {
-            await setDoc(doc(workSpaceRef), {
-                name: workSpaceName
-            })
+            try {
+                await setDoc(doc(workSpaceRef), {
+                    name: workSpaceName
+                })
+            } catch (err) {
+                alert(err.message)
+            }
         }
     }
 
