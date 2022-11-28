@@ -121,8 +121,8 @@ const DirectMessageList = () => {
       {promptModalDisplayed &&
                 <PromptModal
                     onClose={closeModal}
-                    message={"Which user would you like to chat with"}
-                    placeholder="Enter a user name"
+                    message={"Which user email would you like to chat with"}
+                    placeholder="Enter a user email"
                     onSuccess={(userName) => handleCreateChat(userName)} />}
     </StyledDirectMessages>
   )
