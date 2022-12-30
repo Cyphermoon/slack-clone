@@ -22,5 +22,8 @@ This app implements a lot of slack's functionalities like: creating channels and
 - Redux
 - Firebase
 
+## Frequently Asked Question
+### How to add users to private chats
+ You have to enter a user email address into the input field after you have clicked the "+" icon next to the "Direct Messages" text
 
 
