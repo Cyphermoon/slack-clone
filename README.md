@@ -24,6 +24,6 @@ This app implements a lot of slack's functionalities like: creating channels and
 
 ## Frequently Asked Question
 ### How to add users to private chats
- You have to enter a user email address into the input field after you have clicked the "+" icon next to the "Direct Messages" text
+ You have to enter a user's email address into the input field after you have clicked the "+" icon next to the "Direct Messages" text
 
 
