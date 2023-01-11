@@ -18,9 +18,9 @@ const OnlineMultiplayerContainer = () => {
   );
 
   useEffect(() => {
-    if(isGameDataLoading) return
+    if (isGameDataLoading) return
 
-    setPlayers(!isGameDataLoading && ({type:"serverUpdate", newPlayers:gameData.data()["players"]}))
+    setPlayers(!isGameDataLoading && ({ type: "serverUpdate", newPlayers: gameData.data()["players"] }))
 
 
   }, [gameData, isGameDataLoading])
@@ -40,6 +40,13 @@ export const StyledContextArea = styled.div`
   display:flex;
   align-items:center;
   justify-content:center;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}) {
+   &{
+      flex-direction:column-reverse; 
+      justify-between: space-between;
+    }
+  }
 `
 
 export default OnlineMultiplayerContainer

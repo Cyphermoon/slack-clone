@@ -28,6 +28,13 @@ const StyledBoardSection = styled.section`
     padding:1em 1.5em;
     display:grid;
     grid-template-columns:repeat(2, 1fr);
+
+    @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}) {
+        &{
+           margin-right: unset;
+           margin-top: 2.5em;
+         }
+       }
 `
 
 const StyledUserScore = styled.div`

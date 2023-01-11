@@ -1,3 +1,7 @@
+:root{
+  --breakpoint-sm: 32em;
+}
+
 *{
   margin:0;
   padding:0;
@@ -9,6 +13,11 @@
 a{
   display: block;
   text-decoration: none;
+}
+
+img{
+  display: block;
+  max-width: 100%;
 }
 
 *::-webkit-scrollbar {
@@ -29,3 +38,4 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
