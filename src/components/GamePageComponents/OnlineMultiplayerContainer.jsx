@@ -2,11 +2,11 @@ import { query, doc } from 'firebase/firestore'
 import React, { useEffect, useReducer } from 'react'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
 import { db } from '../../firebase'
 import { initPlayers, playersReducer } from '../../lib/gameUtil.lib'
 import OnlineMultiplayerTicTacToeBoard from './OnlineMultiplayerTicTacToeBoard'
 import ScoreBoard from './ScoreBoard'
+import { StyledContextArea } from './styles/game.style'
 
 const OnlineMultiplayerContainer = () => {
   const ticTacToeGameId = useSelector(state => state.ticTacToe.gameId)
@@ -36,17 +36,5 @@ const OnlineMultiplayerContainer = () => {
   )
 }
 
-export const StyledContextArea = styled.div`
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}) {
-   &{
-      flex-direction:column-reverse; 
-      justify-between: space-between;
-    }
-  }
-`
 
 export default OnlineMultiplayerContainer

@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 import GameModeInfo from './GameModeInfo'
+import { StyledBoardSection, StyledUserScore } from './styles/scoreBoard.style'
 
 const ScoreBoard = ({ players }) => {
     return (
@@ -18,42 +18,5 @@ const ScoreBoard = ({ players }) => {
     )
 }
 
-const StyledBoardSection = styled.section`
-    margin-right:12em;
-    background-color:#f4f4f4;
-    width:100%;
-    max-width:310px;
-    height:290px;
-    border-radius:20px;
-    padding:1em 1.5em;
-    display:grid;
-    grid-template-columns:repeat(2, 1fr);
 
-    @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}) {
-        &{
-           margin-right: unset;
-           margin-top: 2.5em;
-         }
-       }
-`
-
-const StyledUserScore = styled.div`
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-
-    h3{
-        font-size:1rem;
-        font-weight:400;
-        margin-bottom:3em;
-        text-transform: capitalize;
-        word-wrap: break-word;
-    }
-
-    span{
-        font-size:5rem;
-        font-weight:400;
-        color:#444;
-    }
-`
 export default ScoreBoard

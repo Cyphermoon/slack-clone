@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import { initPlayers, playersReducer } from '../../lib/gameUtil.lib'
-import { StyledContextArea } from './OnlineMultiplayerContainer'
 import ScoreBoard from './ScoreBoard'
+import { StyledContextArea } from './styles/game.style'
 import TicTacToeMultiplayerBoard from './TicTacToeMultiplayerBoard'
 
 const LocalMultiplayerContainer = () => {
