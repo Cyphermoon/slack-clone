@@ -41,6 +41,7 @@ const StyledMenuContainer = styled.div`
      z-index:50;
      transform: translateX(-100%);
      transition: transform 200ms linear; 
+     overflow-y: scroll;
 
      &.opened{
          transform: translateX(0%);
