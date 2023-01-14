@@ -1,4 +1,3 @@
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import React from 'react'
 import styled from 'styled-components'
 import { Search } from '@mui/icons-material';
@@ -9,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ticTacToeActions } from '../store/tic_tac_toe';
 import { AIMultiplayerContext } from '../constants/GameConstant.constant';
+import HamburgerIcon from './common/Hamburger';
 
 
 const Header = () => {
@@ -23,10 +23,10 @@ const Header = () => {
 
     return (
         <StyledHeaderContainer>
+            <HamburgerIcon />
             <StyledHeaderLeft>
                 {!loading &&
                     <StyledAvatar referrerPolicy="no-referrer" src={user?.photoURL} alt={user?.displayName} onClick={() => auth.signOut()} />}
-                <AccessTimeIcon />
             </StyledHeaderLeft>
 
             <StyledHeaderSearch>
@@ -75,9 +75,6 @@ const StyledHeaderSearch = styled.div`
     padding:5px;
     border-radius:9px;
 
-    // & > .MuiSvgIcon-root{
-    //     color:white;
-    // }
 
     & > input{
         flex-grow:1;
@@ -87,6 +84,10 @@ const StyledHeaderSearch = styled.div`
         padding:.2em;
         color:white;
         background-color:transparent;
+    }
+
+    @media screen and (max-width:32em){
+        display: none;
     }
 `
 
