@@ -2,6 +2,11 @@
   --breakpoint-sm: 32em;
 }
 
+#portal,
+#root{
+  isolation: isolate;
+}
+
 *{
   margin:0;
   padding:0;
