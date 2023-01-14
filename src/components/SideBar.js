@@ -12,6 +12,7 @@ import { usePromptModal } from '../hooks/util.hook'
 import ChannelLoaders from './loaders/ChannelLoaders'
 import { chatContextActions } from '../store/chat_slice'
 import DirectMessageList from './DirectMessageComponent/DirectMessageList'
+import { useNavContext } from '../context/NavProvider'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
@@ -37,8 +38,10 @@ const SideBar = () => {
         dispatch(chatContextActions.selectChatContext({ chatContextMode: "roomChat" }))
     }
 
+    const { navOpened } = useNavContext()
+
     return (
-        <StyledSideBar>
+        <StyledSideBar className={navOpened && "opened"}>
             <SideBarHeader workSpaceName={!workSpaceLoading && workSpaceDetails.data().name} />
             <SideBarOption title={"Threads"} Icon={Chat} />
             <SideBarOption title={"Saved Items"} Icon={Drafts} />
@@ -80,11 +83,9 @@ const SideBar = () => {
 
 
 const StyledSideBar = styled.section`
-    width:100%;
-    max-width:250px;
     padding-top:calc(${({ theme }) => theme.spacing_top_from_header} + 10px);
     padding-left:15px;
-    padding-right:10px;
+    padding-right:15px;
     padding-bottom:50px;
     background-color:var(--slack-color);
     height:100%;
@@ -101,10 +102,18 @@ const StyledSideBar = styled.section`
 
     .channels_group{
         margin-top:1em;
-        // padding-left:.7em;
 
         & > * + *{
             margin-top:.75em;
+        }
+    }
+
+    @media screen and (max-width:${({ theme }) => theme.breakpoint.sm}){
+       opacity:0;
+       transition: opacity 200ms linear;
+
+        &.opened{
+           opacity:1;
         }
     }
 `

@@ -86,13 +86,11 @@ const StyledWorkspaceMenu = styled.section`
     }
 
     @media screen and (max-width:${({ theme }) => theme.breakpoint.sm}){
-        position:absolute;
-        transform: translateX(-100%);
-        transition: transform 200ms linear; 
+      display:none;
 
-        &.opened{
-            transform: translateX(0%);
-        }
+      &.opened{
+        display:block;
+      }
     }
 `
 

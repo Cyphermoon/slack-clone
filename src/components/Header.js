@@ -55,7 +55,7 @@ const StyledHeaderContainer = styled.header`
     top:0;
     left:0;
     width:100vw;
-    z-index:10;
+    z-index:100;
 `
 
 const StyledHeaderLeft = styled.div`
