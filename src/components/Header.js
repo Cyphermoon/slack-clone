@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { ticTacToeActions } from '../store/tic_tac_toe';
 import { AIMultiplayerContext } from '../constants/GameConstant.constant';
 import HamburgerIcon from './common/Hamburger';
+import { useNavContext } from '../context/NavProvider';
 
 
 const Header = () => {
@@ -21,9 +22,11 @@ const Header = () => {
         navigate("/game")
     }
 
+    const { navOpened, toggleNavState } = useNavContext()
+
     return (
         <StyledHeaderContainer>
-            <HamburgerIcon />
+            <HamburgerIcon toggleNavDisplay={toggleNavState} isOpen={navOpened} />
             <StyledHeaderLeft>
                 {!loading &&
                     <StyledAvatar referrerPolicy="no-referrer" src={user?.photoURL} alt={user?.displayName} onClick={() => auth.signOut()} />}
@@ -41,7 +44,7 @@ const Header = () => {
     )
 }
 
-const StyledHeaderContainer = styled.div`
+const StyledHeaderContainer = styled.header`
     background-color:var(--slack-color);
     display:flex;
     align-items:center;

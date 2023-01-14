@@ -4,6 +4,7 @@ import React from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { useNavContext } from '../context/NavProvider'
 import { db } from '../firebase'
 import { usePromptModal } from '../hooks/util.hook'
 import { chatContextActions } from '../store/chat_slice'
@@ -14,6 +15,7 @@ import Workspace from './Workspace'
 
 const WorkspaceMenu = () => {
     const dispatch = useDispatch()
+    const { navOpened } = useNavContext()
 
     const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
@@ -41,7 +43,7 @@ const WorkspaceMenu = () => {
     }
 
     return (
-        <StyledWorkspaceMenu>
+        <StyledWorkspaceMenu className={navOpened && "opened"}>
             {!loading && workspaces.docs.map((doc) => {
                 const { name } = doc.data()
                 const id = doc.id
@@ -72,7 +74,6 @@ const WorkspaceMenu = () => {
 }
 
 const StyledWorkspaceMenu = styled.section`
-    width:6%;
     height:100%;
     overflow:scroll;
     padding:1.3em 1.1em;
@@ -82,6 +83,16 @@ const StyledWorkspaceMenu = styled.section`
 
     & > * + *{
         margin-top:1em;
+    }
+
+    @media screen and (max-width:${({ theme }) => theme.breakpoint.sm}){
+        position:absolute;
+        transform: translateX(-100%);
+        transition: transform 200ms linear; 
+
+        &.opened{
+            transform: translateX(0%);
+        }
     }
 `
 
