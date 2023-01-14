@@ -13,10 +13,9 @@ const AppBody = () => {
         <StyledMain>
             <WorkspaceMenu />
             {workSpaceActiveId && <SideBar />}
-            {chatContext === "roomChat" ?
-                <RoomChatContext /> :
-                chatContext === "directMessage" && <DirectMessageChatContext />
-            }
+            {chatContext === "roomChat" && <RoomChatContext />}
+            {chatContext === "directMessage" && <DirectMessageChatContext />}
+
         </StyledMain>
     )
 }
