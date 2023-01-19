@@ -20,7 +20,7 @@ const store = configureStore({
 });
 
 store.subscribe(() => {
-    console.dir("Store State ->", store.getState())
+    console.log("Store State ->", store.getState())
 })
 
 

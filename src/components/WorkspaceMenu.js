@@ -1,12 +1,13 @@
 import { Add } from '@mui/icons-material'
 import { collection, doc, setDoc } from 'firebase/firestore'
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { db } from '../firebase'
 import { usePromptModal } from '../hooks/util.hook'
 import { chatContextActions } from '../store/chat_slice'
+import { navStateActions } from '../store/navState_slice'
 import { roomActions } from '../store/room_slice'
 import { workSpaceActions } from '../store/workspace_slice'
 import PromptModal from './modals/PromptModal'
@@ -19,6 +20,7 @@ const WorkspaceMenu = () => {
     const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const [workspaces, loading] = useCollection(collection(db, "workspace"))
+    const isSmallScreen = window.matchMedia(`(max-width: 32em)`)
 
 
     const addWorkSpace = async (workSpaceName) => {
@@ -40,6 +42,21 @@ const WorkspaceMenu = () => {
         dispatch(roomActions.selectChannel({ id: false }))
         dispatch(chatContextActions.selectChatContext({ chatContextMode: null }))
     }
+
+    const closeNav = useCallback((e) => {
+        if (e.target.hasAttribute("data-close-nav")) {
+            dispatch(navStateActions.setNavState({ isOpen: false }))
+        }
+
+    }, [dispatch])
+
+    useEffect(() => {
+        if (!isSmallScreen.matches) return
+
+        document.addEventListener("click", closeNav)
+
+        return () => document.removeEventListener("click", closeNav)
+    }, [closeNav, isSmallScreen.matches])
 
     return (
         <StyledWorkspaceMenu className={navOpened && "opened"}>

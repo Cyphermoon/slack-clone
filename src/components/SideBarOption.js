@@ -6,8 +6,8 @@ const SideBarOption = ({ Icon, title, handleClick = f => f, id }) => {
         <StyledSideBarOption>
             {Icon && <Icon />}
             {Icon ?
-                <button onClick={handleClick}>{title}</button> :
-                <SideOptionContainer onClick={() => handleClick(id)}># <button>{title}</button></SideOptionContainer>}
+                <button data-close-nav onClick={handleClick}>{title}</button> :
+                <SideOptionContainer onClick={() => handleClick(id)}># <button data-close-nav>{title}</button></SideOptionContainer>}
 
         </StyledSideBarOption>
     )
