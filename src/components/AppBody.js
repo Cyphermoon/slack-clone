@@ -12,7 +12,7 @@ const AppBody = () => {
     const navOpened = useSelector(state => state.navState.isOpen)
 
     return (
-        <StyledMain>
+        <StyledMain className={navOpened && "opened"}>
             <StyledMenuContainer className={navOpened && "opened"}>
                 <WorkspaceMenu />
                 {workSpaceActiveId && <SideBar />}
@@ -28,6 +28,21 @@ const StyledMain = styled.main`
     display:flex;
     align-items:flex-start;
     height:100vh;
+
+    @media screen and (max-width:${({ theme }) => theme.breakpoint.sm}){
+        &.opened{
+            &::after{
+                content: "";
+                position:fixed;
+                top:0;
+                left:0;
+                width:100vw;
+                height:100vh;
+                background-color: rgba(0,0,0,.4);
+            }
+        }
+    }
+    
 `
 
 const StyledMenuContainer = styled.div`
