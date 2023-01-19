@@ -5,24 +5,30 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
 import { Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ticTacToeActions } from '../store/tic_tac_toe';
 import { AIMultiplayerContext } from '../constants/GameConstant.constant';
 import HamburgerIcon from './common/Hamburger';
-import { useNavContext } from '../context/NavProvider';
+import { navStateActions } from '../store/navState_slice';
 
 
 const Header = () => {
     const [user, loading] = useAuthState(auth);
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const navOpened = useSelector((state) => state.navState.isOpen)
+
 
     const navigateToGame = () => {
+        // update the contextState and navigate to game
         dispatch(ticTacToeActions.updateContext({ contextState: AIMultiplayerContext }))
         navigate("/game")
     }
 
-    const { navOpened, toggleNavState } = useNavContext()
+
+    const toggleNavState = () => {
+        dispatch(navStateActions.toggleNavState())
+    }
 
     return (
         <StyledHeaderContainer>

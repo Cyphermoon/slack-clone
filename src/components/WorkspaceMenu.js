@@ -4,7 +4,6 @@ import React from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { useNavContext } from '../context/NavProvider'
 import { db } from '../firebase'
 import { usePromptModal } from '../hooks/util.hook'
 import { chatContextActions } from '../store/chat_slice'
@@ -15,7 +14,7 @@ import Workspace from './Workspace'
 
 const WorkspaceMenu = () => {
     const dispatch = useDispatch()
-    const { navOpened } = useNavContext()
+    const navOpened = useSelector(state => state.navState.isOpen)
 
     const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)

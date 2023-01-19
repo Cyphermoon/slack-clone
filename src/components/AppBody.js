@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { useNavContext } from '../context/NavProvider'
 import DirectMessageChatContext from './DirectMessageComponent/DirectMessageChatContext'
 import RoomChatContext from './RoomChatsContext'
 import SideBar from './SideBar'
@@ -10,8 +9,7 @@ import WorkspaceMenu from './WorkspaceMenu'
 const AppBody = () => {
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const chatContext = useSelector(state => state.chatContext.context)
-
-    const { navOpened } = useNavContext()
+    const navOpened = useSelector(state => state.navState.isOpen)
 
     return (
         <StyledMain>

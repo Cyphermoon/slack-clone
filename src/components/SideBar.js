@@ -12,13 +12,14 @@ import { usePromptModal } from '../hooks/util.hook'
 import ChannelLoaders from './loaders/ChannelLoaders'
 import { chatContextActions } from '../store/chat_slice'
 import DirectMessageList from './DirectMessageComponent/DirectMessageList'
-import { useNavContext } from '../context/NavProvider'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
     const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
     const [workSpaceDetails, workSpaceLoading] = useDocument(doc(db, "workspace", workSpaceId))
     const [data, loading] = useCollection(collection(db, "workspace", workSpaceId, "rooms"))
+
+    const navOpened = useSelector(state => state.navState.isOpen)
 
 
     const dispatch = useDispatch()
@@ -37,8 +38,6 @@ const SideBar = () => {
         dispatch(roomActions.selectChannel({ id }))
         dispatch(chatContextActions.selectChatContext({ chatContextMode: "roomChat" }))
     }
-
-    const { navOpened } = useNavContext()
 
     return (
         <StyledSideBar className={navOpened && "opened"}>
