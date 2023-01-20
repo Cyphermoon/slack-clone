@@ -5,7 +5,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { IconButton } from '@mui/material';
 import PromptModal from '../modals/PromptModal';
 import { usePromptModal } from '../../hooks/util.hook';
-import { collection, doc, getDoc, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -20,8 +20,9 @@ const DirectMessageList = () => {
   const dispatch = useDispatch()
   const userId = user.email
   const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
-  const [friendsList, loading] = useCollection(query(collection(db, "users", userId, "friends"), where("workSpaceId", "==", workSpaceActiveId)))
   const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
+  //query user's friends list
+  const [friendsList, loading] = useCollection(query(collection(db, "users", userId, "friends"), where("workSpaceId", "==", workSpaceActiveId)))
 
 
   const getUser = async (id) => {
@@ -45,9 +46,33 @@ const DirectMessageList = () => {
     return chatId
   }
 
+  const isAlreadyFriend = async (currentUserId, inputEmail, workSpaceId) => {
+    /*
+      *return true if the input user is already a friend
+      * otherwise. return false 
+     */
+    let friendExists = false
+
+    //query to get current user friend's email
+    const q = query(
+      collection(db, "users", currentUserId, "friends"),
+      where("email", "==", inputEmail), where("workSpaceId", "==", workSpaceId)
+    )
+
+    const friendsList = await getDocs(q)
+    friendsList.forEach((doc) => {
+      if (doc.exists()) friendExists = true
+    })
+
+    return friendExists
+  }
+
   const handleCreateChat = async (userEmail) => {
     if (!userEmail) return
-    if (userEmail === user.email) return
+    if (userEmail === user.email) {
+      alert("You can't add yourself")
+      return
+    }
 
     let userDoc = await getUser(userEmail)
 
@@ -56,11 +81,14 @@ const DirectMessageList = () => {
       return
     }
 
+    let isFriend = await isAlreadyFriend(userId, userEmail, workSpaceActiveId)
+
+    if (isFriend) alert("user is already in your dm")
+
     let friendId = userDoc.id
     let otherUserData = userDoc.data()
 
     let chatId = await createChat(user.email, userEmail, otherUserData.name, workSpaceActiveId)
-    console.log(chatId)
 
     let userFriendsCollectRef = collection(db, "users", userId, "friends")
     await setDoc(doc(userFriendsCollectRef), {

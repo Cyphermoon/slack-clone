@@ -13,6 +13,7 @@ const OnlineMultiplayerContainer = () => {
 
   const [players, setPlayers] = useReducer(playersReducer, null, initPlayers)
 
+  //query and subscribe to this gameId
   const [gameData, isGameDataLoading] = useDocument(
     query(doc(db, "ticTacToeGames", ticTacToeGameId))
   );
