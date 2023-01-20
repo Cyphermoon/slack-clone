@@ -108,26 +108,26 @@ const StyledSideBar = styled.section`
     }
 
     @media screen and (max-width:${({ theme }) => theme.breakpoint.sm}){
-       opacity:0;
-       transition: opacity 200ms linear; 
-       width:68vw;
+        background-color:var(--slack-color)00;
+        transition: opacity 200ms linear; 
+        width:68vw;
 
-        &.opened{
-           opacity:1;
-           animation:fadeIn 300ms linear;
+            &.opened{
+            background-color:var(--slack-color);
+            animation:fadeIn 300ms linear;
 
-           @keyframes fadeIn{
-            0%{
-                opacity:0;
+            @keyframes fadeIn{
+                0%{
+                    opacity:0;
+                }
+                50%{
+                    opacity: .5;
+                }
+                100%{
+                    opacity:1;
+                }
             }
-            50%{
-                opacity: .5;
             }
-            100%{
-                opacity:1;
-            }
-           }
-        }
     }
 `
 
