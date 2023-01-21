@@ -24,7 +24,7 @@ const LoginScreen = () => {
         <StyledLoginScreen>
             <div className='login_modal'>
                 <img src="/images/slack_logo.png" alt="slack logo" />
-                <h2>Welcome back</h2>
+                <h2>Welcome</h2>
                 <span>sign in with your google account</span>
                 <button onClick={signIn}>Sign in</button>
             </div>
@@ -33,8 +33,8 @@ const LoginScreen = () => {
 }
 
 const StyledLoginScreen = styled.section`
-    width:100%;
-    height:100%;
+    width:100vw;
+    height:100vh;
     display:grid;
     place-items:center;
     background-color:#f8f8f8;
@@ -42,14 +42,16 @@ const StyledLoginScreen = styled.section`
     .login_modal{
         box-shadow: 0px 3px 10px
         rgba(0,0,0,0.2);
-        padding:5em;
+        padding:2em;
         display:flex;
         flex-direction:column;
         align-items:center;
         border-radius:15px;
+        width:95%;
+        max-width:400px;
 
         & > * + *{
-            margin-top:.55em;
+            margin-top:.95em;
         }
     }
 
@@ -59,6 +61,7 @@ const StyledLoginScreen = styled.section`
         aspect-ratio: 1 / 1;
         display:block;
         width:150px;
+        height:auto;
         object-fit:contain;
     }
 
