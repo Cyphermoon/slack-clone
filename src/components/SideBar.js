@@ -19,6 +19,8 @@ const SideBar = () => {
     const [workSpaceDetails, workSpaceLoading] = useDocument(doc(db, "workspace", workSpaceId))
     const [data, loading] = useCollection(collection(db, "workspace", workSpaceId, "rooms"))
 
+    const navOpened = useSelector(state => state.navState.isOpen)
+
 
     const dispatch = useDispatch()
 
@@ -38,7 +40,7 @@ const SideBar = () => {
     }
 
     return (
-        <StyledSideBar>
+        <StyledSideBar className={navOpened && "opened"}>
             <SideBarHeader workSpaceName={!workSpaceLoading && workSpaceDetails.data().name} />
             <SideBarOption title={"Threads"} Icon={Chat} />
             <SideBarOption title={"Saved Items"} Icon={Drafts} />
@@ -80,11 +82,9 @@ const SideBar = () => {
 
 
 const StyledSideBar = styled.section`
-    width:100%;
-    max-width:250px;
     padding-top:calc(${({ theme }) => theme.spacing_top_from_header} + 10px);
     padding-left:15px;
-    padding-right:10px;
+    padding-right:15px;
     padding-bottom:50px;
     background-color:var(--slack-color);
     height:100%;
@@ -101,11 +101,33 @@ const StyledSideBar = styled.section`
 
     .channels_group{
         margin-top:1em;
-        // padding-left:.7em;
 
         & > * + *{
             margin-top:.75em;
         }
+    }
+
+    @media screen and (max-width:${({ theme }) => theme.breakpoint.sm}){
+        background-color:var(--slack-color)00;
+        transition: opacity 200ms linear; 
+        width:68vw;
+
+            &.opened{
+            background-color:var(--slack-color);
+            animation:fadeIn 300ms linear;
+
+            @keyframes fadeIn{
+                0%{
+                    opacity:0;
+                }
+                50%{
+                    opacity: .5;
+                }
+                100%{
+                    opacity:1;
+                }
+            }
+            }
     }
 `
 

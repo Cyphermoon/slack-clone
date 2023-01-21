@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import chatContextSlice from "./chat_slice";
+import navStateSlice from "./navState_slice";
 import otherUserSlice from "./other_user_slice";
 import roomSlice from "./room_slice";
 import ticTacToeSlice from "./tic_tac_toe";
@@ -13,7 +14,8 @@ const store = configureStore({
         user: userSlice.reducer,
         chatContext: chatContextSlice.reducer,
         otherUser: otherUserSlice.reducer,
-        ticTacToe: ticTacToeSlice.reducer
+        ticTacToe: ticTacToeSlice.reducer,
+        navState: navStateSlice.reducer
     }
 });
 

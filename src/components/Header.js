@@ -1,4 +1,3 @@
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import React from 'react'
 import styled from 'styled-components'
 import { Search } from '@mui/icons-material';
@@ -6,27 +5,37 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../firebase';
 import { Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ticTacToeActions } from '../store/tic_tac_toe';
 import { AIMultiplayerContext } from '../constants/GameConstant.constant';
+import HamburgerIcon from './common/Hamburger';
+import { navStateActions } from '../store/navState_slice';
 
 
 const Header = () => {
     const [user, loading] = useAuthState(auth);
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const navOpened = useSelector((state) => state.navState.isOpen)
+
 
     const navigateToGame = () => {
+        // update the contextState and navigate to game
         dispatch(ticTacToeActions.updateContext({ contextState: AIMultiplayerContext }))
         navigate("/game")
     }
 
+
+    const toggleNavState = () => {
+        dispatch(navStateActions.toggleNavState())
+    }
+
     return (
         <StyledHeaderContainer>
+            <HamburgerIcon toggleNavDisplay={toggleNavState} isOpen={navOpened} />
             <StyledHeaderLeft>
                 {!loading &&
                     <StyledAvatar referrerPolicy="no-referrer" src={user?.photoURL} alt={user?.displayName} onClick={() => auth.signOut()} />}
-                <AccessTimeIcon />
             </StyledHeaderLeft>
 
             <StyledHeaderSearch>
@@ -41,7 +50,7 @@ const Header = () => {
     )
 }
 
-const StyledHeaderContainer = styled.div`
+const StyledHeaderContainer = styled.header`
     background-color:var(--slack-color);
     display:flex;
     align-items:center;
@@ -52,7 +61,7 @@ const StyledHeaderContainer = styled.div`
     top:0;
     left:0;
     width:100vw;
-    z-index:10;
+    z-index:100;
 `
 
 const StyledHeaderLeft = styled.div`
@@ -75,9 +84,6 @@ const StyledHeaderSearch = styled.div`
     padding:5px;
     border-radius:9px;
 
-    // & > .MuiSvgIcon-root{
-    //     color:white;
-    // }
 
     & > input{
         flex-grow:1;
@@ -87,6 +93,10 @@ const StyledHeaderSearch = styled.div`
         padding:.2em;
         color:white;
         background-color:transparent;
+    }
+
+    @media screen and (max-width:32em){
+        display: none;
     }
 `
 

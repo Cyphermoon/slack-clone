@@ -1,4 +1,4 @@
-import { GamepadOutlined, StarOutlineOutlined } from '@mui/icons-material'
+import { GamepadOutlined } from '@mui/icons-material'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { ticTacToeActions } from '../../store/tic_tac_toe'
 import { initBoard } from '../../lib/gameUtil.lib'
 import { db } from '../../firebase'
 
-const DirectMessageChatHeader = ({roomName}) => {
+const DirectMessageChatHeader = ({ roomName }) => {
     const chatId = useSelector(state => state.chatContext.chatId)
     const currentUserObj = useSelector(state => state.user)
     const otherUserObj = useSelector(state => state.otherUser)
@@ -19,7 +19,7 @@ const DirectMessageChatHeader = ({roomName}) => {
 
     const getGameId = async (id) => {
         let gameDoc = await getDoc(doc(db, "ticTacToeGames", id))
-    
+
         return gameDoc.exists() ? true : false
     }
 
@@ -27,66 +27,66 @@ const DirectMessageChatHeader = ({roomName}) => {
         let gameDoc = doc(db, "ticTacToeGames", id)
 
         let player1 = {
-            id : "player1",
+            id: "player1",
             letter: "x",
-            name : currentUserObj.userName,
-            score : 0,
+            name: currentUserObj.userName,
+            score: 0,
             userId: currentUserObj.userId
         }
-        
+
         let player2 = {
-            id : "player2",
+            id: "player2",
             letter: "o",
-            name : otherUserObj.name,
-            score : 0,
+            name: otherUserObj.name,
+            score: 0,
             userId: otherUserObj.id
         }
 
         const gameData = {
-                gameBoard: initBoard(),
-                boardOpened: true,
-                winner: "",
-                isDraw: false,
-                currentPlayer: player1,
+            gameBoard: initBoard(),
+            boardOpened: true,
+            winner: "",
+            isDraw: false,
+            currentPlayer: player1,
 
-                players:{
-                    player1,
-                    player2
-                }
+            players: {
+                player1,
+                player2
+            }
         }
-        
+
         await setDoc(gameDoc, gameData)
-            
+
     }
 
     const moveToOnlineGame = async () => {
-        const generatedId = chatId.replaceAll("@gmail.com", "").concat("_game") 
+        const generatedId = chatId.replaceAll("@gmail.com", "").concat("_game")
 
-        dispatch(ticTacToeActions.updateGameId({id: generatedId}))
-        
-        dispatch(ticTacToeActions.updateContext({contextState: OnlineMultiplayerContext}))      
+        dispatch(ticTacToeActions.updateGameId({ id: generatedId }))
+
+        dispatch(ticTacToeActions.updateContext({ contextState: OnlineMultiplayerContext }))
 
         getGameId(generatedId)
-        .then((gameExists) => {
-            if(!gameExists){
-                createTicTacToeGame(generatedId)
-            }            
-        })
-        
+            .then((gameExists) => {
+                if (!gameExists) {
+                    createTicTacToeGame(generatedId)
+                }
+            })
+
 
         return navigate("/game")
     }
 
-  return (
-    <StyledChatHeader>
-    <h3> {roomName}  <StarOutlineOutlined /></h3>
-    <button onClick={moveToOnlineGame} className='room_details'><GamepadOutlined /> <span>Play Game</span> </button>
-    </StyledChatHeader>
-  )
+    return (
+        <StyledChatHeader>
+            <h3> {roomName} </h3>
+            <button onClick={moveToOnlineGame} className='room_details'><GamepadOutlined /> <span>Play Game</span> </button>
+        </StyledChatHeader>
+    )
 }
 
 const StyledChatHeader = styled.div`
-    padding:.7em .9em;
+    padding:.7em .5em;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -95,15 +95,10 @@ const StyledChatHeader = styled.div`
 
     h3{
         font-size:1.3rem;
-        display:flex;
         text-transform:capitalize;
-        align-items:baseline;
-
-        svg{
-            font-size:1.3rem;
-            width:1em;
-            height:1em;
-        }
+        text-align:left;
+        word-wrap:break-word;
+        word-break:break-all:
     }
 
     button.room_details{
@@ -118,7 +113,8 @@ const StyledChatHeader = styled.div`
         font-size:.99rem;
 
         span{
-            margin-left:.5em;
+            margin-left:.8em;
+            white-space:nowrap;
         }
     }
 `

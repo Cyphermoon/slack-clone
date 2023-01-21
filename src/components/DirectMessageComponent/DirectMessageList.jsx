@@ -5,14 +5,14 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { IconButton } from '@mui/material';
 import PromptModal from '../modals/PromptModal';
 import { usePromptModal } from '../../hooks/util.hook';
-import { collection, doc, getDoc, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollection} from 'react-firebase-hooks/firestore';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { chatContextActions } from '../../store/chat_slice';
 import { otherUserActions } from '../../store/other_user_slice';
-import { currentUserActions} from '../../store/user_slice';
+import { currentUserActions } from '../../store/user_slice';
 
 
 const DirectMessageList = () => {
@@ -20,15 +20,16 @@ const DirectMessageList = () => {
   const dispatch = useDispatch()
   const userId = user.email
   const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
-  const [friendsList, loading] = useCollection(query(collection(db, "users", userId, "friends"), where("workSpaceId", "==", workSpaceActiveId)))
   const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
+  //query user's friends list
+  const [friendsList, loading] = useCollection(query(collection(db, "users", userId, "friends"), where("workSpaceId", "==", workSpaceActiveId)))
 
 
   const getUser = async (id) => {
     let userRef = doc(db, "users", id)
     let userDoc = await getDoc(userRef)
 
-    return userDoc.exists() ? userDoc : undefined 
+    return userDoc.exists() ? userDoc : undefined
   }
 
   const createChat = async (currentUserId, friendId, friendName, workSpaceId) => {
@@ -40,35 +41,63 @@ const DirectMessageList = () => {
       workSpaceId: workSpaceActiveId,
       users: [currentUserId, friendId],
       name: friendName,
-    }, {merge:true})
+    }, { merge: true })
 
     return chatId
   }
 
+  const isAlreadyFriend = async (currentUserId, inputEmail, workSpaceId) => {
+    /*
+      *return true if the input user is already a friend
+      * otherwise. return false 
+     */
+    let friendExists = false
+
+    //query to get current user friend's email
+    const q = query(
+      collection(db, "users", currentUserId, "friends"),
+      where("email", "==", inputEmail), where("workSpaceId", "==", workSpaceId)
+    )
+
+    const friendsList = await getDocs(q)
+    friendsList.forEach((doc) => {
+      if (doc.exists()) friendExists = true
+    })
+
+    return friendExists
+  }
+
   const handleCreateChat = async (userEmail) => {
-    if(!userEmail) return
-    
+    if (!userEmail) return
+    if (userEmail === user.email) {
+      alert("You can't add yourself")
+      return
+    }
+
     let userDoc = await getUser(userEmail)
 
-    if(!userDoc){
+    if (!userDoc) {
       alert("This user does not exist")
       return
     }
+
+    let isFriend = await isAlreadyFriend(userId, userEmail, workSpaceActiveId)
+
+    if (isFriend) alert("user is already in your dm")
 
     let friendId = userDoc.id
     let otherUserData = userDoc.data()
 
     let chatId = await createChat(user.email, userEmail, otherUserData.name, workSpaceActiveId)
-    console.log(chatId)
-    
+
     let userFriendsCollectRef = collection(db, "users", userId, "friends")
     await setDoc(doc(userFriendsCollectRef), {
       workSpaceId: workSpaceActiveId,
       chatId,
-      email:otherUserData.email,
-      name:otherUserData.name,
+      email: otherUserData.email,
+      name: otherUserData.name,
       friendId,
-      photoUrl:otherUserData.photoUrl
+      photoUrl: otherUserData.photoUrl
     })
 
     let newFriendCollectionRef = collection(db, "users", userEmail, "friends")
@@ -76,8 +105,8 @@ const DirectMessageList = () => {
     await setDoc(doc(newFriendCollectionRef), {
       workSpaceId: workSpaceActiveId,
       chatId,
-      name:user.displayName,
-      email:user.email,
+      name: user.displayName,
+      email: user.email,
       friendId: userId,
       photoUrl: user.photoURL
     })
@@ -85,12 +114,12 @@ const DirectMessageList = () => {
   }
 
   const handleClick = (chatId, chatContextMode, otherUserName, otherUserId) => {
-    dispatch(otherUserActions.updateOtherUserName({name: otherUserName }))
-    dispatch(otherUserActions.updateOtherUserId({id : otherUserId}))
-    dispatch(chatContextActions.selectChatContext({chatContextMode}))
-    dispatch(chatContextActions.selectChatId({chatId}))
-    dispatch(currentUserActions.updateUserId({id: userId}))
-    dispatch(currentUserActions.updateUserName({name: user.displayName}))
+    dispatch(otherUserActions.updateOtherUserName({ name: otherUserName }))
+    dispatch(otherUserActions.updateOtherUserId({ id: otherUserId }))
+    dispatch(chatContextActions.selectChatContext({ chatContextMode }))
+    dispatch(chatContextActions.selectChatId({ chatId }))
+    dispatch(currentUserActions.updateUserId({ id: userId }))
+    dispatch(currentUserActions.updateUserName({ name: user.displayName }))
   }
 
   return (
@@ -98,32 +127,32 @@ const DirectMessageList = () => {
       <StyledDirectMessageHeader>
         <h4>Direct Messages</h4>
 
-        <StyledIconButton size={"large"} onClick={() => openPromptModal() }>
-          <AddRoundedIcon size={"large"} sx={{color:"white"}} />
+        <StyledIconButton size={"large"} onClick={() => openPromptModal()}>
+          <AddRoundedIcon size={"large"} sx={{ color: "white" }} />
         </StyledIconButton>
       </StyledDirectMessageHeader>
 
       {!loading && friendsList.docs.map((friendDetails, idx) => {
         const directMessage = friendDetails.data()
 
-        return(
-           <DirectMessageItem
-           key={idx}
-           name={directMessage.name}
-           photoUrl={directMessage.photoUrl}
-           chatId={directMessage.chatId}
-           otherUserId={directMessage.friendId}
-           handleClick={handleClick} />
+        return (
+          <DirectMessageItem
+            key={idx}
+            name={directMessage.name}
+            photoUrl={directMessage.photoUrl}
+            chatId={directMessage.chatId}
+            otherUserId={directMessage.friendId}
+            handleClick={handleClick} />
         )
 
       })}
 
       {promptModalDisplayed &&
-                <PromptModal
-                    onClose={closeModal}
-                    message={"Which user email would you like to chat with"}
-                    placeholder="Enter a user email"
-                    onSuccess={(userName) => handleCreateChat(userName)} />}
+        <PromptModal
+          onClose={closeModal}
+          message={"Which user would you like to chat with"}
+          placeholder="Enter a user email"
+          onSuccess={(userName) => handleCreateChat(userName)} />}
     </StyledDirectMessages>
   )
 }

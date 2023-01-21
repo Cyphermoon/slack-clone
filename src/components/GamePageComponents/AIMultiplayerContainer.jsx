@@ -3,16 +3,16 @@ import ScoreBoard from './ScoreBoard'
 import { initPlayers, playersReducer } from '../../lib/gameUtil.lib'
 import { auth } from '../../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { StyledContextArea } from './OnlineMultiplayerContainer'
 import AIMultiplayerTicTacToeBoard from './AIMultiplayerTicTacToeBoard'
+import { StyledContextArea } from './styles/game.style'
 
 const AIMultiplayerContainer = () => {
     const [currentUserName, isUserLoading] = useAuthState(auth)
     const [players, setPlayers] = useReducer(playersReducer, null, initPlayers)
 
-  
+
     useEffect(() => {
-        if(isUserLoading) return
+        if (isUserLoading) return
 
         const _players = {
             player1: {
@@ -28,10 +28,10 @@ const AIMultiplayerContainer = () => {
                 letter: "o"
             }
         }
-    
-        setPlayers({type:"serverUpdate", newPlayers:_players})
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setPlayers({ type: "serverUpdate", newPlayers: _players })
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isUserLoading])
 
 

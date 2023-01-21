@@ -12,19 +12,25 @@ const GameBody = () => {
 
   return (
     <StyledMain>
-       {gameContext === OnlineMultiplayerContext && <OnlineMultiplayerContainer />}
-       {gameContext === localMultiplayerContext && <LocalMultiplayerContainer />}
-       {gameContext === AIMultiplayerContext && <AIMultiplayerContainer />}
+      {gameContext === OnlineMultiplayerContext && <OnlineMultiplayerContainer />}
+      {gameContext === localMultiplayerContext && <LocalMultiplayerContainer />}
+      {gameContext === AIMultiplayerContext && <AIMultiplayerContainer />}
     </StyledMain>
   )
 }
 
 const StyledMain = styled.main`
-  --header-height:42px;
-  height:calc(100% - var(--header-height));
+  flex-grow: 1;
   display:flex;
   flex-direction:column;
   justify-content:center;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}) {
+    &{
+      justify-content: flex-start;
+      padding-top: 1em;
+     }
+   }
 `
 
 export default GameBody

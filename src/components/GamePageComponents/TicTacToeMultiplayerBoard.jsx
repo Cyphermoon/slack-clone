@@ -2,9 +2,9 @@
 import React, { useState } from 'react'
 import { gameBoardReducer, initBoard, isBoardFull, isWinningMove } from '../../lib/gameUtil.lib';
 import { useReducer } from 'react';
-import styled from 'styled-components'
 import MessageModal from '../modals/MessageModal';
 import TicTacToeBoard from './TicTacToeBoard';
+import { StyledGameBoardSection } from './styles/game.style';
 
 const TicTacToeMultiplayerBoard = ({ players, setPlayers }) => {
   const [currentPlayer, setCurrentPlayer] = useState(players["player1"]);
@@ -13,7 +13,7 @@ const TicTacToeMultiplayerBoard = ({ players, setPlayers }) => {
   const [isDraw, setIsDraw] = useState(false)
   const isXCurrentPlayer = currentPlayer.letter === players["player1"].letter
 
-   const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
+  const [gameBoard, setGameBoard] = useReducer(gameBoardReducer, null, initBoard)
 
   const restartGame = () => {
     setGameWinner(undefined);
@@ -51,7 +51,7 @@ const TicTacToeMultiplayerBoard = ({ players, setPlayers }) => {
   }
 
   return (
-    <StyledBoardSection>
+    <StyledGameBoardSection>
       <span className='current_user'>{currentPlayer.id === "player1" ? `${players["player1"].name}` :
         `${players["player2"].name}'s`} Turn</span>
 
@@ -67,51 +67,9 @@ const TicTacToeMultiplayerBoard = ({ players, setPlayers }) => {
       <button
         onClick={restartGame}
         className='restart_game'>Restart Game</button>
-    </StyledBoardSection>
+    </StyledGameBoardSection>
   )
 }
-
-export const StyledBoardSection = styled.section`
-    --board-color:#f4f4f4;
-    width:100%;
-    text-align:center;
-    max-width:400px;
-    background-color:red;
-    border-radius:20px;
-    padding:1em .5em;
-    transition: all 500ms linear;
-
-    & > * + *{
-      margin-top:2em;
-    }
-
-    .current_user,
-    .restart_game{
-        display:inline-block;
-        color:var(--board-color);
-        font-weight:500;
-        font-size:.88rem;
-    }
-
-    .restart_game{
-      outline:none;
-      border:none;
-      padding:.5em .35em;
-      border-radius:15px;
-      text-align:center;
-      background-color:var(--board-color);
-      color:black;
-      cursor:pointer;
-    }
-
-    &.disabled{
-      pointer-events:none;
-      opacity:.8;
-      filter: blur(2px);
-    }
-`
-
-
 
 
 export default TicTacToeMultiplayerBoard

@@ -52,7 +52,7 @@ const StyledPromptModal = styled.div`
     border-radius:15px;
     box-shadow:3px 2px 20px rgb(50, 50, 50);
     padding:1em 2em;
-    z-index:20;
+    z-index:200;
     background-color:white;
 
     button{
@@ -70,7 +70,7 @@ const StyledOverLay = styled.div`
     bottom:0;
     width:100vw;
     height:100vh;
-    z-index:10;
+    z-index:101;
     background-color:rgba(0,0,0,.45);
     backdrop-filter:blur(40px);
 `
