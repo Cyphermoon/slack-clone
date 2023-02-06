@@ -8,14 +8,14 @@ import SideBarOption from './SideBarOption'
 import { useDispatch, useSelector } from 'react-redux'
 import { roomActions } from '../store/room_slice'
 import PromptModal from './modals/PromptModal'
-import { usePromptModal } from '../hooks/util.hook'
+import { useModal } from '../hooks/util.hook'
 import ChannelLoaders from './loaders/ChannelLoaders'
 import { chatContextActions } from '../store/chat_slice'
 import DirectMessageList from './DirectMessageComponent/DirectMessageList'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
-    const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
+    const { modalDisplayed, closeModal, openModal } = useModal()
     const [workSpaceDetails, workSpaceLoading] = useDocument(doc(db, "workspace", workSpaceId))
     const [data, loading] = useCollection(collection(db, "workspace", workSpaceId, "rooms"))
 
@@ -53,7 +53,7 @@ const SideBar = () => {
             <hr />
             <SideBarOption title={"Channels"} Icon={ExpandMore} />
             <hr />
-            <SideBarOption title={"Add Channel"} Icon={Add} handleClick={() => openPromptModal()} />
+            <SideBarOption title={"Add Channel"} Icon={Add} handleClick={() => openModal()} />
 
             <div className='channels_group'>
                 {loading ? <ChannelLoaders /> :
@@ -69,7 +69,7 @@ const SideBar = () => {
 
             <DirectMessageList />
 
-            {promptModalDisplayed &&
+            {modalDisplayed &&
                 <PromptModal
                     onClose={closeModal}
                     message={"What is the channel name"}

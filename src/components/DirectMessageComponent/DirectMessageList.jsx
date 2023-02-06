@@ -1,10 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import DirectMessageItem from './DirectMessageItem'
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { IconButton } from '@mui/material';
-import PromptModal from '../modals/PromptModal';
-import { usePromptModal } from '../../hooks/util.hook';
 import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -13,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { chatContextActions } from '../../store/chat_slice';
 import { otherUserActions } from '../../store/other_user_slice';
 import { currentUserActions } from '../../store/user_slice';
+import WorkSpaceUserList from '../modals/WorkSpaceUserList';
+import { useModal } from '../../hooks/util.hook';
 
 
 const DirectMessageList = () => {
@@ -20,9 +20,13 @@ const DirectMessageList = () => {
   const dispatch = useDispatch()
   const userId = user.email
   const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
-  const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
+  const { modalDisplayed, closeModal, openModal } = useModal()
+
   //query user's friends list
   const [friendsList, loading] = useCollection(query(collection(db, "users", userId, "friends"), where("workSpaceId", "==", workSpaceActiveId)))
+
+  const [visibleUsers, setVisibleUsers] = useState([])
+
 
 
   const getUser = async (id) => {
@@ -30,6 +34,15 @@ const DirectMessageList = () => {
     let userDoc = await getDoc(userRef)
 
     return userDoc.exists() ? userDoc : undefined
+  }
+
+  const getProfileVisibleUsers = async () => {
+    // Get a list of users that allows to be chat with
+
+    const visibleUsersQuery = query(collection(db, "users"), where("profileVisible", "==", true))
+    const visibleUserList = await getDocs(visibleUsersQuery);
+
+    return visibleUserList
   }
 
   const createChat = async (currentUserId, friendId, friendName, workSpaceId) => {
@@ -83,7 +96,10 @@ const DirectMessageList = () => {
 
     let isFriend = await isAlreadyFriend(userId, userEmail, workSpaceActiveId)
 
-    if (isFriend) alert("user is already in your dm")
+    if (isFriend) {
+      alert("user is already in your dm")
+      return
+    }
 
     let friendId = userDoc.id
     let otherUserData = userDoc.data()
@@ -113,6 +129,20 @@ const DirectMessageList = () => {
 
   }
 
+  const handleAddUserClicked = async () => {
+    // set the state visible users
+    const visibleUsers = await getProfileVisibleUsers();
+    setVisibleUsers(visibleUsers.docs)
+    openModal()
+  }
+
+  const handleVisibleUserClicked = (username) => {
+    // creates a chat a user is clicked from visible user list modal
+
+    closeModal()
+    handleCreateChat(username)
+  }
+
   const handleClick = (chatId, chatContextMode, otherUserName, otherUserId) => {
     dispatch(otherUserActions.updateOtherUserName({ name: otherUserName }))
     dispatch(otherUserActions.updateOtherUserId({ id: otherUserId }))
@@ -127,7 +157,7 @@ const DirectMessageList = () => {
       <StyledDirectMessageHeader>
         <h4>Direct Messages</h4>
 
-        <StyledIconButton size={"large"} onClick={() => openPromptModal()}>
+        <StyledIconButton size={"large"} onClick={handleAddUserClicked}>
           <AddRoundedIcon size={"large"} sx={{ color: "white" }} />
         </StyledIconButton>
       </StyledDirectMessageHeader>
@@ -146,13 +176,12 @@ const DirectMessageList = () => {
         )
 
       })}
-
-      {promptModalDisplayed &&
-        <PromptModal
-          onClose={closeModal}
-          message={"Which user would you like to chat with"}
-          placeholder="Enter a user email"
-          onSuccess={(userName) => handleCreateChat(userName)} />}
+      {modalDisplayed &&
+        <WorkSpaceUserList
+          workSpaceUsers={visibleUsers}
+          loading={!visibleUsers}
+          closeModal={closeModal}
+          handleUserClicked={handleVisibleUserClicked} />}
     </StyledDirectMessages>
   )
 }

@@ -1,10 +1,10 @@
 import React from 'react'
-import WorkSpaceUsers from '../components/modals/WorkSpaceUsers'
+import WorkSpaceUserList from '../components/modals/WorkSpaceUserList'
 
 const TestingPage = () => {
     return (
         <div>
-            <WorkSpaceUsers />
+            <WorkSpaceUserList />
         </div>
     )
 }

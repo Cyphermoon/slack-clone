@@ -1,16 +1,16 @@
 import { useState } from "react"
 
 
-export const usePromptModal = () => {
-    const [promptModalDisplayed, setPromptModal] = useState(false)
+export const useModal = () => {
+    const [modalDisplayed, setModal] = useState(false)
 
     const closeModal = () => {
-        setPromptModal(false)
+        setModal(false)
     }
 
-    const openPromptModal = () => {
-        setPromptModal(true)
+    const openModal = () => {
+        setModal(true)
     }
 
-    return { closeModal, openPromptModal, promptModalDisplayed }
+    return { closeModal, openModal, modalDisplayed }
 }

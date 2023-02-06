@@ -5,7 +5,7 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { db } from '../firebase'
-import { usePromptModal } from '../hooks/util.hook'
+import { useModal } from '../hooks/util.hook'
 import { chatContextActions } from '../store/chat_slice'
 import { navStateActions } from '../store/navState_slice'
 import { roomActions } from '../store/room_slice'
@@ -17,7 +17,7 @@ const WorkspaceMenu = () => {
     const dispatch = useDispatch()
     const navOpened = useSelector(state => state.navState.isOpen)
 
-    const { promptModalDisplayed, closeModal, openPromptModal } = usePromptModal()
+    const { modalDisplayed, closeModal, openModal } = useModal()
     const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
     const [workspaces, loading] = useCollection(collection(db, "workspace"))
     const isSmallScreen = window.matchMedia(`(max-width: 32em)`)
@@ -73,13 +73,13 @@ const WorkspaceMenu = () => {
             })}
 
             <StyledAddChannel onClick={() => {
-                openPromptModal()
+                openModal()
             }}>
                 <Add />
             </StyledAddChannel>
 
 
-            {promptModalDisplayed &&
+            {modalDisplayed &&
                 <PromptModal
                     onClose={closeModal}
                     message={"What is the workspace name"}
