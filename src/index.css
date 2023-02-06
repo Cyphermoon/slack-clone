@@ -44,3 +44,10 @@ code {
     monospace;
 }
 
+
+button{
+  text-decoration: none;
+  background-color: none;
+  border:none;
+  outline:none;
+}

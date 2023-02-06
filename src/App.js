@@ -3,6 +3,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import GamePage from './pages/GamePage';
 import { default as HomePage } from './pages/Home';
 import NotFound from './pages/NotFound';
+import TestingPage from './pages/TestingPage';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             </ProtectedRoute>
           } />
         <Route path="/game" element={<GamePage />} />
+        <Route path="/testing" element={<TestingPage />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </div>
