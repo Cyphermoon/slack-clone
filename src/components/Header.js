@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Search } from '@mui/icons-material';
 import { useAuthState } from "react-firebase-hooks/auth"
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,9 @@ import { ticTacToeActions } from '../store/tic_tac_toe';
 import { AIMultiplayerContext } from '../constants/GameConstant.constant';
 import HamburgerIcon from './common/Hamburger';
 import { navStateActions } from '../store/navState_slice';
+import { useModal } from '../hooks/util.hook'
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useDocument } from 'react-firebase-hooks/firestore';
 
 
 const Header = () => {
@@ -17,12 +20,30 @@ const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const navOpened = useSelector((state) => state.navState.isOpen)
+    const { modalDisplayed, openModal, closeModal } = useModal()
+    // const [customUserData, customUserLoading] = useDocument(doc(db, "users", user.email))
 
 
     const navigateToGame = () => {
         // update the contextState and navigate to game
         dispatch(ticTacToeActions.updateContext({ contextState: AIMultiplayerContext }))
         navigate("/game")
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    const getProfileVisible = async (id) => {
+        let docRef = doc(db, "users", id)
+        let user = await getDoc(docRef)
+        return user.data.profileVisible
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    const setProfileVisible = async (id, isVisible) => {
+        let docRef = doc(db, "users", id)
+
+        await updateDoc(docRef, {
+            profileVisible: isVisible
+        })
     }
 
 
@@ -33,9 +54,14 @@ const Header = () => {
     return (
         <StyledHeaderContainer>
             <HamburgerIcon toggleNavDisplay={toggleNavState} isOpen={navOpened} />
-            <StyledHeaderLeft>
+            <StyledHeaderLeft onMouseEnter={openModal} onMouseLeave={closeModal}>
                 {!loading &&
-                    <StyledAvatar referrerPolicy="no-referrer" src={user?.photoURL} alt={user?.displayName} onClick={() => auth.signOut()} />}
+                    <StyledAvatar referrerPolicy="no-referrer" src={user?.photoURL} alt={user?.displayName} />}
+
+                <ul className={`${modalDisplayed && "list_active"}`}>
+                    <li onClick={() => auth.sign()}>Log Out</li>
+                    <li title='allow other users to chat with you'>Allow Chat</li>
+                </ul>
             </StyledHeaderLeft>
 
             <StyledHeaderSearch>
@@ -65,12 +91,37 @@ const StyledHeaderContainer = styled.header`
 `
 
 const StyledHeaderLeft = styled.div`
+    position: relative;
     display:flex;
     align-items:center;
     justify-content:space-between;
     width:30%;
     max-width:150px;
-}
+
+
+    ul{
+        /*container for the list item, hidden by default*/
+        position:absolute;
+        display:none;
+        background-color:#e2e2e2;
+        z-index:10;
+        width:max-content;
+
+        &.list_active{
+            display:block;
+        }
+
+        li{
+            cursor:pointer;
+            font-size:.8rem;
+            color:#1c1c1c;
+            padding:.5em 1em;
+
+            :hover{
+                background-color:#c4c4c4;
+            }
+        }
+    }
 `
 
 const StyledHeaderSearch = styled.div`

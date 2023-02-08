@@ -16,17 +16,17 @@ import { useModal } from '../../hooks/util.hook';
 
 
 const DirectMessageList = () => {
-  const [user] = useAuthState(auth)
-  const dispatch = useDispatch()
-  const userId = user.email
+  //TODO create a separate file for all the functions hear
+
+  const [visibleUsers, setVisibleUsers] = useState([])
   const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
+  const dispatch = useDispatch()
   const { modalDisplayed, closeModal, openModal } = useModal()
+  const [user] = useAuthState(auth)
+  const userId = user.email
 
   //query user's friends list
   const [friendsList, loading] = useCollection(query(collection(db, "users", userId, "friends"), where("workSpaceId", "==", workSpaceActiveId)))
-
-  const [visibleUsers, setVisibleUsers] = useState([])
-
 
 
   const getUser = async (id) => {
@@ -46,6 +46,8 @@ const DirectMessageList = () => {
   }
 
   const createChat = async (currentUserId, friendId, friendName, workSpaceId) => {
+    // creates the chat in the database
+
     let chatId = `${currentUserId}_${friendId}_${workSpaceId}`
 
     let chatDocRef = doc(db, "chats", chatId)
@@ -64,6 +66,7 @@ const DirectMessageList = () => {
       *return true if the input user is already a friend
       * otherwise. return false 
      */
+
     let friendExists = false
 
     //query to get current user friend's email
@@ -151,6 +154,7 @@ const DirectMessageList = () => {
     dispatch(currentUserActions.updateUserId({ id: userId }))
     dispatch(currentUserActions.updateUserName({ name: user.displayName }))
   }
+
 
   return (
     <StyledDirectMessages>
