@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+import BackgroundOverlay from '../common/BackgroundOverlay'
 
 
 const WorkSpaceUserList = ({ loading, workSpaceUsers, handleUserClicked, closeModal }) => {
@@ -11,51 +12,39 @@ const WorkSpaceUserList = ({ loading, workSpaceUsers, handleUserClicked, closeMo
 
     return ReactDOM.createPortal(
         <>
-            <StyledOverLay />
-            <StyledUserListSection>
-                <StyledUserListHeader>
-                    <h2>Users on this app</h2>
-                    <button onClick={closeModal}>
-                        <Close />
-                    </button>
-                </StyledUserListHeader>
-                <StyledUserList>
+            <BackgroundOverlay >
+                <StyledUserListSection>
+                    <StyledUserListHeader>
+                        <h2>Users on this app</h2>
+                        <button onClick={closeModal}>
+                            <Close />
+                        </button>
+                    </StyledUserListHeader>
+                    <StyledUserList>
 
-                    {loading && <p>Loading....</p>}
+                        {loading && <p>Loading....</p>}
 
-                    {!loading &&
-                        workSpaceUsers.map((workSpaceUser, idx) => {
-                            let workSpaceUserData = workSpaceUser.data()
-                            return <div className='users' key={`workspace-user-${idx}`}>
-                                <h5>{workSpaceUserData.name}</h5>
-                                <figure>
-                                    <img src={workSpaceUserData.photoUrl} alt="profile" />
-                                </figure>
-                                <button onClick={() => handleUserClicked(workSpaceUserData.email)}>message</button>
-                            </div>
+                        {!loading &&
+                            workSpaceUsers.map((workSpaceUser, idx) => {
+                                let workSpaceUserData = workSpaceUser.data()
+                                return <div className='users' key={`workspace-user-${idx}`}>
+                                    <h5>{workSpaceUserData.name}</h5>
+                                    <figure>
+                                        <img src={workSpaceUserData.photoUrl} alt="profile" />
+                                    </figure>
+                                    <button onClick={() => handleUserClicked(workSpaceUserData.email)}>message</button>
+                                </div>
+                            }
+                            )
                         }
-                        )
-                    }
 
-                </StyledUserList>
-            </StyledUserListSection>
+                    </StyledUserList>
+                </StyledUserListSection>
+            </BackgroundOverlay>
         </>
         , document.getElementById("portal"))
 }
 
-const StyledOverLay = styled.div`
-    position:absolute;
-    content:"";
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100vw;
-    height:100vh;
-    z-index:1;
-    background-color:rgba(0,0,0,.45);
-    backdrop-filter:blur(40px);
-`
 
 const StyledUserListHeader = styled.div`
     display:flex;

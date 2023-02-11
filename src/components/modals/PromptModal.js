@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ReactDOM from "react-dom"
 import styled from 'styled-components'
+import BackgroundOverlay from '../common/BackgroundOverlay'
 
 const PromptModal = ({ onClose, onSuccess, message, placeholder }) => {
     const [promptValue, setPromptValue] = useState("")
@@ -17,26 +18,27 @@ const PromptModal = ({ onClose, onSuccess, message, placeholder }) => {
 
     return ReactDOM.createPortal(
         <>
-            <StyledOverLay />
-            <StyledPromptModal>
-                <StyledPromptHeader>
-                    <h2>{message}</h2>
-                </StyledPromptHeader>
+            <BackgroundOverlay >
+                <StyledPromptModal>
+                    <StyledPromptHeader>
+                        <h2>{message}</h2>
+                    </StyledPromptHeader>
 
-                <StyledChannelForm onSubmit={submitChannel}>
-                    <input type="text"
-                        value={promptValue}
-                        onChange={(e) => setPromptValue(e.target.value)}
-                        placeholder={placeholder || "Enter a value"} />
+                    <StyledChannelForm onSubmit={submitChannel}>
+                        <input type="text"
+                            value={promptValue}
+                            onChange={(e) => setPromptValue(e.target.value)}
+                            placeholder={placeholder || "Enter a value"} />
 
-                    <div className='form_btn'>
-                        <button className='cancel_btn' onClick={onClose}>cancel</button>
-                        <button type='submit' className='submit_btn'>Done</button>
-                    </div>
+                        <div className='form_btn'>
+                            <button className='cancel_btn' onClick={onClose}>cancel</button>
+                            <button type='submit' className='submit_btn'>Done</button>
+                        </div>
 
 
-                </StyledChannelForm>
-            </StyledPromptModal>
+                    </StyledChannelForm>
+                </StyledPromptModal>
+            </BackgroundOverlay>
         </>
 
         , document.getElementById("portal"))
@@ -59,20 +61,6 @@ const StyledPromptModal = styled.div`
         outline:none;
         border:none;
     }
-`
-
-const StyledOverLay = styled.div`
-    position:absolute;
-    content:"";
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100vw;
-    height:100vh;
-    z-index:101;
-    background-color:rgba(0,0,0,.45);
-    backdrop-filter:blur(40px);
 `
 
 const StyledPromptHeader = styled.div`
