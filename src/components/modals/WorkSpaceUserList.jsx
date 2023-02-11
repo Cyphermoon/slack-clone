@@ -14,7 +14,7 @@ const WorkSpaceUserList = ({ loading, workSpaceUsers, handleUserClicked, closeMo
             <StyledOverLay />
             <StyledUserListSection>
                 <StyledUserListHeader>
-                    <h2>Users on this workspace</h2>
+                    <h2>Users on this app</h2>
                     <button onClick={closeModal}>
                         <Close />
                     </button>
@@ -97,6 +97,8 @@ const StyledUserList = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     grid-auto-rows:1fr;
     gap:1.2em;
+    max-height:400px;
+    overflow-y: scroll;
 
     div.users{
         padding:.5em;

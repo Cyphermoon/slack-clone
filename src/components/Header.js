@@ -3,14 +3,13 @@ import styled from 'styled-components'
 import { Search } from '@mui/icons-material';
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from '../firebase';
-import { Avatar } from '@mui/material';
+import { Avatar, FormControlLabel, Switch } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ticTacToeActions } from '../store/tic_tac_toe';
 import { AIMultiplayerContext } from '../constants/GameConstant.constant';
 import HamburgerIcon from './common/Hamburger';
 import { navStateActions } from '../store/navState_slice';
-import { useModal } from '../hooks/util.hook'
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useDocument } from 'react-firebase-hooks/firestore';
 
@@ -20,8 +19,7 @@ const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const navOpened = useSelector((state) => state.navState.isOpen)
-    const { modalDisplayed, openModal, closeModal } = useModal()
-    // const [customUserData, customUserLoading] = useDocument(doc(db, "users", user.email))
+    const [customUserData, customUserLoading] = useDocument(doc(db, "users", user.email))
 
 
     const navigateToGame = () => {
@@ -54,13 +52,25 @@ const Header = () => {
     return (
         <StyledHeaderContainer>
             <HamburgerIcon toggleNavDisplay={toggleNavState} isOpen={navOpened} />
-            <StyledHeaderLeft onMouseEnter={openModal} onMouseLeave={closeModal}>
+            <StyledHeaderLeft >
                 {!loading &&
                     <StyledAvatar referrerPolicy="no-referrer" src={user?.photoURL} alt={user?.displayName} />}
 
-                <ul className={`${modalDisplayed && "list_active"}`}>
-                    <li onClick={() => auth.sign()}>Log Out</li>
-                    <li title='allow other users to chat with you'>Allow Chat</li>
+                <ul className='list_active'>
+                    <li onClick={() => auth.signOut()}>Log Out</li>
+                    <li title='allow other users to chat with you'>
+                        {!customUserLoading &&
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        size='small'
+                                        checked={customUserData.data().profileVisible}
+                                        onChange={(e) => setProfileVisible(user.email, e.target.checked)} />
+                                }
+                                label='Allow Chat'
+                                labelPlacement='start' />}
+
+                    </li>
                 </ul>
             </StyledHeaderLeft>
 
@@ -81,7 +91,7 @@ const StyledHeaderContainer = styled.header`
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:5px 20px;
+    padding:7px 20px;
     color:white;
     position:fixed;
     top:0;
@@ -96,18 +106,22 @@ const StyledHeaderLeft = styled.div`
     align-items:center;
     justify-content:space-between;
     width:30%;
-    max-width:150px;
+    max-width:60px;
 
+    &:hover .list_active{
+        display:block;
+    }
 
     ul{
         /*container for the list item, hidden by default*/
         position:absolute;
+        top: 100%;
         display:none;
         background-color:#e2e2e2;
         z-index:10;
         width:max-content;
 
-        &.list_active{
+        &:focus-within.list_active{
             display:block;
         }
 
@@ -120,6 +134,15 @@ const StyledHeaderLeft = styled.div`
             :hover{
                 background-color:#c4c4c4;
             }
+
+            span.MuiFormControlLabel-label{
+                font-size:.8rem;
+            }
+
+            label.MuiFormControlLabel-root {
+                margin:0;
+            }
+
         }
     }
 `
