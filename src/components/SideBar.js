@@ -1,4 +1,4 @@
-import { Add, Apps, BookmarkBorder, Chat, Drafts, ExpandLess, ExpandMore, FileCopy, Inbox, PeopleAlt } from '@mui/icons-material'
+import { Add, Chat, Drafts, ExpandLess, ExpandMore, Inbox } from '@mui/icons-material'
 import { collection, doc, setDoc } from 'firebase/firestore'
 import styled from 'styled-components'
 import { useCollection, useDocument } from "react-firebase-hooks/firestore"
@@ -12,6 +12,7 @@ import { useModal } from '../hooks/util.hook'
 import ChannelLoaders from './loaders/ChannelLoaders'
 import { chatContextActions } from '../store/chat_slice'
 import DirectMessageList from './DirectMessageComponent/DirectMessageList'
+import SideBarDropDown from './SideBarDropDown'
 
 const SideBar = () => {
     const workSpaceId = useSelector((state) => state.workspace.activeId)
@@ -45,27 +46,28 @@ const SideBar = () => {
             <SideBarOption title={"Threads"} Icon={Chat} disabled={true} />
             <SideBarOption title={"Saved Items"} Icon={Drafts} disabled={true} />
             <SideBarOption title={"Mentions & Reactions"} Icon={Inbox} disabled={true} />
-            <SideBarOption title={"Channel Browser"} Icon={BookmarkBorder} disabled={true} />
-            <SideBarOption title={"People & user groups"} Icon={PeopleAlt} disabled={true} />
-            <SideBarOption title={"Apps"} Icon={Apps} disabled={true} />
-            <SideBarOption title={"File browser"} Icon={FileCopy} disabled={true} />
-            <SideBarOption title={"Show More"} Icon={ExpandLess} disabled={true} />
-            <hr />
-            <SideBarOption title={"Channels"} Icon={ExpandMore} disabled={true} />
-            <hr />
-            <SideBarOption title={"Add Channel"} Icon={Add} handleClick={() => openModal()} />
 
-            <div className='channels_group'>
-                {loading ? <ChannelLoaders /> :
-                    (
-                        data.docs.map((doc) =>
-                            <SideBarOption
-                                key={doc.id}
-                                id={doc.id}
-                                title={doc.data().name}
-                                handleClick={(docId) => selectChannel(docId)} />)
-                    )}
-            </div>
+            <SideBarOption title={"Show More"} Icon={ExpandMore} disabled={true} />
+            {/* <hr />
+            <SideBarOption title={"Channels"} Icon={ExpandMore} disabled={true} />
+            <hr /> */}
+
+            <SideBarDropDown headerTitle={"Channels"} openIcon={ExpandLess} closeIcon={ExpandMore}>
+
+                <div className='channels_group'>
+                    {loading ? <ChannelLoaders /> :
+                        (
+                            data.docs.map((doc) =>
+                                <SideBarOption
+                                    small={true}
+                                    key={doc.id}
+                                    id={doc.id}
+                                    title={doc.data().name}
+                                    handleClick={(docId) => selectChannel(docId)} />)
+                        )}
+                    <SideBarOption small={true} title={"Add Channel"} Icon={Add} handleClick={() => openModal()} />
+                </div>
+            </SideBarDropDown>
 
             <DirectMessageList />
 
@@ -100,8 +102,6 @@ const StyledSideBar = styled.section`
     }
 
     .channels_group{
-        margin-top:1em;
-
         & > * + *{
             margin-top:.75em;
         }

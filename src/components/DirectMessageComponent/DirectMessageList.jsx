@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import DirectMessageItem from './DirectMessageItem'
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { IconButton } from '@mui/material';
 import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -13,10 +12,11 @@ import { otherUserActions } from '../../store/other_user_slice';
 import { currentUserActions } from '../../store/user_slice';
 import WorkSpaceUserList from '../modals/WorkSpaceUserList';
 import { useModal } from '../../hooks/util.hook';
+import { StyledIconButton } from '../../styles/button.style';
 
 
 const DirectMessageList = () => {
-  //TODO create a separate file for all the functions hear
+  //TODO create a separate file for all the functions here
 
   const [visibleUsers, setVisibleUsers] = useState([])
   const workSpaceActiveId = useSelector((state) => state.workspace.activeId)
@@ -190,20 +190,6 @@ const DirectMessageList = () => {
   )
 }
 
-
-const StyledIconButton = styled(IconButton)`
-  &&{
-  background-color:gray;
-  width:35px;
-  height:35px;
-  padding:.2em;
-  border-radius:50%;
-
-  :hover{
-    background-color:lightgray;
-  }
-}
-`
 
 const StyledDirectMessageHeader = styled.div`
   display:flex;
