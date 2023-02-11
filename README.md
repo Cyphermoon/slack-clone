@@ -1,6 +1,5 @@
 # Connect (<small>inspired by slack</small>)
-
-This app implements a lot of slack's functionalities like: creating channels and workspace. I also added private communication and ability to play an online game (*tic-tac-toe*) in DM
+This application incorporates a range of functionalities similar to Slack, such as the ability to create channels and workspaces. Additionally, it offers features for private communication and enables users to play a multiplayer online game, specifically tic-tac-toe, within direct messaging.
 
 ![connect preview](https://cdn.sanity.io/images/fohljj9y/production/12a1886b5c5c50dc9ddbeee940c3f322ebada0ec-1440x791.png)
 
