@@ -5,12 +5,12 @@ import styled from 'styled-components'
 const SideBarOption = ({ Icon, title, handleClick = f => f, id, disabled, small }) => {
     return (
         <StyledSideBarOption
-            onClick={handleClick}
+
             className={`${disabled && 'disabled'} ${small && 'small'}`}>
             {Icon && <Icon />}
             {Icon ?
-                <button data-close-nav >{title}</button> :
-                <button onClick={() => handleClick(id)}><Tag /> {title}</button>}
+                <button onClick={handleClick} >{title}</button> :
+                <button data-close-nav onClick={() => handleClick(id)}><Tag /> {title}</button>}
 
         </StyledSideBarOption>
     )
