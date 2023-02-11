@@ -42,16 +42,16 @@ const SideBar = () => {
     return (
         <StyledSideBar className={navOpened && "opened"}>
             <SideBarHeader workSpaceName={!workSpaceLoading && workSpaceDetails.data().name} />
-            <SideBarOption title={"Threads"} Icon={Chat} />
-            <SideBarOption title={"Saved Items"} Icon={Drafts} />
-            <SideBarOption title={"Mentions & Reactions"} Icon={Inbox} />
-            <SideBarOption title={"Channel Browser"} Icon={BookmarkBorder} />
-            <SideBarOption title={"People & user groups"} Icon={PeopleAlt} />
-            <SideBarOption title={"Apps"} Icon={Apps} />
-            <SideBarOption title={"File browser"} Icon={FileCopy} />
-            <SideBarOption title={"Show More"} Icon={ExpandLess} />
+            <SideBarOption title={"Threads"} Icon={Chat} disabled={true} />
+            <SideBarOption title={"Saved Items"} Icon={Drafts} disabled={true} />
+            <SideBarOption title={"Mentions & Reactions"} Icon={Inbox} disabled={true} />
+            <SideBarOption title={"Channel Browser"} Icon={BookmarkBorder} disabled={true} />
+            <SideBarOption title={"People & user groups"} Icon={PeopleAlt} disabled={true} />
+            <SideBarOption title={"Apps"} Icon={Apps} disabled={true} />
+            <SideBarOption title={"File browser"} Icon={FileCopy} disabled={true} />
+            <SideBarOption title={"Show More"} Icon={ExpandLess} disabled={true} />
             <hr />
-            <SideBarOption title={"Channels"} Icon={ExpandMore} />
+            <SideBarOption title={"Channels"} Icon={ExpandMore} disabled={true} />
             <hr />
             <SideBarOption title={"Add Channel"} Icon={Add} handleClick={() => openModal()} />
 

@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const SideBarOption = ({ Icon, title, handleClick = f => f, id }) => {
+const SideBarOption = ({ Icon, title, handleClick = f => f, id, disabled }) => {
     return (
-        <StyledSideBarOption>
+        <StyledSideBarOption className={disabled && 'disabled'}>
             {Icon && <Icon />}
             {Icon ?
                 <button data-close-nav onClick={handleClick}>{title}</button> :
@@ -19,6 +19,11 @@ const StyledSideBarOption = styled.div`
     display:flex;
     align-items:center;
     justify-content:flex-start;
+
+    &.disabled{
+        opacity:.7;
+        pointer-events:none;
+    }
     
     &:hover{
         opacity:.78;

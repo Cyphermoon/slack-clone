@@ -43,15 +43,16 @@ const StyledSideBarHeader = styled.div`
 `
 
 const StyledInfoGroup = styled.div`
-     & > h3{
+        margin-right: 1em;
+        & > h3{
         color:white;
         font-size:1.35rem;
         font-weight:600;
         text-transform: capitalize;
         margin-bottom:.15em;
-     }
+        }
 
-     span{
+        span{
         --font-size:.9;
         display:flex;
         align-items:center;
@@ -63,7 +64,7 @@ const StyledInfoGroup = styled.div`
             font-size:var(--font-size)em;
             color:green;
         }
-     }
+        }
 `
 
 
