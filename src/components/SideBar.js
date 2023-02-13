@@ -108,26 +108,9 @@ const StyledSideBar = styled.section`
     }
 
     @media screen and (max-width:${({ theme }) => theme.breakpoint.sm}){
-        background-color:var(--slack-color)00;
+        background-color:var(--slack-color);
         transition: opacity 200ms linear; 
         width:68vw;
-
-            &.opened{
-            background-color:var(--slack-color);
-            animation:fadeIn 300ms linear;
-
-            @keyframes fadeIn{
-                0%{
-                    opacity:0;
-                }
-                50%{
-                    opacity: .5;
-                }
-                100%{
-                    opacity:1;
-                }
-            }
-            }
     }
 `
 

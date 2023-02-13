@@ -15,38 +15,38 @@ const DirectMessageChatArea = ({ roomName, roomMessages, messagesLoading, sendMe
         chatRef.current.scrollIntoView({ behavior: "smooth" })
     })
 
-return(
-<StyledChatArea>
-  <DirectMessageChatHeader roomName={roomName} />
+    return (
+        <StyledChatArea>
+            <DirectMessageChatHeader roomName={roomName} />
 
-  <StyledChatMessages>
-      {messagesLoading ? <MessageSkeletons /> :
+            <StyledChatMessages isDirectMessage={true}>
+                {messagesLoading ? <MessageSkeletons /> :
 
-          roomMessages?.docs?.map((doc) => {
-              const { serverTimeStamp, content, user, userImg } = doc.data();
-              const id = doc.id;
+                    roomMessages?.docs?.map((doc) => {
+                        const { serverTimeStamp, content, user, userImg } = doc.data();
+                        const id = doc.id;
 
-              return (
-                  <div
-                  key={id}>
-                      <DirectChatMessageItem
-                          message={content}
-                          timeStamp={serverTimeStamp?.toDate().toDateString()}
-                          userName={user}
-                          userImg={userImg} />
+                        return (
+                            <div
+                                key={id}>
+                                <DirectChatMessageItem
+                                    message={content}
+                                    timeStamp={serverTimeStamp?.toDate().toDateString()}
+                                    userName={user}
+                                    userImg={userImg} />
 
-                  </div>
+                            </div>
 
-              )
+                        )
 
-          })
-      }
-      <div className='message_bottom' ref={chatRef} />
-  </StyledChatMessages>
+                    })
+                }
+                <div className='message_bottom' ref={chatRef} />
+            </StyledChatMessages>
 
-  <ChatInput chatRef={chatRef} sendMessage={sendMessage} channelName={roomName} />
-</StyledChatArea>
-)
+            <ChatInput chatRef={chatRef} sendMessage={sendMessage} channelName={roomName} />
+        </StyledChatArea>
+    )
 }
 
 

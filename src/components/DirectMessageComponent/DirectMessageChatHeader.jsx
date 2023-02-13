@@ -80,7 +80,8 @@ const DirectMessageChatHeader = ({ roomName }) => {
     return (
         <StyledChatHeader>
             <h3> {roomName} </h3>
-            <button onClick={moveToOnlineGame} className='room_details'><GamepadOutlined /> <span>Play Game</span> </button>
+            <button onClick={moveToOnlineGame} className='room_details'><GamepadOutlined /> <span>Play Game</span>
+            </button>
         </StyledChatHeader>
     )
 }
@@ -92,6 +93,9 @@ const StyledChatHeader = styled.div`
     justify-content:space-between;
     background-color:#f9f9f9;
     border-bottom:1px solid #ccc;
+    position:absolute;
+    width:100%;
+    z-index:1;
 
     h3{
         font-size:1.3rem;

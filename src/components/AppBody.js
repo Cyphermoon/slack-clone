@@ -39,6 +39,7 @@ const StyledMain = styled.main`
                 width:100vw;
                 height:100vh;
                 background-color: rgba(0,0,0,.4);
+                z-index:1;
             }
         }
     }

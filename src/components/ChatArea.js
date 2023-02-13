@@ -10,7 +10,7 @@ const ChatArea = ({ roomDetails, roomDetailsLoading, roomMessages, messagesLoadi
 
     useEffect(() => {
         chatRef.current.scrollIntoView({ behavior: "smooth" })
-    })
+    }, [])
 
 
     return (
@@ -59,7 +59,8 @@ export const StyledChatArea = styled.div`
 
 export const StyledChatMessages = styled.div`
     width:100%;
-    padding:.7em 1em; 
+    padding:.7em 1em;
+    padding-top:${({ isDirectMessage }) => isDirectMessage && "80px"}; 
     overflow-y:scroll;
     justify-self:start;
     flex-grow:1;
@@ -69,14 +70,7 @@ export const StyledChatMessages = styled.div`
     }
 
     .message_bottom{
-        padding-bottom:3rem;
-    }
-
-    div{
-        // display:flex;
-        // flex-direction:column;
-        // justify-content:center;
-        // background-color:red;
+        padding-bottom:2rem;
     }
 `
 
