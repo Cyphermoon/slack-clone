@@ -84,11 +84,9 @@ const SideBar = () => {
 
 
 const StyledSideBar = styled.section`
-    padding-top:calc(${({ theme }) => theme.spacing_top_from_header} + 10px);
     padding-left:15px;
     padding-right:15px;
     padding-bottom:50px;
-    background-color:var(--slack-color);
     height:100%;
     overflow-y:scroll;
 

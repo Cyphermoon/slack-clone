@@ -50,8 +50,6 @@ export const StyledChatArea = styled.div`
     position:relative;
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
-    padding-top:${({ theme }) => theme.spacing_top_from_header};
     flex-grow:1;
     height:100%;
     overflow:auto;
@@ -60,7 +58,7 @@ export const StyledChatArea = styled.div`
 export const StyledChatMessages = styled.div`
     width:100%;
     padding:.7em 1em;
-    padding-top:${({ isDirectMessage }) => isDirectMessage && "80px"}; 
+    margin-top:${({ isDirectMessage }) => isDirectMessage && "80px"}; 
     overflow-y:scroll;
     justify-self:start;
     flex-grow:1;
@@ -70,7 +68,7 @@ export const StyledChatMessages = styled.div`
     }
 
     .message_bottom{
-        padding-bottom:2rem;
+        padding-bottom:1rem;
     }
 `
 

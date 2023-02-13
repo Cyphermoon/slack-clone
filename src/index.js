@@ -9,7 +9,7 @@ import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 
 const theme = {
-  spacing_top_from_header: "50px",
+  spacing_top_from_header: "54px",
   breakpoint: {
     sm: "32em"
   }

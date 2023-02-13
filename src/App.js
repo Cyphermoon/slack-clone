@@ -12,7 +12,7 @@ function isDev() {
 function App() {
 
   return (
-    <div className='app' style={{ height: "100vh" }}>
+    <div className='app' style={{ height: "100vh", overflow: "hidden" }}>
       <Routes>
         <Route path="/"
           element={

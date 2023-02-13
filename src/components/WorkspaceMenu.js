@@ -92,10 +92,7 @@ const WorkspaceMenu = () => {
 const StyledWorkspaceMenu = styled.section`
     height:100%;
     overflow:scroll;
-    padding:1.3em 1.1em;
-    padding-top:calc(${({ theme }) => theme.spacing_top_from_header} + 10px);
-    background-color:var(--slack-color);
-
+    padding:0 1.1em;
 
     & > * + *{
         margin-top:1em;

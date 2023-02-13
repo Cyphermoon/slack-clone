@@ -18,6 +18,7 @@ const StyledChatHeader = styled.div`
     justify-content:space-between;
     background-color:#f9f9f9;
     border-bottom:1px solid #ccc;
+    z-index:1;
 
     h3{
         font-size:1.3rem;

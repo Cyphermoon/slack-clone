@@ -33,18 +33,20 @@ const ChatInput = ({ chatRef, channelName, sendMessage }) => {
 }
 
 const StyledChatInput = styled.form`
-    width:95%;
+    width:100%;
     margin:0 auto;
     background-color:#f1f1f1;
-    margin-bottom:.5em;
+    // margin-bottom:.5em;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
     input{
         width:100%;
         background-color:transparent;
         color:black;
-        border:1px solid #333;
+        border:none;
+        border-top:1px solid #ccc;
         padding:1.5em;
+        height:77px;
         font-size:1rem;
     }
 `
