@@ -32,6 +32,8 @@ const MessageSkeletons = () => {
 const StyledMessageSkeletons = styled.div`
     width:95%;
     max-width:160px;
+    position:relative;
+    z-index:-1;
 
     & > * + *{
         margin-top:2em;

@@ -50,8 +50,8 @@ export const StyledChatArea = styled.div`
     position:relative;
     display:flex;
     flex-direction:column;
-    flex-grow:1;
     height:100%;
+    width:100%;
     overflow:auto;
 `
 
@@ -60,7 +60,6 @@ export const StyledChatMessages = styled.div`
     padding:.7em 1em;
     margin-top:${({ isDirectMessage }) => isDirectMessage && "80px"}; 
     overflow-y:scroll;
-    justify-self:start;
     flex-grow:1;
     
     & > * + *{
@@ -68,7 +67,7 @@ export const StyledChatMessages = styled.div`
     }
 
     .message_bottom{
-        padding-bottom:1rem;
+        padding-bottom:3rem;
     }
 `
 

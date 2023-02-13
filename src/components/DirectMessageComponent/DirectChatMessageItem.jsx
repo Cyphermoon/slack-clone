@@ -12,12 +12,12 @@ const DirectChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
 
             <Avatar src={userImg || ""} alt={userName} referrerPolicy="no-referrer" />
             <StyledMessageInfo
-            isCurrentUserMessage={user.displayName === userName}>
+                isCurrentUserMessage={user.displayName === userName}>
                 <div className='user_name'>
                     <h4>{userName}</h4>
-                     <p>
-                    {message}
-                </p>
+                    <p>
+                        {message}
+                    </p>
                 </div>
 
                 <span className='timeStamp'>{timeStamp}</span>
@@ -28,17 +28,21 @@ const DirectChatMessageItem = ({ userImg, userName, message, timeStamp }) => {
 }
 
 const StyledMessageItem = styled.div`
-    margin-left:${({isCurrentUserMessage }) =>(isCurrentUserMessage ? "auto" : null)};
+    margin-left:${({ isCurrentUserMessage }) => (isCurrentUserMessage ? "auto" : null)};
     display:flex;
-    // flex-direction:${({isCurrentUserMessage }) =>(isCurrentUserMessage ? "row-reverse" : "row")};
+    // flex-direction:${({ isCurrentUserMessage }) => (isCurrentUserMessage ? "row-reverse" : "row")};
     align-items:center;
     justify-content:space-between;
     width:100%;
-    max-width:350px;
+    max-width: 360px;
+
+    @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}){
+        margin-left:0;
+    }
 
 
     .MuiAvatar-root{
-        svg{   font-size:7rem;}
+        svg{  font-size:6.8rem;}
 
     }
 `
@@ -46,15 +50,17 @@ const StyledMessageItem = styled.div`
 const StyledMessageInfo = styled.div`
     width:85%;
     display:flex;
-    // flex-direction:${({isCurrentUserMessage }) =>(isCurrentUserMessage ? "row-reverse" : "row")};
+    // flex-direction:${({ isCurrentUserMessage }) => (isCurrentUserMessage ? "row-reverse" : "row")};
     justify-content:space-between;
 
     .user_name{
         display:flex;
         flex-direction:column;
         align-items:start;
+        width:70%;
 
         h4{
+            font-size:.9rem;
             font-weight:700;
             opacity:.89;
             text-transform:capitalize;
@@ -69,9 +75,10 @@ const StyledMessageInfo = styled.div`
 
     span{
         color:#555;
-        font-size:.76rem;
+        font-size:.72rem;
         font-weight:300;
         align-self:start;
+        flex-grow:1;
     }
 
   

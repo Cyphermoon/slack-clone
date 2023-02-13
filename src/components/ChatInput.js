@@ -36,8 +36,16 @@ const StyledChatInput = styled.form`
     width:100%;
     margin:0 auto;
     background-color:#f1f1f1;
-    // margin-bottom:.5em;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    position: absolute;
+    bottom:0;
+
+    @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}){
+        position:fixed;
+      }
+
+    &:focus-within{
+        border:1px solid #000;
+    }
 
     input{
         width:100%;
@@ -48,6 +56,7 @@ const StyledChatInput = styled.form`
         padding:1.5em;
         height:77px;
         font-size:1rem;
+        outline:none;
     }
 `
 

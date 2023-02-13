@@ -97,6 +97,10 @@ const StyledChatHeader = styled.div`
     width:100%;
     z-index:1;
 
+    @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}){
+      position:fixed;
+    }
+
     h3{
         font-size:1.3rem;
         text-transform:capitalize;

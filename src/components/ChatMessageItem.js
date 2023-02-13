@@ -36,7 +36,7 @@ const StyledMessageItem = styled.div`
     align-items:flex-end;
     justify-content:space-between;
     width:100%;
-    max-width:350px;
+    max-width:390px;
 
 
     .MuiAvatar-root{

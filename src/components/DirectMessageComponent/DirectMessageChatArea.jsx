@@ -27,16 +27,12 @@ const DirectMessageChatArea = ({ roomName, roomMessages, messagesLoading, sendMe
                         const id = doc.id;
 
                         return (
-                            <div
-                                key={id}>
-                                <DirectChatMessageItem
-                                    message={content}
-                                    timeStamp={serverTimeStamp?.toDate().toDateString()}
-                                    userName={user}
-                                    userImg={userImg} />
-
-                            </div>
-
+                            <DirectChatMessageItem
+                                message={content}
+                                timeStamp={serverTimeStamp?.toDate().toDateString()}
+                                userName={user}
+                                key={id}
+                                userImg={userImg} />
                         )
 
                     })
