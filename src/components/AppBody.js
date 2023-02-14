@@ -55,6 +55,7 @@ const StyledMenuContainer = styled.div`
 
     @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}){
         position: fixed;
+        top: ${({ theme }) => theme.spacing_top_from_header};
         z-index: 50;
         transform: translateX(-300%);
         transition: transform 300ms linear;
