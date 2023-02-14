@@ -54,11 +54,12 @@ const StyledMenuContainer = styled.div`
     background-color:var(--slack-color);
 
     @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}){
-        position: absolute;
+        position: fixed;
         z-index: 50;
         transform: translateX(-300%);
         transition: transform 300ms linear;
         overflow-y: scroll;
+        height: calc(100% - ${({ theme }) => theme.spacing_top_from_header});
 
         &.opened{
             transform: translateX(0%);
