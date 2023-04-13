@@ -10,9 +10,7 @@ This application incorporates a range of functionalities similar to Slack, such 
 - Private Communication
 - Tic-Tac-Toe game with AI
 
-## Todo
-- Make the site mobile responsive
-- Add Delete functionality to messages
+
 
 ## Technologies
 - Javascript
